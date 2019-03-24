@@ -34,39 +34,21 @@ import java.util.Scanner;
 public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
-
-    private static final String DYNAMIC_MOVIE_URL =
-//            "https://andfun-weather.udacity.com/weather";
-            "https://api.themoviedb.org/3/movie";
-
     private final static String PARAM_KEY = "api_key";
     private final static String QUERY_PARAM = "number of movies";
-
     private final static String KEY_VALUE =
             "fcb4ae381c4482341fc74a85ea0b071a";
 
-
-//    https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a       // correct Sample
-//    https://api.themoviedb.org/3/movie/?api_key=fcb4ae381c4482341fc74a85ea0b071a&cnt=14   // 1st attempt api-built per below implementation 3/15
+    private static final String DYNAMIC_MOVIE_URL =
+            "https://api.themoviedb.org/3/movie";
 
     private static final String MOVIE_BASE_URL = DYNAMIC_MOVIE_URL;
 
-    /*
-     * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
-     * server. They are simply here to allow us to teach you how to build a URL if you were to use
-     * a real API.If you want to connect your app to OpenWeatherMap's API, feel free to! However,
-     * we are not going to show you how to do so in this course.
-     */
-
-    /* The format we want our API to return */
-    private static final String format = "json";
-    /* The units we want our API to return */
-    private static final String units = "metric";
-    /* The number of days we want our API to return */
-    private static final int numDays = 14;
-
-
-    final static String DAYS_PARAM = "cnt";
+    // Image Url
+    private static final String MAIN_POSTER_BASE_URL = "http://image.tmdb.org/t/p";
+    private static final String OPTIMUM_SIZE = "w185";
+    private static final String OPTIMUM_SIZE_92 = "w92";
+    private static final String OPTIMUM_SIZE_154 = "w154";
 
     /**
      * Builds the URL used to talk to the weather server using a location. This location is based
@@ -93,25 +75,26 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildUrlPoster(String numOfMovies) {
-        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                .appendEncodedPath(numOfMovies)
-                .appendQueryParameter(PARAM_KEY, KEY_VALUE)
+    public static URL buildUrlPoster(String imageLocation) {
+        Uri builtUri = Uri.parse(MAIN_POSTER_BASE_URL).buildUpon()
+                .appendEncodedPath(OPTIMUM_SIZE)
+                .appendEncodedPath(imageLocation)
                 .build();
-//                                                               https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a
-        URL urlPoster = null;
+                                                                // expected imageLocation: '/ehYc5DRe1Ipnn5XSf3Tol3LMbrq.jpg' Target -> : 2 / 3
+        URL urlPoster = null;                                   // 1. sample: //image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
+                                                                // 2. Redirected sample: http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
+                                                                // 3. alternate to #2: http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
+
         try {
             urlPoster = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URI " + urlPoster);
+        Log.v(TAG, "BuiltPosterUrl " + urlPoster);
 
         return urlPoster;
     }
-
-
 
     /**
      * Builds the URL used to talk to the weather server using latitude and longitude of a

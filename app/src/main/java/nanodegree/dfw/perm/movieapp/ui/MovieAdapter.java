@@ -11,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import nanodegree.dfw.perm.movieapp.R;
 import nanodegree.dfw.perm.movieapp.data.POJO_MovieData;
@@ -27,7 +29,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     final private MovieAdapterOnClickHandler mClickHandler;
 
-    public interface MovieAdapterOnClickHandler {              //Interface for OnCickHanlding
+    public interface MovieAdapterOnClickHandler {                                       //Interface for OnCickHanlding
         void setDataClicked(String dataClicked);
     }
 
@@ -40,10 +42,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             implements View.OnClickListener{
 
         public final ImageView mMovieImageView;
+
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             mMovieImageView = itemView.findViewById(R.id.poster_master);
-
             itemView.setOnClickListener(this);
         }
 
@@ -51,11 +53,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         public void onClick(View v) {
 
             int adapterPosition = getAdapterPosition();
+//            mClickHandler.setDataClicked(mShowablesList.get(adapterPosition).toString());   // Dummy Implementation
+            mClickHandler.setDataClicked(mMoviesList.get(adapterPosition).toString());   // Dummy Implementation
 
-            mClickHandler.setDataClicked(mShowablesList.get(adapterPosition).toString());   // Dummy Implementation
-//            mClickHandler.setDataClicked(mMoviesList.get(adapterPosition).toString());
-
-            Toast.makeText(v.getContext(),"OnClick() in MovieViewHolder at Adapter Position: " + adapterPosition,Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(),"OnClick() in MovieViewHolder at Adapter Position: "
+                    + adapterPosition,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -71,56 +73,64 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         int layoutIdForListItem = R.layout.movie_poster_item;
         LayoutInflater mainPosterInflaltor = LayoutInflater.from(vContext);
         boolean shouldAttachToParentImmediately = false;
-
         View viewPoster = mainPosterInflaltor.inflate(layoutIdForListItem,viewGroup,shouldAttachToParentImmediately);
         return new MovieViewHolder(viewPoster);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
-        Showables mImagSelected = mShowablesList.get(position);
-//        POJO_MovieData mImagSelected = mMoviesList.get(position);
+//        Showables mImagSelected = mShowablesList.get(position);
+        POJO_MovieData mImagSelected = mMoviesList.get(position);
+//        Log.d("onBinderVH","onBindViewHolder called");
 
-        Log.d("onBinderVH","onBindViewHolder called");
-        String imageUrl = mImagSelected.getmImageUrl();                   // worked with Dummy Data in 'Showables'
-//        String imageUrl = mImagSelected.getPoster_path();
-
-//        Picasso.get().load(imageUrl).fit().centerInside().into(movieViewHolder.mMovieImageView);
+//        String imageUrl = mImagSelected.getmImageUrl();                       // worked with Dummy Data in 'Showables'
+        String imageUrl = mImagSelected.getPosterBulit_path();
 
 
-//        Picasso.get()
-////                .load("https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg")
-//                .load(imageUrl)
-//                .fit()
+
+
+            Picasso.get()
+                    .load(imageUrl)
+                    .fit()
 //                .centerCrop()
-//                .rotate(0)
-////                .centerInside()
-////                .placeholder(R.drawable.ic_launcher_background)
-////                .error(R.drawable.ic_launcher_foreground)
+                    .rotate(0)
+                    .centerInside()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(movieViewHolder.mMovieImageView);
+
+
+
+//        Glide.with(movieViewHolder.mMovieImageView.getContext())
+//                .load(imageUrl)                                         // Image: /adw6Lq9FiC9zjYEpOqfq03ituwp.jpg
+//                .centerCrop()
 //                .into(movieViewHolder.mMovieImageView);
+//
 
 
-        Glide.with(movieViewHolder.mMovieImageView.getContext())
-                .load(imageUrl)
-                .centerCrop()
-                .into(movieViewHolder.mMovieImageView);
+        System.out.println("Dummy data: " + imageUrl);
+//        System.out.println("from movieServer: " + imageUrl);
     }
 
     @Override
     public int getItemCount() {
+//        if (null == mShowablesList) return 0;
+//        return mShowablesList.size();
 
-        Log.d("adapterCnt", " " + Integer.toString(mShowablesList.size()));
-//        Log.d("adapterCnt", " " + Integer.toString(mMoviesList.size()));
+        if (null == mMoviesList) return 0;
+        return mMoviesList.size();
 
-        if (null == mShowablesList) return 0;
-//        return mMoviesList.size();
-        return mShowablesList.size();
     }
 
-    public void setMovieData(ArrayList<Showables> toSowData){
-//    public void setMovieData(ArrayList<POJO_MovieData> toSowData){
-        mShowablesList = toSowData;
+
+
+//    public void setMovieDataLocal(ArrayList<Showables> toSowData){
+//        mShowablesList = toSowData;
+//        notifyDataSetChanged();
+//    }
+
+    public void setMovieData(ArrayList<POJO_MovieData> movieDataRcvd){
+        mMoviesList = movieDataRcvd;
         notifyDataSetChanged();
     }
 }

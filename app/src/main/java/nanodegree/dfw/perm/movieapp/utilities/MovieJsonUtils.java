@@ -1,6 +1,6 @@
 package nanodegree.dfw.perm.movieapp.utilities;
 
-import android.content.ContentValues;
+//import android.content.ContentValues;
 import android.content.Context;
 
 import org.json.JSONException;
@@ -41,23 +41,12 @@ public class MovieJsonUtils {
     public static HashMap<Integer, POJO_MovieData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
             throws JSONException {
 
-        int inStaticCall = movieCounter++;
-        // + 1;
-        /* Weather information. Each day's forecast info is an element of the "list" array */
-
-
-        /* String array to hold each day's weather String */
-        String[] parsedMovieData = null;
-
         HashMap<Integer, POJO_MovieData> movieData = new HashMap();
-
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
-
         /* Is there an error? */
         if (forecastJson.has(MOVIE_STATUS_CODE)) {
 //        if (forecastJson.has()) {
             int errorCode = forecastJson.getInt(MOVIE_STATUS_CODE);
-
             switch (errorCode) {
 //                case HttpURLConnection.HTTP_OK:
 //                    break;
@@ -92,8 +81,6 @@ public class MovieJsonUtils {
                         forecastJson.getDouble(MOVIE_POPULARITY),
                         null)
         );
-
-
 
         return movieData;
     }

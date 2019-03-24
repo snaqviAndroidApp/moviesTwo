@@ -10,10 +10,10 @@
         android:layout_height="match_parent">
     <ImageView
         android:id="@+id/poster_master"
-        android:layout_margin="5dp"
+        android:layout_margin="0dp"
         android:layout_width="match_parent"
         android:layout_height="270dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="0dp"
         android:contentDescription="@string/movie_poster" />
 
     <!--<View-->

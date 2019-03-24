@@ -1,5 +1,9 @@
 package nanodegree.dfw.perm.movieapp.data;
 
+import java.net.URL;
+
+import nanodegree.dfw.perm.movieapp.utilities.NetworkUtils;
+
 public class POJO_MovieData {
 
     private String poster_path;
@@ -73,6 +77,11 @@ public class POJO_MovieData {
         this.popularity = popularity;
     }
 
+    public String getFailure_status() { return failure_status; }
+
+    public void setFailure_status(String failure_status) { this.failure_status = failure_status; }
+
+
     @Override
     public String toString() {
         return "POJO_MovieData{" +
@@ -85,5 +94,10 @@ public class POJO_MovieData {
                 ", failure_status='" + failure_status + '\'' +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    public String getPosterBulit_path() {
+        String buildUrlStr = NetworkUtils.buildUrlPoster(getPoster_path()).toString();
+        return buildUrlStr;
     }
 }
