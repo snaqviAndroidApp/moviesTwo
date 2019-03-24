@@ -87,15 +87,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return mShowingListMainActivity;
     }
 
-//    private ArrayList<POJO_MovieData> getPrimaryMoviesList(int numOfMovies) {
     private  void getPrimaryMoviesList(int numOfMovies) {
         new MovieTasking().execute(String.valueOf(numOfMovies), "How are you");
 
     }
 
-
-
-    //    @Override
     public void setDataClicked(String dataClicked) {
         Toast.makeText(this,"MainActivity setDataClicked()",Toast.LENGTH_SHORT).show();
     }
@@ -154,18 +150,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return moviesDataList;
         }
 
-            @Override
-            protected void onPostExecute(List<HashMap<Integer, POJO_MovieData>> movieDataListIn) {
+        @Override
+        protected void onPostExecute(List<HashMap<Integer, POJO_MovieData>> movieDataListIn) {
             mLoadIndicator.setVisibility(View.INVISIBLE);
-
-//            staticMovies = movieDataListIn;
-//            movieAdapter.setMovieData(sendMovieData(movieDataListIn));
-              sendMovieData(movieDataListIn);
-
+            sendMovieData(movieDataListIn);
         }
     }
 
-//    private ArrayList<POJO_MovieData> sendMovieData(List<HashMap<Integer, POJO_MovieData>> localMovieData) {
     private void sendMovieData(List<HashMap<Integer, POJO_MovieData>> localMovieData) {
         posterForMainToAdapter = new ArrayList<>();
 
@@ -181,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(movieAdapter);
 
         localMovieData = null;
-//        return posterForMainToAdapter;
     }
 
     private ArrayList<String> orderPosters(ArrayList<POJO_MovieData> unOorderedPostersList) {

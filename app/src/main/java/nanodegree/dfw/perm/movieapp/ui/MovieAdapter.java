@@ -98,18 +98,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_foreground)
                     .into(movieViewHolder.mMovieImageView);
-
-
-
-//        Glide.with(movieViewHolder.mMovieImageView.getContext())
-//                .load(imageUrl)                                         // Image: /adw6Lq9FiC9zjYEpOqfq03ituwp.jpg
-//                .centerCrop()
-//                .into(movieViewHolder.mMovieImageView);
-//
-
-
-        System.out.println("Dummy data: " + imageUrl);
-//        System.out.println("from movieServer: " + imageUrl);
     }
 
     @Override
@@ -121,13 +109,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMoviesList.size();
 
     }
-
-
-
-//    public void setMovieDataLocal(ArrayList<Showables> toSowData){
-//        mShowablesList = toSowData;
-//        notifyDataSetChanged();
-//    }
 
     public void setMovieData(ArrayList<POJO_MovieData> movieDataRcvd){
         mMoviesList = movieDataRcvd;
