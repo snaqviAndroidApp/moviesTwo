@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-
-//        movieAdapter.setMovieDataLocal(displayShowables());
-
         getPrimaryMoviesList(14);                                                // Async call
         mRecyclerView.setAdapter(movieAdapter);
     }
@@ -84,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-//            protected List<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
             protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
             moviesFromServer = new ArrayList<>();
             if (strings.length == 0) {                                  /* If there's no zip code, there's nothing to look up. */

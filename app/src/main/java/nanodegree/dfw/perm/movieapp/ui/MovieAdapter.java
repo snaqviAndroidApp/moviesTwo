@@ -20,15 +20,12 @@ import static android.app.PendingIntent.getActivity;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private ArrayList<Showables> mShowablesList;
     private ArrayList<MoviesData> mMoviesList;
-
     final private MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnCickHanlding
         void setDataClicked(String dataClicked);
     }
-
 
     public MovieAdapter(MovieAdapterOnClickHandler movieAdapterOnClickHandler){
         mClickHandler = movieAdapterOnClickHandler;
@@ -69,7 +66,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         Picasso.get()
                 .load(imageUrl)
                 .fit()
-//                .centerCrop()
                 .rotate(0)
                 .centerInside()
                 .placeholder(R.drawable.ic_launcher_background)
@@ -81,7 +77,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public int getItemCount() {
         if (null == mMoviesList) return 0;
         return mMoviesList.size();
-
     }
 
     public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd){
