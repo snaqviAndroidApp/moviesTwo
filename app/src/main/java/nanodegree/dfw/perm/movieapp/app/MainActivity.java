@@ -63,12 +63,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(movieAdapter);
     }
 
-//    private ArrayList<Showables> displayShowables() {
-//        mShowingListMainActivity.add(new Showables(Constants.testImageUrl, Constants.testImageUrlRate));
-//        mShowingListMainActivity.add(new Showables(Constants.testImageUrlTwo, Constants.testImageUrlTwoRate));
-//        return mShowingListMainActivity;
-//    }
-
     private  void getPrimaryMoviesList(int numOfMovies) {
         new MovieTasking().execute(String.valueOf(numOfMovies), "How are you");
     }
@@ -78,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Toast.makeText(this,"MainActivity setDataClicked()", Toast.LENGTH_SHORT).show();
     }
 
-//    class MovieTasking extends AsyncTask<String, Void, List<HashMap<Integer, MoviesData>>> {
     class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
 
         HashMap<Integer, MoviesData> parsedJsonMovieData;
@@ -176,28 +169,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
 
-//    static private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
-//
-//        // 1. Attempt to sort directly with unOrderedDataList --> Worked
-//
-//        ArrayList<HashMap<Integer, MoviesData>> ReforderedDataList = unOrderedMovies;
-//        moviesSortedByPopularity = new ArrayList<>();
-//
-//        unOrderedMovies.sort((o1, o2) -> {                                      // Comparator
-//            Double k1 = o1.get(o1.keySet().toArray()[0]).getPopularity();
-//            Double k2 = o2.get(o2.keySet().toArray()[0]).getPopularity();
-//            return k1.compareTo(k2);
-//        });
-//
-//
-//        if (unOrderedMovies != null) {
-//            unOrderedMovies.forEach(m -> {
-//                moviesSortedByPopularity.add(m.get(m.keySet().toArray()[0]));
-//            });
-//        }
-//
-//        return moviesSortedByPopularity;
-//    }
 
     static private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
         ArrayList<HashMap<Integer, MoviesData>> ReforderedDataList = unOrderedMovies;
