@@ -6,21 +6,19 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import nanodegree.dfw.perm.movieapp.data.POJO_MovieData;
+import nanodegree.dfw.perm.movieapp.data.MoviesData;
 
 public class MovieJsonUtils {
 
     public static int movieCounter;
     // Target
-    // 1. get JSON data strings / double in one POJO_MovieData
+    // 1. get JSON data strings / double in one MoviesData
     // 2. loop to the total no. of movies e.g: 8 i.e: 8 POJO_MovieData_Objects
     // 3. return it to backgrondTask
 
-//    private List<POJO_MovieData> moviesDetailedInfo = new ArrayList<>();
+//    private List<MoviesData> moviesDetailedInfo = new ArrayList<>();
 
 
     private static final String MOVIE_ID = "id";
@@ -38,10 +36,10 @@ public class MovieJsonUtils {
 
 
 
-    public static HashMap<Integer, POJO_MovieData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
+    public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
             throws JSONException {
 
-        HashMap<Integer, POJO_MovieData> movieData = new HashMap();
+        HashMap<Integer, MoviesData> movieData = new HashMap();
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
         /* Is there an error? */
         if (forecastJson.has(MOVIE_STATUS_CODE)) {
@@ -55,7 +53,7 @@ public class MovieJsonUtils {
                     /* Location invalid */
 //                    return null;
                     movieData.put(Integer.valueOf(forecastJson.getString(MOVIE_ID)),
-                            new POJO_MovieData(
+                            new MoviesData(
                                     null,
                                     null,
                                     null,
@@ -72,7 +70,7 @@ public class MovieJsonUtils {
         }
 
         movieData.put(Integer.valueOf(forecastJson.getString(MOVIE_ID)),
-                new POJO_MovieData(
+                new MoviesData(
                         forecastJson.getString(MOVIE_POSTER_PATH),
                         forecastJson.getString(MOVIE_ORIGINAL_TITLE),
                         forecastJson.getString(MOVIE_OVERVIEW),

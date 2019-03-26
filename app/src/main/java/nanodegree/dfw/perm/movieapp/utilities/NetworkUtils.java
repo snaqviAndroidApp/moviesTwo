@@ -29,20 +29,21 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * These utilities will be used to communicate with the weather servers.
+ * These utilities will be used to communicate with the Movies servers.
  */
 public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
     private final static String PARAM_KEY = "api_key";
-    private final static String QUERY_PARAM = "number of movies";
-    private final static String KEY_VALUE =
-            "fcb4ae381c4482341fc74a85ea0b071a";
+    private final static String KEY_VALUE = "fcb4ae381c4482341fc74a85ea0b071a";
 
-    private static final String DYNAMIC_MOVIE_URL =
+    private static final String BASE_MOVIES_URL =                                            //Sample:  https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a     ---> Current utilization
             "https://api.themoviedb.org/3/movie";
 
-    private static final String MOVIE_BASE_URL = DYNAMIC_MOVIE_URL;
+    private static final String POPULAR_MOVIES_URL =                                         //Sample: https://api.themoviedb.org/3/movie/popular?api_key=fcb4ae381c4482341fc74a85ea0b071a
+            "https://api.themoviedb.org/3/movie/popular";
+
+    private static final String _BASE_URL = BASE_MOVIES_URL;
 
     // Image Url
     private static final String MAIN_POSTER_BASE_URL = "http://image.tmdb.org/t/p";
@@ -51,63 +52,53 @@ public final class NetworkUtils {
     private static final String OPTIMUM_SIZE_154 = "w154";
 
     /**
-     * Builds the URL used to talk to the weather server using a location. This location is based
-     * on the query capabilities of the weather provider that we are using.
-     *
+     * Builds the URL used to talk to the Movie server [api] server
+     * @implNote ----> Current consumption <--------
      * @param numOfMovies The total-Movies-numbre that will be queried for.
      * @return The URL to use to query the weather server.
      */
     public static URL buildUrl(String numOfMovies) {
-        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
+        Uri builtUri = Uri.parse(_BASE_URL).buildUpon()
                 .appendEncodedPath(numOfMovies)
                 .appendQueryParameter(PARAM_KEY, KEY_VALUE)
                 .build();
-//                                                               https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a
         URL url = null;
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        Log.v(TAG, "Built URI " + url);
-
         return url;
     }
-
-    public static URL buildUrlPoster(String imageLocation) {
+    public static URL buildPosterUrl(String imageLocation) {
         Uri builtUri = Uri.parse(MAIN_POSTER_BASE_URL).buildUpon()
                 .appendEncodedPath(OPTIMUM_SIZE)
                 .appendEncodedPath(imageLocation)
                 .build();
-                                                                // expected imageLocation: '/ehYc5DRe1Ipnn5XSf3Tol3LMbrq.jpg' Target -> : 2 / 3
-        URL urlPoster = null;                                   // 1. sample: //image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
-                                                                // 2. Redirected sample: http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
-                                                                // 3. alternate to #2: http://image.tmdb.org/t/p/w185/nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg
 
+        URL urlPoster = null;
         try {
             urlPoster = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        Log.v(TAG, "BuiltPosterUrl " + urlPoster);
-
         return urlPoster;
     }
-
-    /**
-     * Builds the URL used to talk to the weather server using latitude and longitude of a
-     * location.
-     *
-     * @param lat The latitude of the location
-     * @param lon The longitude of the location
-     * @return The Url to use to query the weather server.
-     */
-    public static URL buildUrl(Double lat, Double lon) {
-        /** This will be implemented in a future lesson **/
-        return null;
+    
+    public static URL buildPopularMoviesUrl(String numOfMovies) {
+        Uri builtUri = Uri.parse(_BASE_URL).buildUpon()
+                .appendEncodedPath(numOfMovies)
+                .appendQueryParameter(PARAM_KEY, KEY_VALUE)
+                .build();
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
     }
+
 
     /**
      * This method returns the entire result from the HTTP response.
@@ -120,7 +111,6 @@ public final class NetworkUtils {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
-
             Scanner scanner = new Scanner(in);
             scanner.useDelimiter("\\A");
 
