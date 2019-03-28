@@ -5,5 +5,7 @@
     <string name="sort_by_rate">Sort by rating</string>
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="mainposter_thumbnail">mainPoster thumbnail</string>
-    <string name="releaseData_Prepending">Released on:</string>
+    <string name="releaseData_Prepending"> </string>
+    <string name="release_date">Release Date</string>
+    <string name="movie_rating">Movie rating</string>
 </resources>

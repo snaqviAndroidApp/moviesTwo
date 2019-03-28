@@ -3,6 +3,7 @@ package nanodegree.dfw.perm.movieapp.app;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +14,7 @@ import nanodegree.dfw.perm.movieapp.data.DetailsData;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private String rcvd_backdrop_path;         //    2.    movie poster image thumbnail
+    private String rcvd_backdrop_path;
     TextView vTitle, vOverview,vReleaseDate, vVoteAverage;
     ImageView thumbNail;
 
