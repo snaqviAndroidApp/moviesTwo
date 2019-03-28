@@ -17,10 +17,6 @@ package nanodegree.dfw.perm.movieapp.utilities;
  */
 
 import android.net.Uri;
-import android.util.Log;
-
-//import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -84,22 +80,6 @@ public final class NetworkUtils {
         }
         return urlPoster;
     }
-    
-    public static URL buildPopularMoviesUrl(String numOfMovies) {
-        Uri builtUri = Uri.parse(_BASE_URL).buildUpon()
-                .appendEncodedPath(numOfMovies)
-                .appendQueryParameter(PARAM_KEY, KEY_VALUE)
-                .build();
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return url;
-    }
-
-
     /**
      * This method returns the entire result from the HTTP response.
      *
