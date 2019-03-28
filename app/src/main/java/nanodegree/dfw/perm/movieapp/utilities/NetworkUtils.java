@@ -19,7 +19,7 @@ package nanodegree.dfw.perm.movieapp.utilities;
 import android.net.Uri;
 import android.util.Log;
 
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;

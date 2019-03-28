@@ -2,31 +2,18 @@ package nanodegree.dfw.perm.movieapp.utilities;
 
 //import android.content.ContentValues;
 import android.content.Context;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
-
 import nanodegree.dfw.perm.movieapp.data.MoviesData;
 
 public class MovieJsonUtils {
 
-    public static int movieCounter;
-    // Target
-    // 1. get JSON data strings / double in one MoviesData
-    // 2. loop to the total no. of movies e.g: 8 i.e: 8 POJO_MovieData_Objects
-    // 3. return it to backgrondTask
-
-//    private List<MoviesData> moviesDetailedInfo = new ArrayList<>();
-
-
     private static final String MOVIE_ID = "id";
     private static final String MOVIE_STATUS_CODE = "status_code";
     private static final String MOVIE_STATUS_CODE_VALUE = "status_message";
-
     private static final String MOVIE_POSTER_PATH = "poster_path";
-    private static final String MOVIE_POSTER_THUMB = "poster_path"; // string
+    private static final String MOVIE_POSTER_THUMB = "backdrop_path"; // string
     private static final String MOVIE_ORIGINAL_TITLE = "original_title";  // string
     private static final String TITLE = "title";                    // string
     private static final String MOVIE_OVERVIEW = "overview";              // String
@@ -34,12 +21,10 @@ public class MovieJsonUtils {
     private static final String MOVIE_RATING = "vote_average";      // double
     private static final String MOVIE_POPULARITY = "popularity";    // double
 
-
-
     public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
             throws JSONException {
 
-        HashMap<Integer, MoviesData> movieData = new HashMap();
+        HashMap movieData = new HashMap();
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
         /* Is there an error? */
         if (forecastJson.has(MOVIE_STATUS_CODE)) {
@@ -58,6 +43,7 @@ public class MovieJsonUtils {
                                     null,
                                     null,
                                     null,
+                                    null,
                                     0.0,
                                     0.0,
                                     forecastJson.getString(MOVIE_STATUS_CODE_VALUE))
@@ -72,6 +58,7 @@ public class MovieJsonUtils {
         movieData.put(Integer.valueOf(forecastJson.getString(MOVIE_ID)),
                 new MoviesData(
                         forecastJson.getString(MOVIE_POSTER_PATH),
+                        forecastJson.getString(MOVIE_POSTER_THUMB),
                         forecastJson.getString(MOVIE_ORIGINAL_TITLE),
                         forecastJson.getString(MOVIE_OVERVIEW),
                         forecastJson.getString(MOVIE_RELEASE_DATE),

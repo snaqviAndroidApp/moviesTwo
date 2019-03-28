@@ -9,7 +9,7 @@ class Sorting{
 
     companion object {
 
-        fun mergeSorting(inputArray:DoubleArray):MutableList<Double>{
+        fun mergeSorting(inputArray:DoubleArray):MutableList<Double> {
             return mergeSorting(inputArray,
                     0,
                     inputArray.size - 1).toMutableList()

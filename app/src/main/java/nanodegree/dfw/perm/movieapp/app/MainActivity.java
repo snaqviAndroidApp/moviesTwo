@@ -19,21 +19,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import nanodegree.dfw.perm.movieapp.R;
+import nanodegree.dfw.perm.movieapp.data.DetailsData;
 import nanodegree.dfw.perm.movieapp.data.MoviesData;
 import nanodegree.dfw.perm.movieapp.ui.MovieAdapter;
 import nanodegree.dfw.perm.movieapp.utilities.MovieJsonUtils;
 import nanodegree.dfw.perm.movieapp.utilities.NetworkUtils;
 
+import static java.util.Objects.*;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
+    private static final int MOVIES_OFFSET = 545;
+    private static final int NUM_OF_MOVIES = 14;
 
-    public static final int MOVIE_OFFSET = 545;
-
-    ArrayList<MoviesData> moviesToView;                               // Final - POJO
-    ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
-    ArrayList<HashMap<Integer, MoviesData>> moviesDataToSort;
-    static ArrayList<MoviesData> moviesSortedByPopularity;
-    static ArrayList<MoviesData> moviesSortedByRating;
+    private ArrayList<MoviesData> moviesToView;                               // Final - POJO
+    private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
+    private ArrayList<HashMap<Integer, MoviesData>> moviesDataToSort;
+    private static ArrayList<MoviesData> moviesSortedByPopularity;
+    private static ArrayList<MoviesData> moviesSortedByRating;
 
     private RecyclerView mRecyclerView;
     private MovieAdapter movieAdapter;
@@ -56,21 +59,27 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-        getPrimaryMoviesList(14);                                                // Async call
+        getPrimaryMoviesList();                                                // Async call
         mRecyclerView.setAdapter(movieAdapter);
     }
 
-    private  void getPrimaryMoviesList(int numOfMovies) {
-        new MovieTasking().execute(String.valueOf(numOfMovies), "How are you");
+    private  void getPrimaryMoviesList() {
+        new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES), "How are you");
     }
 
-    public void setDataClicked(String dataClicked) {
-        startActivity(new Intent(this,DetailsActivity.class));
-        Toast.makeText(this,"MainActivity setDataClicked()", Toast.LENGTH_SHORT).show();
+    public void setDataClicked(MoviesData dataClicked) {
+       final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
+        detailIntent.putExtra("movieDetails", new DetailsData(
+                dataClicked.getOriginal_title(),
+                dataClicked.getbackDropImage_bulitPath(),
+                dataClicked.getOverview(),
+                dataClicked.getVote_average(),
+                dataClicked.getRelease_date())
+        );
+        startActivity(detailIntent);
     }
 
     class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
-
         HashMap<Integer, MoviesData> parsedJsonMovieData;
         String jsonMovieResponse;
 
@@ -90,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             for (int i = 0; i < movieNumber; i++) {
                 parsedJsonMovieData = null;
                 jsonMovieResponse = null;
-                URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIE_OFFSET + i)));                            //  https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a
+                URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));                            //  https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a
                 try {
                     jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
                     parsedJsonMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse);
@@ -99,8 +108,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     System.out.printf("error occured: %s", e.getStackTrace().toString());
                     if (e.getClass().getName() == "java.io.FileNotFoundException") {
                         parsedJsonMovieData = new HashMap<>();
-                        parsedJsonMovieData.put((MOVIE_OFFSET + i),
+                        parsedJsonMovieData.put((MOVIES_OFFSET + i),
                                 new MoviesData(
+                                        null,
                                         null,
                                         null,
                                         null,
@@ -120,8 +130,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             return moviesFromServer;
         }
 
-        @Override
-//        protected void onPostExecute(List<HashMap<Integer, MoviesData>> movieDataListIn) {
+    @Override
         protected void onPostExecute(ArrayList<HashMap<Integer, MoviesData>> movieDataListIn) {
             mLoadIndicator.setVisibility(View.INVISIBLE);
             sendMovieData(movieDataListIn);
@@ -133,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         if (localMovieData != null) {
             moviesDataToSort = new ArrayList<>();
             localMovieData.forEach(m -> {
-                moviesToView.add(m.get(m.keySet().toArray()[0]));
+                moviesToView.add(m.get(requireNonNull(m.keySet().toArray())[0]));
             });
         }
         movieAdapter.setMoviePosters(moviesToView);
@@ -164,10 +173,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onOptionsItemSelected(item);
     }
 
-
-
     static private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
-        ArrayList<HashMap<Integer, MoviesData>> ReforderedDataList = unOrderedMovies;
         moviesSortedByRating = new ArrayList<>();
         if(sortBy.equals("popularity")){
             unOrderedMovies.sort((o1, o2) -> {                                      // Comparator

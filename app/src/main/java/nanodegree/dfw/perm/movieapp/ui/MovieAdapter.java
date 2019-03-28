@@ -14,17 +14,20 @@ import java.util.ArrayList;
 
 import nanodegree.dfw.perm.movieapp.R;
 import nanodegree.dfw.perm.movieapp.data.MoviesData;
-import nanodegree.dfw.perm.movieapp.data.Showables;
 
 import static android.app.PendingIntent.getActivity;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private ArrayList<MoviesData> mMoviesList;
+
     final private MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnCickHanlding
-        void setDataClicked(String dataClicked);
+        //        void setDataClicked(String dataClicked);
+        default void setDataClicked(MoviesData dataClicked) {
+
+        }
     }
 
     public MovieAdapter(MovieAdapterOnClickHandler movieAdapterOnClickHandler){
@@ -34,8 +37,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
 
-        public final ImageView mMovieImageView;
-        public MovieViewHolder(@NonNull View itemView) {
+       ImageView mMovieImageView;
+        MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             mMovieImageView = itemView.findViewById(R.id.poster_master);
             itemView.setOnClickListener(this);
@@ -44,7 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.setDataClicked(mMoviesList.get(adapterPosition).toString());   // Dummy Implementation
+            mClickHandler.setDataClicked(mMoviesList.get(adapterPosition));   // Dummy Implementation
         }
     }
 
@@ -62,7 +65,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         MoviesData mImagSelected = mMoviesList.get(position);
-        String imageUrl = mImagSelected.getPosterBulit_path();
+        String imageUrl = mImagSelected.getPoster_builtPath();
         Picasso.get()
                 .load(imageUrl)
                 .fit()

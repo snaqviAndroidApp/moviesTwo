@@ -5,14 +5,13 @@ import java.io.SerializablePermission;
 
 //import kotlin.jvm.internal.DoubleCompanionObject;
 
-public class Showables implements Serializable {
+ class Showables implements Serializable {
 
     private String mImageUrl;
-    private double mRating;
 
     public Showables(String mImageUrl, double mRating) {
         this.mImageUrl = mImageUrl;
-        this.mRating = mRating;
+        double mRating1 = mRating;
     }
 
     public String getmImageUrl() {

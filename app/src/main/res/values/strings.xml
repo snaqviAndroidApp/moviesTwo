@@ -4,4 +4,6 @@
     <string name="title_activity_detail">Movie Details</string>
     <string name="sort_by_rate">Sort by rating</string>
     <string name="sort_by_popularity">Sort by popularity</string>
+    <string name="mainposter_thumbnail">mainPoster thumbnail</string>
+    <string name="releaseData_Prepending">Released on:</string>
 </resources>
