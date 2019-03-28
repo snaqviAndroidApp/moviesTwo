@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="movie_poster">This will contain movie poster</string>
-    <string name="title_activity_detail">Movie Details</string>
+    <string name="title_activity_detail">Details</string>
     <string name="sort_by_rate">Sort by rating</string>
     <string name="sort_by_popularity">Sort by popularity</string>
     <string name="mainposter_thumbnail">mainPoster thumbnail</string>
     <string name="releaseData_Prepending"> </string>
     <string name="release_date">Release Date</string>
     <string name="movie_rating">Movie rating</string>
+    <string name="title_hint">title</string>
+    <string name="overviewText">Overview</string>
 </resources>
