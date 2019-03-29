@@ -11,7 +11,7 @@ Output: Master - Detail results are below respectively
 <p> ---------------------------------------------- </p>
 </hr>
 <p align="right"> 
-<img src="https://github.com/snaqviAndroidApp/movieAppOne/tree/master/app/src/main/res/drawable/master.png"width="150"/>
+<img src="https://github.com/snaqviAndroidApp/movieAppOne/blob/master/app/src/main/res/drawable/details.png"width="150"/>
 </p>                                                                                                                           
 
 </hr>
