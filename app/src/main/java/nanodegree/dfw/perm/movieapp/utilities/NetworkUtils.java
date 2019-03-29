@@ -31,11 +31,11 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
     private final static String PARAM_KEY = "api_key";
-    private final static String KEY_VALUE = "=YOUR_API_KEY";
+    private final static String KEY_VALUE = "YOUR KEY";
     private static final String BASE_MOVIES_URL =
             "https://api.themoviedb.org/3/movie";
-
     private static final String _BASE_URL = BASE_MOVIES_URL;
+
     private static final String MAIN_POSTER_BASE_URL = "http://image.tmdb.org/t/p";
     private static final String OPTIMUM_SIZE = "w185";
     private static final String OPTIMUM_SIZE_92 = "w92";
