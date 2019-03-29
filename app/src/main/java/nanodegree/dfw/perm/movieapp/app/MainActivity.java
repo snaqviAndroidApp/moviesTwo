@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         GridLayoutManager gridlayoutManager
                 = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(gridlayoutManager);
-        mRecyclerView.setHasFixedSize(true);
+//        mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
         getPrimaryMoviesList();                                                // Async call
         mRecyclerView.setAdapter(movieAdapter);
