@@ -11,7 +11,7 @@ Lambda used to sort, thanks to Java8 features.
 </p>
 Output: Master - Detail results are below respectively
 </hr>
-<p> ---------------------------------------------- </p>
+<p> ------------------------------------------------------------------------------- </p>
 </hr>
 <p align="right"> 
 <img src="https://github.com/snaqviAndroidApp/movieAppOne/blob/master/app/src/main/res/drawable/master.png"width="200"/>
@@ -24,7 +24,6 @@ Output: Master - Detail results are below respectively
 </p>                                                                                                                           
 
 </hr>
-<p> ---------------------------------------------- </p>
 </hr>
 
 
