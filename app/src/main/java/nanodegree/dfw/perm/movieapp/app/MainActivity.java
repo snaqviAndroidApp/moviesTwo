@@ -288,15 +288,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
                         SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
                         sock.connect(sockAddr, timeoutMs);
                         Log.d(TAGTwo, "inside checkConnection() ");
-
-//                        new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));              // doesn't work
-
-//                        Snackbar.make(Objects.requireNonNull(getCurrentFocus())                               // works, but Toast doesn't
-//                                , MessageFormat.format("Yes, internet connetion working", null)
-//                                , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
                         sock.close();
-
                         runOnUiThread(new Runnable() {                      // works but doesn't stop repainting
                             @Override
                             public void run() {
@@ -305,9 +297,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
                                 threadCount++;
                                 }
                             }
-
                         });
-
                         return true;
                     } catch (IOException e) {
                         Snackbar.make(Objects.requireNonNull(getCurrentFocus())
