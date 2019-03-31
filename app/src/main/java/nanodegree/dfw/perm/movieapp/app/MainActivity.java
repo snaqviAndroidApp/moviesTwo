@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -52,7 +51,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
     private ArrayList<HashMap<Integer, MoviesData>> moviesDataToSort;
     private ArrayList<MoviesData> moviesSortedByRating;
 
-    private ScheduledExecutorService scheduler;
+//    private ScheduledExecutorService scheduler;
 
     boolean menuItemEnabled = false;
     private RecyclerView mRecyclerView;
@@ -71,7 +70,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         if(null != moviesDataToSort ) moviesDataToSort.clear();
         if(null != moviesSortedByRating) moviesSortedByRating.clear();
 
-        if(null != scheduler) scheduler = null;
+//        if(null != scheduler) scheduler = null;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
@@ -81,13 +80,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
 
-
-//        getPrimaryMoviesList(true);                                                  // Async call, trying from onResume()
-
-        ScheduledFuture hereCheck = new InternetConnectionCheck().getConnCheckHanlde();
-//        new InternetConnectionCheck().checkConnection();
-
-
+        new InternetConnectionCheck().getConnCheckHanlde();
         mRecyclerView.setAdapter(movieAdapter);
     }
 
@@ -113,13 +106,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
 
     @Override
     protected void onResume() {
-
         Log.d(TAG, "onResume() called");
-//        ScheduledFuture checkHere = new InternetConnectionCheck().getConnCheckHanlde();
-//        if(checkHere.isCancelled()) getPrimaryMoviesList(true);     // works, but apparently triggers multiple threads
-//        getPrimaryMoviesList(false);
-//        if(checkHere.isCancelled()) getPrimaryMoviesList(false);     // works, but apparently triggers multiple threads
-
         super.onResume();
     }
 
@@ -182,9 +169,7 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
             mLoadIndicator.setVisibility(View.INVISIBLE);
             menuItemEnabled = true;
             sendMovieData(movieDataListIn);
-
             invalidateOptionsMenu();
-
         }
     }
 
@@ -255,12 +240,9 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
     }
 
     public final class InternetConnectionCheck {
-
         int threadCount = 0;
-
         private ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
-
         final Runnable internNetCheck  = new Runnable() {
                 @Override
                 public void run() {
@@ -274,7 +256,6 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
 
         final ScheduledFuture<?> connCheckHanlde =
                     scheduler.scheduleAtFixedRate(internNetCheck, 5, 5, SECONDS);
-//                    scheduler.schedule(internNetCheck, 3, SECONDS);
 
         public ScheduledFuture<?> getConnCheckHanlde() {
             return connCheckHanlde;
@@ -303,15 +284,11 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
                         Snackbar.make(Objects.requireNonNull(getCurrentFocus())
                                 , MessageFormat.format("Ah, no internet connetion", null)
                                 , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
                         threadCount = 0;
                         Log.d(TAGTwo, "inside checkConnection() error reported ");
                         return false;
                     }
                 }
-
-        };
-
+        }
 }
-
 
