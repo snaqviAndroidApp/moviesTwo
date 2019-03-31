@@ -43,34 +43,24 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
 
-    public static final String TAG = "default_callbcks";
-    public static final String TAGTwo = "run_";
-
     private ArrayList<MoviesData> moviesToView;                               // Final - POJO
     private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
     private ArrayList<HashMap<Integer, MoviesData>> moviesDataToSort;
     private ArrayList<MoviesData> moviesSortedByRating;
-
-//    private ScheduledExecutorService scheduler;
 
     boolean menuItemEnabled = false;
     private RecyclerView mRecyclerView;
     private MovieAdapter movieAdapter;
     private ProgressBar mLoadIndicator;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if(null != moviesFromServer) moviesFromServer.clear();
         if(null != moviesDataToSort ) moviesDataToSort.clear();
         if(null != moviesSortedByRating) moviesSortedByRating.clear();
-
-//        if(null != scheduler) scheduler = null;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
@@ -79,14 +69,11 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-
         new InternetConnectionCheck().getConnCheckHanlde();
         mRecyclerView.setAdapter(movieAdapter);
     }
 
-
-//    private  void getPrimaryMoviesList() {
-    synchronized private  void getPrimaryMoviesList(boolean nwConn) {
+    private  void getPrimaryMoviesList(boolean nwConn) {
         if(nwConn) {
             new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));        // moved to InternetConnectioncheck() class
         }
@@ -106,7 +93,6 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume() called");
         super.onResume();
     }
 
@@ -125,9 +111,6 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
             if (strings.length == 0) {                                  /* If there's no zip code, there's nothing to look up. */
                     return null;
             }
-
-//                      new InternetConnectionCheck().getConnCheckHanlde();                   // check if Internet connection is working
-
             Integer movieNumber = Integer.valueOf(strings[0]);
             for (int i = 0; i < movieNumber; i++) {
                 parsedJsonMovieData = null;
@@ -246,13 +229,9 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         final Runnable internNetCheck  = new Runnable() {
                 @Override
                 public void run() {
-                    if(checkConnection()){
-//                        getPrimaryMoviesList(true);
-                        Log.d(TAGTwo, "runnable exectued");
-                    }
+                    if(checkConnection()){  }
                 }
             };
-
 
         final ScheduledFuture<?> connCheckHanlde =
                     scheduler.scheduleAtFixedRate(internNetCheck, 5, 5, SECONDS);
@@ -262,13 +241,11 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         }
 
         public boolean checkConnection() {
-
             try {
                         int timeoutMs = 1500;
                         Socket sock = new Socket();
                         SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
                         sock.connect(sockAddr, timeoutMs);
-                        Log.d(TAGTwo, "inside checkConnection() ");
                         sock.close();
                         runOnUiThread(new Runnable() {                      // works but doesn't stop repainting
                             @Override
@@ -285,7 +262,6 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
                                 , MessageFormat.format("Ah, no internet connetion", null)
                                 , Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         threadCount = 0;
-                        Log.d(TAGTwo, "inside checkConnection() error reported ");
                         return false;
                     }
                 }
