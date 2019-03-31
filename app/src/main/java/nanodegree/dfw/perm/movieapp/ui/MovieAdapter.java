@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import nanodegree.dfw.perm.movieapp.R;
 import nanodegree.dfw.perm.movieapp.data.MoviesData;
 
-import static android.app.PendingIntent.getActivity;
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private ArrayList<MoviesData> mMoviesList;
@@ -24,9 +22,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     final private MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnCickHanlding
-        //        void setDataClicked(String dataClicked);
         default void setDataClicked(MoviesData dataClicked) {
-
         }
     }
 
@@ -41,7 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             mMovieImageView = itemView.findViewById(R.id.poster_master);
-            mMovieImageView.setImageBitmap(null);
+            mMovieImageView.setBackground(null);
             itemView.setOnClickListener(this);
         }
 
@@ -71,8 +67,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .load(imageUrl)
                 .fit()
                 .rotate(0)
-                .centerInside()
-                .placeholder(R.drawable.ic_launcher_background)
+//                .centerInside()
+                .centerCrop(5)
+//                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(null)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(movieViewHolder.mMovieImageView);
     }

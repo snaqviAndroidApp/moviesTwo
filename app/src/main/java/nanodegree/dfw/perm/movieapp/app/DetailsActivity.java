@@ -40,7 +40,7 @@ public class DetailsActivity extends AppCompatActivity {
                 .fit()
                 .rotate(0)
                 .centerInside()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.color.colorAccentAmended)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(thumbNail);
     }

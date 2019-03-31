@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,9 +16,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
 import nanodegree.dfw.perm.movieapp.R;
 import nanodegree.dfw.perm.movieapp.data.DetailsData;
@@ -26,45 +37,66 @@ import nanodegree.dfw.perm.movieapp.utilities.MovieJsonUtils;
 import nanodegree.dfw.perm.movieapp.utilities.NetworkUtils;
 
 import static java.util.Objects.*;
+import static java.util.concurrent.TimeUnit.*;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
 
+    public static final String TAG = "default_callbcks";
+    public static final String TAGTwo = "run_";
+
     private ArrayList<MoviesData> moviesToView;                               // Final - POJO
     private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
     private ArrayList<HashMap<Integer, MoviesData>> moviesDataToSort;
-    private static ArrayList<MoviesData> moviesSortedByPopularity;
-    private static ArrayList<MoviesData> moviesSortedByRating;
+    private ArrayList<MoviesData> moviesSortedByRating;
 
+    private ScheduledExecutorService scheduler;
+
+    boolean menuItemEnabled = false;
     private RecyclerView mRecyclerView;
     private MovieAdapter movieAdapter;
     private ProgressBar mLoadIndicator;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if(null != moviesFromServer) moviesFromServer.clear();
         if(null != moviesDataToSort ) moviesDataToSort.clear();
-        if(null != moviesSortedByPopularity) moviesSortedByPopularity.clear();
-        if(null != moviesSortedByPopularity) moviesSortedByRating.clear();
+        if(null != moviesSortedByRating) moviesSortedByRating.clear();
+
+        if(null != scheduler) scheduler = null;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
         GridLayoutManager gridlayoutManager
                 = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
         mRecyclerView.setLayoutManager(gridlayoutManager);
-//        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-        getPrimaryMoviesList();                                                // Async call
+
+
+//        getPrimaryMoviesList(true);                                                  // Async call, trying from onResume()
+
+        ScheduledFuture hereCheck = new InternetConnectionCheck().getConnCheckHanlde();
+//        new InternetConnectionCheck().checkConnection();
+
+
         mRecyclerView.setAdapter(movieAdapter);
     }
 
-    private  void getPrimaryMoviesList() {
-        new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES), "How are you");
+
+//    private  void getPrimaryMoviesList() {
+    synchronized private  void getPrimaryMoviesList(boolean nwConn) {
+        if(nwConn) {
+            new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));        // moved to InternetConnectioncheck() class
+        }
     }
 
     public void setDataClicked(MoviesData dataClicked) {
@@ -79,13 +111,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         startActivity(detailIntent);
     }
 
-    class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
+    @Override
+    protected void onResume() {
+
+        Log.d(TAG, "onResume() called");
+//        ScheduledFuture checkHere = new InternetConnectionCheck().getConnCheckHanlde();
+//        if(checkHere.isCancelled()) getPrimaryMoviesList(true);     // works, but apparently triggers multiple threads
+//        getPrimaryMoviesList(false);
+//        if(checkHere.isCancelled()) getPrimaryMoviesList(false);     // works, but apparently triggers multiple threads
+
+        super.onResume();
+    }
+
+    public class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
         HashMap<Integer, MoviesData> parsedJsonMovieData;
         String jsonMovieResponse;
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
             mLoadIndicator.setVisibility(View.VISIBLE);
         }
 
@@ -95,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (strings.length == 0) {                                  /* If there's no zip code, there's nothing to look up. */
                     return null;
             }
+
+//                      new InternetConnectionCheck().getConnCheckHanlde();                   // check if Internet connection is working
+
             Integer movieNumber = Integer.valueOf(strings[0]);
             for (int i = 0; i < movieNumber; i++) {
                 parsedJsonMovieData = null;
@@ -123,7 +169,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         moviesFromServer.add(parsedJsonMovieData);
                         continue;
                     }
-                        return null;
+
+                    return null;
                 }
                 moviesFromServer.add(parsedJsonMovieData);
             }
@@ -133,7 +180,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @Override
         protected void onPostExecute(ArrayList<HashMap<Integer, MoviesData>> movieDataListIn) {
             mLoadIndicator.setVisibility(View.INVISIBLE);
+            menuItemEnabled = true;
             sendMovieData(movieDataListIn);
+
+            invalidateOptionsMenu();
+
         }
     }
 
@@ -152,6 +203,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mainMInflator = getMenuInflater();
         mainMInflator.inflate(R.menu.main_menu, menu);
+
+        if(menuItemEnabled){
+            menu.findItem(R.id.sortby_popularity).setEnabled(true);
+            menu.findItem(R.id.sortby_rate).setEnabled(true);
+        }
+
         return true;
     }
 
@@ -173,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         return super.onOptionsItemSelected(item);
     }
 
-    static private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
+    private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
         moviesSortedByRating = new ArrayList<>();
         if(sortBy.equals("popularity")){
             unOrderedMovies.sort((o1, o2) -> {                                      // Comparator
@@ -196,6 +253,74 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
         return moviesSortedByRating;
     }
+
+    public final class InternetConnectionCheck {
+
+        int threadCount = 0;
+
+        private ScheduledExecutorService scheduler =
+                Executors.newScheduledThreadPool(1);
+
+        final Runnable internNetCheck  = new Runnable() {
+                @Override
+                public void run() {
+                    if(checkConnection()){
+//                        getPrimaryMoviesList(true);
+                        Log.d(TAGTwo, "runnable exectued");
+                    }
+                }
+            };
+
+
+        final ScheduledFuture<?> connCheckHanlde =
+                    scheduler.scheduleAtFixedRate(internNetCheck, 5, 5, SECONDS);
+//                    scheduler.schedule(internNetCheck, 3, SECONDS);
+
+        public ScheduledFuture<?> getConnCheckHanlde() {
+            return connCheckHanlde;
+        }
+
+        public boolean checkConnection() {
+
+            try {
+                        int timeoutMs = 1500;
+                        Socket sock = new Socket();
+                        SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
+                        sock.connect(sockAddr, timeoutMs);
+                        Log.d(TAGTwo, "inside checkConnection() ");
+
+//                        new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));              // doesn't work
+
+//                        Snackbar.make(Objects.requireNonNull(getCurrentFocus())                               // works, but Toast doesn't
+//                                , MessageFormat.format("Yes, internet connetion working", null)
+//                                , Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                        sock.close();
+
+                        runOnUiThread(new Runnable() {                      // works but doesn't stop repainting
+                            @Override
+                            public void run() {
+                                while (threadCount <=1 ){
+                                    getPrimaryMoviesList(true);
+                                threadCount++;
+                                }
+                            }
+
+                        });
+
+                        return true;
+                    } catch (IOException e) {
+                        Snackbar.make(Objects.requireNonNull(getCurrentFocus())
+                                , MessageFormat.format("Ah, no internet connetion", null)
+                                , Snackbar.LENGTH_LONG).setAction("Action", null).show();
+
+                        threadCount = 0;
+                        Log.d(TAGTwo, "inside checkConnection() error reported ");
+                        return false;
+                    }
+                }
+
+        };
 
 }
 
