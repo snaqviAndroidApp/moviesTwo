@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                                     getPrimaryMoviesList(true);
                                 threadCounts++;
                                 schPeriod = 15;
-                                    Log.d("thaeadC", "Try counter: " + threadCounts);
+                                    Log.d("thaeadC", "Try counter: " + threadCounts);       // check repeation
 
                                 }
                             }
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         Snackbar.make(Objects.requireNonNull(getCurrentFocus())
                                 , MessageFormat.format("Ah, no internet connetion", null)
                                 , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        Log.e("thaeadC", "IOException counter: " + threadCounts);
+                        Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repeation
                         threadCounts = 0;
                         return false;
                     }
