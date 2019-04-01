@@ -3,9 +3,8 @@ package nanodegree.dfw.perm.movieapp.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//public final class DetailsData implements Parcelable {
-
-public class DetailsData implements Parcelable {
+public final class DetailsData implements Parcelable {
+//public class DetailsData implements Parcelable {
 
     private String detailAct_original_title;        //    1.    original title
     private String detailAct_backdrop_path;         //    2.    movie image thumbnail --> moving it to actual Image, and Poster to thumbnail

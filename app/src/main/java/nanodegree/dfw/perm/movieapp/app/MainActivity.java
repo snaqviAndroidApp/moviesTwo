@@ -36,9 +36,9 @@ import nanodegree.dfw.perm.movieapp.utilities.MovieJsonUtils;
 import nanodegree.dfw.perm.movieapp.utilities.NetworkUtils;
 
 import static java.util.Objects.*;
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
-class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
@@ -52,6 +52,8 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
     private RecyclerView mRecyclerView;
     private MovieAdapter movieAdapter;
     private ProgressBar mLoadIndicator;
+    private long schPeriod;
+    private int threadCounts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,8 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         if(null != moviesFromServer) moviesFromServer.clear();
         if(null != moviesDataToSort ) moviesDataToSort.clear();
         if(null != moviesSortedByRating) moviesSortedByRating.clear();
+        schPeriod = 15;
+        threadCounts = 0;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
@@ -69,15 +73,18 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-        new InternetConnectionCheck().getConnCheckHanlde();
+        new ConnectionUtilities().getConnCheckHanlde();
         mRecyclerView.setAdapter(movieAdapter);
     }
 
-    private  void getPrimaryMoviesList(boolean nwConn) {
+
+//    private  void getPrimaryMoviesList(boolean nwConn) {
+    public void getPrimaryMoviesList(boolean nwConn) {
         if(nwConn) {
             new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));        // moved to InternetConnectioncheck() class
         }
     }
+
 
     public void setDataClicked(MoviesData dataClicked) {
        final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
@@ -171,7 +178,6 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mainMInflator = getMenuInflater();
         mainMInflator.inflate(R.menu.main_menu, menu);
-
         if(menuItemEnabled){
             menu.findItem(R.id.sortby_popularity).setEnabled(true);
             menu.findItem(R.id.sortby_rate).setEnabled(true);
@@ -222,20 +228,32 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
         return moviesSortedByRating;
     }
 
-    public final class InternetConnectionCheck {
-        int threadCount = 0;
+    public final class ConnectionUtilities {
         private ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
-        final Runnable internNetCheck  = new Runnable() {
-                @Override
-                public void run() {
-                    if(checkConnection()){  }
+
+        final Runnable internNetCheck  = new Runnable() {           // 2nd Approach
+            @Override
+            public void run() {
+                    if(checkConnection()){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while (threadCounts < 1 ){
+                                    getPrimaryMoviesList(true);
+                                threadCounts++;
+                                schPeriod = 15;
+                                    Log.d("thaeadC", "Try counter: " + threadCounts);
+
+                                }
+                            }
+                        });
+                    }
                 }
             };
 
         final ScheduledFuture<?> connCheckHanlde =
-                    scheduler.scheduleAtFixedRate(internNetCheck, 5, 5, SECONDS);
-
+                    scheduler.scheduleAtFixedRate(internNetCheck, 5, schPeriod, SECONDS);
         public ScheduledFuture<?> getConnCheckHanlde() {
             return connCheckHanlde;
         }
@@ -247,24 +265,17 @@ class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapte
                         SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
                         sock.connect(sockAddr, timeoutMs);
                         sock.close();
-                        runOnUiThread(new Runnable() {                      // works but doesn't stop repainting
-                            @Override
-                            public void run() {
-                                while (threadCount <=1 ){
-                                    getPrimaryMoviesList(true);
-                                threadCount++;
-                                }
-                            }
-                        });
                         return true;
                     } catch (IOException e) {
                         Snackbar.make(Objects.requireNonNull(getCurrentFocus())
                                 , MessageFormat.format("Ah, no internet connetion", null)
                                 , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        threadCount = 0;
+                        Log.e("thaeadC", "IOException counter: " + threadCounts);
+                        threadCounts = 0;
                         return false;
                     }
                 }
         }
+
 }
 
