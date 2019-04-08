@@ -40,16 +40,16 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
-
-
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
     public static final String POPULARITY = "popularity";
     public static final String RATING = "vote_average";
 
     private ArrayList<MoviesData> moviesToView;                               // Final - POJO
+    private ArrayList<MoviesData> moviesSortedByRating;                       // To Order
+
     private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
-    private ArrayList<MoviesData> moviesSortedByRating;
+    private ArrayList<HashMap<Integer, MoviesData>> moviesInputListToOrder;
 
     boolean menuItemEnabled = false;
     private RecyclerView mRecyclerView;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setContentView(R.layout.activity_main);
 
         if(null != moviesFromServer) moviesFromServer.clear();
+        if(null != moviesInputListToOrder) moviesInputListToOrder.clear();
         if(null != moviesSortedByRating) moviesSortedByRating.clear();
         schPeriod = 15;
         threadCounts = 0;
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-
     public void setDataClicked(MoviesData dataClicked) {
        final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
         detailIntent.putExtra("movieDetails", new DetailsData(
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 dataClicked.getbackDropImage_bulitPath(),
                 dataClicked.getOverview(),
                 dataClicked.getVote_average(),
+                dataClicked.getPopularity(),
                 dataClicked.getRelease_date())
         );
         startActivity(detailIntent);
@@ -112,29 +113,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mLoadIndicator.setVisibility(View.VISIBLE);
         }
 
-            @Override
-            synchronized protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
+        @Override
+        synchronized protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
             moviesFromServer = new ArrayList<>();
+            moviesInputListToOrder = new ArrayList<>();
             if (strings.length == 0) {
                     return null;
             }
-
             String moviesToOrder = strings[0];
-            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){                 // populaer or rated movies data - parsing
+            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){                       // populaer or rated movies data - parsing
                 parsedJsonMovieData = null;
                 jsonMovieResponse = null;
-                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);           // build URL
+                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);               // build URL
                 try {
                     jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-//                    parsedJsonMovieData = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse);
-                    moviesFromServer = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse);
-
+                    moviesInputListToOrder = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse);
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.printf("error occured: %s", e.getStackTrace().toString());
                     return null;
                 }
 //                moviesFromServer.add(parsedJsonMovieData);
+
+                return moviesInputListToOrder;
             }
             else {
                 Integer movieNumber = Integer.valueOf(strings[0]);
@@ -167,10 +168,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         }
                         return null;
                     }
+
                     moviesFromServer.add(parsedJsonMovieData);
                 }
+
+                return moviesFromServer;
             }
-            return moviesFromServer;
         }
 
     @Override
@@ -189,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 moviesToView.add(m.get(requireNonNull(m.keySet().toArray())[0]));
             });
         }
-        movieAdapter.setMoviePosters(moviesToView);
+        movieAdapter.setMoviePosters(moviesToView, "");
     }
 
     @Override
@@ -200,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             menu.findItem(R.id.sortby_popularity).setEnabled(true);
             menu.findItem(R.id.sortby_rate).setEnabled(true);
         }
-
         return true;
     }
 
@@ -211,21 +213,32 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             case R.id.sortby_rate:
                 {
                     new MovieTasking().execute("vote_average");                                                                     //    TODO_ (1)Popular:
-                    movieAdapter.setMoviePosters(sortMoviesBy(moviesFromServer, "vote_average"));
+                    try {
+                        Thread.sleep(280);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "vote_average"), RATING);
                     break;
                 }
             case R.id.sortby_popularity:
-            {
-                new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
-                movieAdapter.setMoviePosters(sortMoviesBy(moviesFromServer, "popularity"));
-                break;
-            }
+                {
+                    new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
+                    try {
+                        Thread.sleep(280);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "popularity"), POPULARITY);
+                    break;
+                }
         }
         mRecyclerView.setAdapter(movieAdapter);
         return super.onOptionsItemSelected(item);
     }
 
     private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
+
         moviesSortedByRating = new ArrayList<>();
         if(sortBy.equals("popularity")){
             unOrderedMovies.sort((o1, o2) -> {                                      // Comparator

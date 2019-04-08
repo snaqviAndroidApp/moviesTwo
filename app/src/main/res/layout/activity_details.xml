@@ -111,6 +111,42 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linearLayoutP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_goneMarginTop="5dp">
+
+            <TextView
+                android:id="@+id/tvPopularityTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:text="@string/movie_popularity"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPopularity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0.35"
+                android:hint="popularity"
+                app:layout_constraintStart_toStartOf="@+id/tvRatingTitle" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/linearReleaseDate"
@@ -120,7 +156,7 @@
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutP">
 
             <TextView
                 android:id="@+id/tvDateTitle"

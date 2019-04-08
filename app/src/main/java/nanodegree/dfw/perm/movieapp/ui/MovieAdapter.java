@@ -20,6 +20,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private ArrayList<MoviesData> mMoviesList;
 
     final private MovieAdapterOnClickHandler mClickHandler;
+    private String sorting = null;
+    String imageUrl = null;
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnCickHanlding
         default void setDataClicked(MoviesData dataClicked) {
@@ -62,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
         MoviesData mImagSelected = mMoviesList.get(position);
-        String imageUrl = mImagSelected.getPoster_builtPath();
+        imageUrl = mImagSelected.getPoster_builtPath();
         Picasso.get()
                 .load(imageUrl)
                 .fit()
@@ -79,8 +81,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMoviesList.size();
     }
 
-    public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd){
+//    public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd){
+    public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd, String ifSorting){
         mMoviesList = movieDataRcvd;
+        sorting = ifSorting;
         notifyDataSetChanged();
     }
 }

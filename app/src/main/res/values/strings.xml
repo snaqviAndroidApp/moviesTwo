@@ -10,4 +10,5 @@
     <string name="movie_rating">Movie rating</string>
     <string name="title_hint">title</string>
     <string name="overviewText">Overview</string>
+    <string name="movie_popularity">Movie popularity</string>
 </resources>

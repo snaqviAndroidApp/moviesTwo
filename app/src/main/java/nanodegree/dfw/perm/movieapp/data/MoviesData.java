@@ -108,4 +108,5 @@ public class MoviesData {
     public String getbackDropImage_bulitPath() {
         return NetworkUtils.buildPosterUrl(getBackDrop_path()).toString();
     }
+
 }

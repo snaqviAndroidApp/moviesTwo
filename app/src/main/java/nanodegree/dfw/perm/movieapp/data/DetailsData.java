@@ -12,22 +12,8 @@ public final class DetailsData implements Parcelable {
     private double detailAct_popularity;
     private String detailAct_release_date;
 
-    public String getDetailAct_original_title() { return detailAct_original_title; }
-    public String getDetailAct_backdrop_path() { return detailAct_backdrop_path; }
-    public String getDetailAct_overview() { return detailAct_overview; }
-    public double getDetailAct_vote_average() { return detailAct_vote_average; }
-    public String getDetailAct_release_date() { return detailAct_release_date; }
 
-    public DetailsData(String original_title, String backDrop_path, String overview, double vote_average, double popularity, String release_date) {
-        this.detailAct_original_title = original_title;
-        this.detailAct_backdrop_path = backDrop_path;
-        this.detailAct_overview = overview;
-        this.detailAct_vote_average = vote_average;
-        this.detailAct_popularity = popularity;
-        this.detailAct_release_date = release_date;
-    }
-
-    public DetailsData(Parcel in) {
+    protected DetailsData(Parcel in) {
         detailAct_original_title = in.readString();
         detailAct_backdrop_path = in.readString();
         detailAct_overview = in.readString();
@@ -48,6 +34,33 @@ public final class DetailsData implements Parcelable {
         }
     };
 
+    public String getDetailAct_original_title() {
+        return detailAct_original_title;
+    }
+    public String getDetailAct_backdrop_path() {
+        return detailAct_backdrop_path;
+    }
+    public String getDetailAct_overview() {
+        return detailAct_overview;
+    }
+    public double getDetailAct_vote_average() {
+        return detailAct_vote_average;
+    }
+    public double getDetailAct_popularity() {
+        return detailAct_popularity;
+    }
+    public String getDetailAct_release_date() {
+        return detailAct_release_date;
+    }
+
+    public DetailsData(String detailAct_original_title, String detailAct_backdrop_path, String detailAct_overview, double detailAct_vote_average, double detailAct_popularity, String detailAct_release_date) {
+        this.detailAct_original_title = detailAct_original_title;
+        this.detailAct_backdrop_path = detailAct_backdrop_path;
+        this.detailAct_overview = detailAct_overview;
+        this.detailAct_vote_average = detailAct_vote_average;
+        this.detailAct_popularity = detailAct_popularity;
+        this.detailAct_release_date = detailAct_release_date;
+    }
 
     @Override
     public int describeContents() {

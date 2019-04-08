@@ -10,11 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import nanodegree.dfw.perm.movieapp.app.MainActivity;
 import nanodegree.dfw.perm.movieapp.data.MoviesData;
 
 public class MovieJsonUtils {
-
     private static final String MOVIE_ID = "id";
     private static final String MOVIE_STATUS_CODE = "status_code";
     private static final String MOVIE_STATUS_CODE_VALUE = "status_message";
@@ -45,12 +43,10 @@ public class MovieJsonUtils {
         return movieData;
     }
 
-//    public static HashMap<Integer, MoviesData> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
     public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
             throws JSONException {
         ArrayList<HashMap<Integer, MoviesData>> moviesListToOrder = new ArrayList<>();
         JSONArray inMoviesJson_UnOrdered = new JSONObject(toOrderJsonStr).getJSONArray("results");
-
         for (int toOderMovies = 0; toOderMovies < inMoviesJson_UnOrdered.length();toOderMovies++) {
             HashMap orderedMovieData = new HashMap();
             orderedMovieData.put(toOderMovies,
@@ -66,23 +62,8 @@ public class MovieJsonUtils {
             );
             moviesListToOrder.add(orderedMovieData);
         }
-
-//        return orderedMovieData;
         return moviesListToOrder;
     }
 
-
-    /**
-     * Parse the JSON and convert it into ContentValues that can be inserted into our database.
-     *
-     * @param context         An application context, such as a service or activity context.
-     * @param forecastJsonStr The JSON to parse into ContentValues.
-     *
-     * @return An array of ContentValues parsed from the JSON.
-     */
-//    public static ContentValues[] getFullWeatherDataFromJson(Context context, String forecastJsonStr) {
-//        /** This will be implemented in a future lesson **/
-//        return null;
-//    }
 }
 

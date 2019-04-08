@@ -27,6 +27,7 @@ public class DetailsActivity extends AppCompatActivity {
         vOverview = findViewById(R.id.tvOverview);
         thumbNail = findViewById(R.id.tvThumbnail);
         vVoteAverage = findViewById(R.id.tvRating);
+        vPopularity = findViewById(R.id.tvPopularity);
         vReleaseDate = findViewById(R.id.tvReleaseData);
         Intent intent = getIntent();
         DetailsData inDet = intent.getParcelableExtra("movieDetails");          // UnMarshalling
@@ -34,6 +35,7 @@ public class DetailsActivity extends AppCompatActivity {
         rcvd_backdrop_path = inDet.getDetailAct_backdrop_path();
         vOverview.setText(inDet.getDetailAct_overview());
         vVoteAverage.setText(String.valueOf(inDet.getDetailAct_vote_average()));
+        vPopularity.setText(String.valueOf(inDet.getDetailAct_popularity()));
         vReleaseDate.setText(String.format("%s%s", getString(R.string.releaseData_Prepending), inDet.getDetailAct_release_date()));
         Picasso.get()
                 .load(rcvd_backdrop_path)
