@@ -1,8 +1,6 @@
 package nanodegree.dfw.perm.movieapp.utilities;
 
-//import android.content.ContentValues;
 import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,13 +15,13 @@ public class MovieJsonUtils {
     private static final String MOVIE_STATUS_CODE = "status_code";
     private static final String MOVIE_STATUS_CODE_VALUE = "status_message";
     private static final String MOVIE_POSTER_PATH = "poster_path";
-    private static final String MOVIE_POSTER_THUMB = "backdrop_path"; // string
-    private static final String MOVIE_ORIGINAL_TITLE = "original_title";  // string
-    private static final String TITLE = "title";                    // string
-    private static final String MOVIE_OVERVIEW = "overview";              // String
-    private static final String MOVIE_RELEASE_DATE = "release_date";      //String
-    private static final String MOVIE_RATING = "vote_average";      // double
-    private static final String MOVIE_POPULARITY = "popularity";    // double
+    private static final String MOVIE_POSTER_THUMB = "backdrop_path";
+    private static final String MOVIE_ORIGINAL_TITLE = "original_title";
+    private static final String TITLE = "title";
+    private static final String MOVIE_OVERVIEW = "overview";
+    private static final String MOVIE_RELEASE_DATE = "release_date";
+    private static final String MOVIE_RATING = "vote_average";
+    private static final String MOVIE_POPULARITY = "popularity";
 
     public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
             throws JSONException {

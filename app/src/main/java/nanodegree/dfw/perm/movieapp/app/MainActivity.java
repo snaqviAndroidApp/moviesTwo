@@ -133,8 +133,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     System.out.printf("error occured: %s", e.getStackTrace().toString());
                     return null;
                 }
-//                moviesFromServer.add(parsedJsonMovieData);
-
                 return moviesInputListToOrder;
             }
             else {
@@ -168,10 +166,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         }
                         return null;
                     }
-
                     moviesFromServer.add(parsedJsonMovieData);
                 }
-
                 return moviesFromServer;
             }
         }
@@ -214,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 {
                     new MovieTasking().execute("vote_average");                                                                     //    TODO_ (1)Popular:
                     try {
-                        Thread.sleep(280);
+                        Thread.sleep(320);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -225,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 {
                     new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
                     try {
-                        Thread.sleep(280);
+                        Thread.sleep(320);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -253,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return k1.compareTo(k2);
             });
         }
-
         if (unOrderedMovies != null) {
             unOrderedMovies.forEach(m -> {
                 moviesSortedByRating.add(m.get(m.keySet().toArray()[0]));
@@ -265,8 +260,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public final class ConnectionUtilities {
         private ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
-
-        final Runnable internNetCheck  = new Runnable() {           // 2nd Approach
+        final Runnable internNetCheck  = new Runnable() {
             @Override
             public void run() {
                     if(checkConnection()){
@@ -284,13 +278,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     }
                 }
             };
-
         final ScheduledFuture<?> connCheckHanlde =
-                    scheduler.scheduleAtFixedRate(internNetCheck, 5, schPeriod, SECONDS);
+                scheduler.scheduleAtFixedRate(internNetCheck, 5, schPeriod, SECONDS);
         public ScheduledFuture<?> getConnCheckHanlde() {
             return connCheckHanlde;
         }
-
         private boolean checkConnection() {
             try {
                         int timeoutMs = 1500;

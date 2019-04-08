@@ -11,4 +11,8 @@
     <string name="title_hint">title</string>
     <string name="overviewText">Overview</string>
     <string name="movie_popularity">Movie popularity</string>
+    <string name="overview">Overview</string>
+    <string name="ratingHint">rating</string>
+    <string name="popularityHint">popularity</string>
+    <string name="release_dateHint">release Date</string>
 </resources>

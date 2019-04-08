@@ -69,7 +69,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="8dp"
-                android:hint="Overview"
+                android:hint="@string/overview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.512"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -100,13 +100,13 @@
 
             <TextView
                 android:id="@+id/tvRating"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.35"
-                android:hint="rating"
+                android:hint="@string/ratingHint"
                 app:layout_constraintStart_toStartOf="@+id/tvRatingTitle" />
 
         </LinearLayout>
@@ -136,13 +136,13 @@
 
             <TextView
                 android:id="@+id/tvPopularity"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.35"
-                android:hint="popularity"
+                android:hint="@string/popularityHint"
                 app:layout_constraintStart_toStartOf="@+id/tvRatingTitle" />
 
         </LinearLayout>
@@ -169,11 +169,11 @@
 
             <TextView
                 android:id="@+id/tvReleaseData"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.35"
-                android:hint="release Date"
+                android:hint="@string/release_dateHint"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/tvDateTitle" />
 
