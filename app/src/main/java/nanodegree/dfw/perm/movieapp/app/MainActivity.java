@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     System.out.printf("error occured: %s", e.getStackTrace().toString());
                     return null;
                 }
-                moviesFromServer.add(parsedJsonMovieData);
+//                moviesFromServer.add(parsedJsonMovieData);
             }
             else {
                 Integer movieNumber = Integer.valueOf(strings[0]);
@@ -165,14 +165,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                             moviesFromServer.add(parsedJsonMovieData);
                             continue;
                         }
-
                         return null;
                     }
                     moviesFromServer.add(parsedJsonMovieData);
                 }
             }
-
-
             return moviesFromServer;
         }
 

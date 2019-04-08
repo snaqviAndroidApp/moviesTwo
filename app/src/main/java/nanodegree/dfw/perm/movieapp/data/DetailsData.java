@@ -4,12 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public final class DetailsData implements Parcelable {
-//public class DetailsData implements Parcelable {
 
     private String detailAct_original_title;
     private String detailAct_backdrop_path;
     private String detailAct_overview;
     private double detailAct_vote_average;
+    private double detailAct_popularity;
     private String detailAct_release_date;
 
     public String getDetailAct_original_title() { return detailAct_original_title; }
@@ -18,11 +18,12 @@ public final class DetailsData implements Parcelable {
     public double getDetailAct_vote_average() { return detailAct_vote_average; }
     public String getDetailAct_release_date() { return detailAct_release_date; }
 
-    public DetailsData(String original_title, String backDrop_path, String overview, double vote_average, String release_date) {
+    public DetailsData(String original_title, String backDrop_path, String overview, double vote_average, double popularity, String release_date) {
         this.detailAct_original_title = original_title;
         this.detailAct_backdrop_path = backDrop_path;
         this.detailAct_overview = overview;
         this.detailAct_vote_average = vote_average;
+        this.detailAct_popularity = popularity;
         this.detailAct_release_date = release_date;
     }
 
@@ -31,6 +32,7 @@ public final class DetailsData implements Parcelable {
         detailAct_backdrop_path = in.readString();
         detailAct_overview = in.readString();
         detailAct_vote_average = in.readDouble();
+        detailAct_popularity = in.readDouble();
         detailAct_release_date = in.readString();
     }
 
@@ -58,6 +60,7 @@ public final class DetailsData implements Parcelable {
         dest.writeString(detailAct_backdrop_path);
         dest.writeString(detailAct_overview);
         dest.writeDouble(detailAct_vote_average);
+        dest.writeDouble(detailAct_popularity);
         dest.writeString(detailAct_release_date);
     }
 }

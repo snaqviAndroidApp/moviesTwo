@@ -42,20 +42,17 @@ public class MovieJsonUtils {
                         forecastJson.getDouble(MOVIE_POPULARITY),
                         null)
         );
-
         return movieData;
     }
 
 //    public static HashMap<Integer, MoviesData> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
     public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
             throws JSONException {
-
         ArrayList<HashMap<Integer, MoviesData>> moviesListToOrder = new ArrayList<>();
-
-        HashMap orderedMovieData = new HashMap();
         JSONArray inMoviesJson_UnOrdered = new JSONObject(toOrderJsonStr).getJSONArray("results");
 
         for (int toOderMovies = 0; toOderMovies < inMoviesJson_UnOrdered.length();toOderMovies++) {
+            HashMap orderedMovieData = new HashMap();
             orderedMovieData.put(toOderMovies,
                     new MoviesData(
                             inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_POSTER_PATH),

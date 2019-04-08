@@ -15,7 +15,7 @@ import nanodegree.dfw.perm.movieapp.data.DetailsData;
 public class DetailsActivity extends AppCompatActivity {
 
     private String rcvd_backdrop_path;
-    TextView vTitle, vOverview,vReleaseDate, vVoteAverage;
+    TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity;
     ImageView thumbNail;
 
     @Override
