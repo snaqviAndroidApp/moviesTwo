@@ -2,9 +2,15 @@ package nanodegree.dfw.perm.movieapp.utilities;
 
 //import android.content.ContentValues;
 import android.content.Context;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import nanodegree.dfw.perm.movieapp.app.MainActivity;
 import nanodegree.dfw.perm.movieapp.data.MoviesData;
 
 public class MovieJsonUtils {
@@ -23,38 +29,8 @@ public class MovieJsonUtils {
 
     public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
             throws JSONException {
-
         HashMap movieData = new HashMap();
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
-        /* Is there an error? */
-        if (forecastJson.has(MOVIE_STATUS_CODE)) {
-//        if (forecastJson.has()) {
-            int errorCode = forecastJson.getInt(MOVIE_STATUS_CODE);
-            switch (errorCode) {
-//                case HttpURLConnection.HTTP_OK:
-//                    break;
-//                case HttpURLConnection.HTTP_NOT_FOUND:
-                case 34:
-                    /* Location invalid */
-//                    return null;
-                    movieData.put(Integer.valueOf(forecastJson.getString(MOVIE_ID)),
-                            new MoviesData(
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    0.0,
-                                    0.0,
-                                    forecastJson.getString(MOVIE_STATUS_CODE_VALUE))
-                    );
-                    return movieData;
-
-                default:
-                    return null;                                            /* Server probably down */
-            }
-        }
-
         movieData.put(Integer.valueOf(forecastJson.getString(MOVIE_ID)),
                 new MoviesData(
                         forecastJson.getString(MOVIE_POSTER_PATH),
@@ -68,6 +44,34 @@ public class MovieJsonUtils {
         );
 
         return movieData;
+    }
+
+//    public static HashMap<Integer, MoviesData> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
+    public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
+            throws JSONException {
+
+        ArrayList<HashMap<Integer, MoviesData>> moviesListToOrder = new ArrayList<>();
+
+        HashMap orderedMovieData = new HashMap();
+        JSONArray inMoviesJson_UnOrdered = new JSONObject(toOrderJsonStr).getJSONArray("results");
+
+        for (int toOderMovies = 0; toOderMovies < inMoviesJson_UnOrdered.length();toOderMovies++) {
+            orderedMovieData.put(toOderMovies,
+                    new MoviesData(
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_POSTER_PATH),
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_POSTER_THUMB),
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_ORIGINAL_TITLE),
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_OVERVIEW),
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_RELEASE_DATE),
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getDouble(MOVIE_RATING),
+                            inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getDouble(MOVIE_POPULARITY),
+                            null)
+            );
+            moviesListToOrder.add(orderedMovieData);
+        }
+
+//        return orderedMovieData;
+        return moviesListToOrder;
     }
 
 

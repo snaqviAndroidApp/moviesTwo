@@ -6,11 +6,11 @@ import android.os.Parcelable;
 public final class DetailsData implements Parcelable {
 //public class DetailsData implements Parcelable {
 
-    private String detailAct_original_title;        //    1.    original title
-    private String detailAct_backdrop_path;         //    2.    movie image thumbnail --> moving it to actual Image, and Poster to thumbnail
-    private String detailAct_overview;              //    3.    A plot synopsis (called overview in the api)
-    private double detailAct_vote_average;          //    4.    user rating (called vote_average in the api)
-    private String detailAct_release_date;          //    5.    release date
+    private String detailAct_original_title;
+    private String detailAct_backdrop_path;
+    private String detailAct_overview;
+    private double detailAct_vote_average;
+    private String detailAct_release_date;
 
     public String getDetailAct_original_title() { return detailAct_original_title; }
     public String getDetailAct_backdrop_path() { return detailAct_backdrop_path; }
@@ -25,7 +25,6 @@ public final class DetailsData implements Parcelable {
         this.detailAct_vote_average = vote_average;
         this.detailAct_release_date = release_date;
     }
-
 
     public DetailsData(Parcel in) {
         detailAct_original_title = in.readString();

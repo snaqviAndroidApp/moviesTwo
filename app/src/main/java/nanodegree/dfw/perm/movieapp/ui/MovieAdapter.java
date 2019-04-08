@@ -67,9 +67,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .load(imageUrl)
                 .fit()
                 .rotate(0)
-//                .centerInside()
                 .centerCrop(5)
-//                .placeholder(R.drawable.ic_launcher_background)
                 .placeholder(null)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(movieViewHolder.mMovieImageView);

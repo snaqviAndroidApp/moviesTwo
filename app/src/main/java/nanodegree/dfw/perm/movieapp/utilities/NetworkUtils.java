@@ -31,12 +31,19 @@ public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
     private final static String PARAM_KEY = "api_key";
-    private final static String KEY_VALUE = "YOUR KEY";
+
+//    private final static String KEY_VALUE = "YOUR KEY";
+    private final static String KEY_VALUE = "fcb4ae381c4482341fc74a85ea0b071a";
+
     private static final String BASE_MOVIES_URL =
             "https://api.themoviedb.org/3/movie";
     private static final String _BASE_URL = BASE_MOVIES_URL;
 
-    private static final String MAIN_POSTER_BASE_URL = "http://image.tmdb.org/t/p";
+    private static final String POSTER_BASE_URL_MAIN = "http://image.tmdb.org/t/p";
+
+    private static final String POSTER_BASE_URL_MAIN_RATED = "http://api.themoviedb.org/3/movie/top_rated";     //  http://api.themoviedb.org/3/movie/top_rated?api_key=<api_key>
+    private static final String POSTER_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";     //  http://api.themoviedb.org/3/movie/popular?api_key=<api_key>
+
     private static final String OPTIMUM_SIZE = "w185";
     private static final String OPTIMUM_SIZE_92 = "w92";
     private static final String OPTIMUM_SIZE_154 = "w154";
@@ -61,7 +68,7 @@ public final class NetworkUtils {
         return url;
     }
     public static URL buildPosterUrl(String imageLocation) {
-        Uri builtUri = Uri.parse(MAIN_POSTER_BASE_URL).buildUpon()
+        Uri builtUri = Uri.parse(POSTER_BASE_URL_MAIN).buildUpon()
                 .appendEncodedPath(OPTIMUM_SIZE)
                 .appendEncodedPath(imageLocation)
                 .build();
@@ -74,6 +81,32 @@ public final class NetworkUtils {
         }
         return urlPoster;
     }
+
+    public static URL buildToOrderPostersUrl(String imageLocation) {
+        URL urlPosterOrdered = null;
+        if (imageLocation.equals("popularity")) {
+            Uri builtUri = Uri.parse(POSTER_BASE_URL_MAIN_POPULAR).buildUpon()
+                    .appendQueryParameter(PARAM_KEY, KEY_VALUE)
+                    .build();
+            try {
+                urlPosterOrdered = new URL(builtUri.toString());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        } else {
+                Uri builtUri = Uri.parse(POSTER_BASE_URL_MAIN_RATED).buildUpon()
+                        .appendQueryParameter(PARAM_KEY, KEY_VALUE)
+                        .build();
+                try {
+                    urlPosterOrdered = new URL(builtUri.toString());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }                                                           // Expected: http://api.themoviedb.org/3/movie/popular?api_key=fcb4ae381c4482341fc74a85ea0b071a
+            return urlPosterOrdered;                                    // built:    http://api.themoviedb.org/3/movie/top_rated?api_key=fcb4ae381c4482341fc74a85ea0b071a
+        }
+
+
     /**
      * This method returns the entire result from the HTTP response.
      *

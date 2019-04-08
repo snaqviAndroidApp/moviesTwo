@@ -38,9 +38,7 @@ public class MoviesData {
         this.poster_path = poster_path;
     }
     public void setBackDrop_path(String backDrop_path) { this.backDrop_path = backDrop_path; }
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
-    }
+    public void setOriginal_title(String original_title) { this.original_title = original_title; }
     public void setVote_average(double vote_average) {
         this.vote_average = vote_average;
     }
@@ -87,7 +85,6 @@ public class MoviesData {
     }
     public String getBackDrop_path()
     { return backDrop_path; }
-
 
     @Override
     public String toString() {

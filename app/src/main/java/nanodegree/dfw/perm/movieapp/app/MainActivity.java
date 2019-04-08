@@ -40,12 +40,15 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
+
+
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
+    public static final String POPULARITY = "popularity";
+    public static final String RATING = "vote_average";
 
     private ArrayList<MoviesData> moviesToView;                               // Final - POJO
     private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
-    private ArrayList<HashMap<Integer, MoviesData>> moviesDataToSort;
     private ArrayList<MoviesData> moviesSortedByRating;
 
     boolean menuItemEnabled = false;
@@ -61,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         setContentView(R.layout.activity_main);
 
         if(null != moviesFromServer) moviesFromServer.clear();
-        if(null != moviesDataToSort ) moviesDataToSort.clear();
         if(null != moviesSortedByRating) moviesSortedByRating.clear();
         schPeriod = 15;
         threadCounts = 0;
@@ -77,11 +79,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(movieAdapter);
     }
 
-
-//    private  void getPrimaryMoviesList(boolean nwConn) {
     public void getPrimaryMoviesList(boolean nwConn) {
         if(nwConn) {
-            new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));        // moved to InternetConnectioncheck() class
+            new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));
         }
     }
 
@@ -112,45 +112,67 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             mLoadIndicator.setVisibility(View.VISIBLE);
         }
 
-        @Override
-            protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
+            @Override
+            synchronized protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
             moviesFromServer = new ArrayList<>();
-            if (strings.length == 0) {                                  /* If there's no zip code, there's nothing to look up. */
+            if (strings.length == 0) {
                     return null;
             }
-            Integer movieNumber = Integer.valueOf(strings[0]);
-            for (int i = 0; i < movieNumber; i++) {
+
+            String moviesToOrder = strings[0];
+            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){                 // populaer or rated movies data - parsing
                 parsedJsonMovieData = null;
                 jsonMovieResponse = null;
-                URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));                            //  https://api.themoviedb.org/3/movie/550?api_key=fcb4ae381c4482341fc74a85ea0b071a
+                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);           // build URL
                 try {
                     jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-                    parsedJsonMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse);
+//                    parsedJsonMovieData = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse);
+                    moviesFromServer = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.printf("error occured: %s", e.getStackTrace().toString());
-                    if (e.getClass().getName() == "java.io.FileNotFoundException") {
-                        parsedJsonMovieData = new HashMap<>();
-                        parsedJsonMovieData.put((MOVIES_OFFSET + i),
-                                new MoviesData(
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        0.0,
-                                        0.0,
-                                        "The resource you requested could not be found"
-                                )
-                        );
-                        moviesFromServer.add(parsedJsonMovieData);
-                        continue;
-                    }
-
                     return null;
                 }
                 moviesFromServer.add(parsedJsonMovieData);
             }
+            else {
+                Integer movieNumber = Integer.valueOf(strings[0]);
+                for (int i = 0; i < movieNumber; i++) {
+                    parsedJsonMovieData = null;
+                    jsonMovieResponse = null;
+                    URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));        //  https://api.themoviedb.org/3/movie/550?api_key=KEY
+                    try {
+                        jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
+                        parsedJsonMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.printf("error occured: %s", e.getStackTrace().toString());
+                        if (e.getClass().getName() == "java.io.FileNotFoundException") {
+                            parsedJsonMovieData = new HashMap<>();
+                            parsedJsonMovieData.put((MOVIES_OFFSET + i),
+                                    new MoviesData(
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            0.0,
+                                            0.0,
+                                            "The resource you requested could not be found"
+                                    )
+                            );
+                            moviesFromServer.add(parsedJsonMovieData);
+                            continue;
+                        }
+
+                        return null;
+                    }
+                    moviesFromServer.add(parsedJsonMovieData);
+                }
+            }
+
+
             return moviesFromServer;
         }
 
@@ -163,10 +185,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
-    private void sendMovieData(ArrayList<HashMap<Integer, MoviesData>> localMovieData) {                 // a method or function
+    private void sendMovieData(ArrayList<HashMap<Integer, MoviesData>> localMovieData) {
         moviesToView = new ArrayList<>();
         if (localMovieData != null) {
-            moviesDataToSort = new ArrayList<>();
             localMovieData.forEach(m -> {
                 moviesToView.add(m.get(requireNonNull(m.keySet().toArray())[0]));
             });
@@ -192,12 +213,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         {
             case R.id.sortby_rate:
                 {
-                    movieAdapter.setMoviePosters(sortMoviesBy(moviesFromServer, "rate"));
-                    return true;
+                    new MovieTasking().execute("vote_average");                                                                     //    TODO_ (1)Popular:
+                    movieAdapter.setMoviePosters(sortMoviesBy(moviesFromServer, "vote_average"));
+                    break;
                 }
             case R.id.sortby_popularity:
             {
+                new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
                 movieAdapter.setMoviePosters(sortMoviesBy(moviesFromServer, "popularity"));
+                break;
             }
         }
         mRecyclerView.setAdapter(movieAdapter);
@@ -243,8 +267,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                                     getPrimaryMoviesList(true);
                                 threadCounts++;
                                 schPeriod = 15;
-                                    Log.d("thaeadC", "Try counter: " + threadCounts);       // check repeation
-
+                                    Log.d("thaeadC", "Try counter: " + threadCounts);       // check repetition
                                 }
                             }
                         });
@@ -258,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             return connCheckHanlde;
         }
 
-        public boolean checkConnection() {
+        private boolean checkConnection() {
             try {
                         int timeoutMs = 1500;
                         Socket sock = new Socket();
@@ -270,12 +293,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         Snackbar.make(Objects.requireNonNull(getCurrentFocus())
                                 , MessageFormat.format("Ah, no internet connetion", null)
                                 , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repeation
+                        Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repetition
                         threadCounts = 0;
                         return false;
                     }
                 }
         }
-
 }
 

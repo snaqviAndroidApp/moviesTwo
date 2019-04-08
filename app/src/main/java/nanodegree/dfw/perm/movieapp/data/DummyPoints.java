@@ -5,11 +5,11 @@ import java.io.SerializablePermission;
 
 //import kotlin.jvm.internal.DoubleCompanionObject;
 
- class Showables implements Serializable {
+ class DummyPoints implements Serializable {
 
     private String mImageUrl;
 
-    public Showables(String mImageUrl, double mRating) {
+    public DummyPoints(String mImageUrl, double mRating) {
         this.mImageUrl = mImageUrl;
         double mRating1 = mRating;
     }
