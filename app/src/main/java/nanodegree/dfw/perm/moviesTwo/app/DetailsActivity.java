@@ -1,16 +1,15 @@
-package nanodegree.dfw.perm.movieapp.app;
+package nanodegree.dfw.perm.moviesTwo.app;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import nanodegree.dfw.perm.movieapp.R;
-import nanodegree.dfw.perm.movieapp.data.DetailsData;
+import nanodegree.dfw.perm.moviesTwo.R;
+import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
 
 public class DetailsActivity extends AppCompatActivity {
 

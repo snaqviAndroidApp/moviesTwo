@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.movieapp;
+package nanodegree.dfw.perm.moviesTwo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

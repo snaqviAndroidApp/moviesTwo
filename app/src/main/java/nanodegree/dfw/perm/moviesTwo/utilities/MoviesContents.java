@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.movieapp.utilities;
+package nanodegree.dfw.perm.moviesTwo.utilities;
 
 
 import android.content.ContentProvider;

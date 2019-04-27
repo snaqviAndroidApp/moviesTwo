@@ -1,7 +1,6 @@
-package nanodegree.dfw.perm.movieapp.data;
+package nanodegree.dfw.perm.moviesTwo.data;
 
 import java.io.Serializable;
-import java.io.SerializablePermission;
 
 //import kotlin.jvm.internal.DoubleCompanionObject;
 

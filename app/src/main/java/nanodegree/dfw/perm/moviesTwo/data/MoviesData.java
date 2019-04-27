@@ -1,6 +1,6 @@
-package nanodegree.dfw.perm.movieapp.data;
+package nanodegree.dfw.perm.moviesTwo.data;
 
-import nanodegree.dfw.perm.movieapp.utilities.NetworkUtils;
+import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
 
 public class MoviesData {
 

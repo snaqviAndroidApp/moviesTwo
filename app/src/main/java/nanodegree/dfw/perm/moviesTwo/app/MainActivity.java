@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.movieapp.app;
+package nanodegree.dfw.perm.moviesTwo.app;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,12 +28,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import nanodegree.dfw.perm.movieapp.R;
-import nanodegree.dfw.perm.movieapp.data.DetailsData;
-import nanodegree.dfw.perm.movieapp.data.MoviesData;
-import nanodegree.dfw.perm.movieapp.ui.MovieAdapter;
-import nanodegree.dfw.perm.movieapp.utilities.MovieJsonUtils;
-import nanodegree.dfw.perm.movieapp.utilities.NetworkUtils;
+import nanodegree.dfw.perm.moviesTwo.R;
+import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
+import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.ui.MovieAdapter;
+import nanodegree.dfw.perm.moviesTwo.utilities.MovieJsonUtils;
+import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
 
 import static java.util.Objects.*;
 import static java.util.concurrent.TimeUnit.SECONDS;

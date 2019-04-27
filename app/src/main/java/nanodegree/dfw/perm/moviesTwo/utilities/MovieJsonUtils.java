@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.movieapp.utilities;
+package nanodegree.dfw.perm.moviesTwo.utilities;
 
 import android.content.Context;
 import org.json.JSONArray;
@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import nanodegree.dfw.perm.movieapp.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
 
 public class MovieJsonUtils {
     private static final String MOVIE_ID = "id";

@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.movieapp.ui;
+package nanodegree.dfw.perm.moviesTwo.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,8 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import nanodegree.dfw.perm.movieapp.R;
-import nanodegree.dfw.perm.movieapp.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.R;
+import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 

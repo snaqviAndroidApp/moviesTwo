@@ -8,7 +8,7 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "nanodegree.dfw.perm.movieapp"
+        applicationId "nanodegree.dfw.perm.moviesTwo"
         minSdkVersion 24
         targetSdkVersion 28
         versionCode 1

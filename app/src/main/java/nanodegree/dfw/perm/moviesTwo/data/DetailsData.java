@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.movieapp.data;
+package nanodegree.dfw.perm.moviesTwo.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

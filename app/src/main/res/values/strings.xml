@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movies</string>
+    <string name="app_name">Movies_</string>
     <string name="movie_poster">This will contain movie poster</string>
     <string name="title_activity_detail">Details</string>
     <string name="sort_by_rate">Sort by rating</string>

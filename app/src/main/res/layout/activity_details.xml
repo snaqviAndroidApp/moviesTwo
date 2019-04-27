@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="7dp"
-    android:padding="5dp"
+    android:layout_margin="@dimen/detailsActMain_margin"
+    android:padding="@dimen/detailsActMain_padding"
     android:textDirection="firstStrong"
     tools:context=".app.DetailsActivity">
 
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="193dp"
             android:contentDescription="@string/mainposter_thumbnail"
-            android:padding="5dp"
+            android:padding="@dimen/tv_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:orientation="vertical"
-            android:padding="5dp"
+            android:padding="@dimen/tv_padding"
             app:layout_constraintTop_toBottomOf="@+id/tvThumbnail"
             app:layout_goneMarginTop="5dp"
             tools:layout_editor_absoluteX="571dp">
@@ -144,9 +144,7 @@
                 android:layout_weight="0.35"
                 android:hint="@string/popularityHint"
                 app:layout_constraintStart_toStartOf="@+id/tvRatingTitle" />
-
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/linearReleaseDate"
