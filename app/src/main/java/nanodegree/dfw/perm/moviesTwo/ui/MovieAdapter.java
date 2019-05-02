@@ -23,7 +23,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private String sorting = null;
     String imageUrl = null;
 
-    public interface MovieAdapterOnClickHandler {                                       //Interface for OnCickHanlding
+    public interface MovieAdapterOnClickHandler {                                       //Interface for OnCick Hanlding
         default void setDataClicked(MoviesData dataClicked) {
         }
     }

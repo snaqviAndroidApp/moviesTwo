@@ -17,6 +17,9 @@ public class DetailsActivity extends AppCompatActivity {
     TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity;
     ImageView thumbNail;
 
+    // State Two
+    private String secReviews;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

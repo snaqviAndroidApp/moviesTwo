@@ -12,7 +12,8 @@ public class MoviesData {
     private double vote_average;
     private double popularity;
     private String failure_status;
-    private String title;                    // to be used later, in case
+
+    // added for State-2
 
     public MoviesData() {
 
@@ -28,6 +29,7 @@ public class MoviesData {
         this.vote_average = vote_average;
         this.popularity = popularity;
         this.failure_status = failure_status;
+
     }
 
     /**
@@ -97,7 +99,6 @@ public class MoviesData {
                 ", vote_average=" + vote_average +
                 ", popularity=" + popularity +
                 ", failure_status='" + failure_status + '\'' +
-                ", title='" + title + '\'' +
                 '}';
     }
 

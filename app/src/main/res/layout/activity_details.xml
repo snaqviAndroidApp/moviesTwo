@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/detailsActMain_margin"
@@ -11,172 +11,257 @@
     tools:context=".app.DetailsActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <android.support.constraint.ConstraintLayout
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvOriginalTitle"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="@string/title_hint"
-            android:padding="5dp"
-            android:textAllCaps="true"
-            android:textSize="19sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/tvThumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="193dp"
-            android:contentDescription="@string/mainposter_thumbnail"
-            android:padding="@dimen/tv_padding"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvOriginalTitle" />
-
-        <LinearLayout
-            android:id="@+id/linearLayoutOverview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:padding="@dimen/tv_padding"
-            app:layout_constraintTop_toBottomOf="@+id/tvThumbnail"
-            app:layout_goneMarginTop="5dp"
-            tools:layout_editor_absoluteX="571dp">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/tvOverTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/overviewText"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvOverview"
+                android:id="@+id/tvOriginalTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
-                android:hint="@string/overview"
+                android:hint="@string/title_hint"
+                android:padding="5dp"
+                android:textAllCaps="true"
+                android:textColor="#E7053A"
+                android:textSize="19sp"
+                android:textStyle="bold|italic"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.512"
-                app:layout_constraintStart_toStartOf="parent" />
-        </LinearLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="4dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutOverview"
-            app:layout_goneMarginTop="5dp">
-
-            <TextView
-                android:id="@+id/tvRatingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+            <ImageView
+                android:id="@+id/tvThumbnail"
+                android:layout_width="157dp"
+                android:layout_height="168dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/movie_rating"
-                android:textStyle="bold" />
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/mainposter_thumbnail"
+                android:padding="@dimen/tv_padding"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayoutOverview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOriginalTitle"
+                app:layout_constraintVertical_bias="0.144" />
 
-            <TextView
-                android:id="@+id/tvRating"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+
+            <LinearLayout
+                android:layout_width="351dp"
+                android:layout_height="95dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.35"
-                android:hint="@string/ratingHint"
-                app:layout_constraintStart_toStartOf="@+id/tvRatingTitle" />
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayoutOverview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvThumbnail"
+                app:layout_constraintVertical_bias="0.0">
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayoutP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="4dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_goneMarginTop="5dp">
+                <LinearLayout
+                    android:layout_width="64dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvPopularityTitle"
-                android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textStyle="bold"
+                        android:text="@string/trailerString"
+                        app:layout_constraintStart_toStartOf="@+id/playButton" />
+
+                    <ImageButton
+                        android:id="@+id/playButton"
+                        style="@style/Widget.AppCompat.ImageButton"
+                        android:layout_width="51dp"
+                        android:layout_height="43dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="0.5"
+                        android:background="#00AA3C3C"
+                        android:src="@android:drawable/ic_media_play"
+                        tools:src="@android:drawable/ic_media_play" />
+
+
+                </LinearLayout>
+
+
+                <WebView
+                    android:layout_width="273dp"
+                    android:layout_height="84dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutOverview"
+                android:layout_width="352dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_margin="5dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/movie_popularity"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                android:padding="@dimen/tv_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_goneMarginTop="5dp">
 
-            <TextView
-                android:id="@+id/tvPopularity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="0.35"
-                android:hint="@string/popularityHint"
-                app:layout_constraintStart_toStartOf="@+id/tvRatingTitle" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tvOverTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/overviewText"
+                    android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/linearReleaseDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutP">
+                <TextView
+                    android:id="@+id/tvOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/overview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.512"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDateTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:text="@string/release_date"
-                android:textStyle="bold" />
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="158dp"
+                android:layout_height="146dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayoutOverview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.571"
+                app:layout_constraintStart_toEndOf="@+id/tvThumbnail"
+                app:layout_constraintTop_toBottomOf="@+id/tvOriginalTitle"
+                app:layout_constraintVertical_bias="0.123">
 
-            <TextView
-                android:id="@+id/tvReleaseData"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.35"
-                android:hint="@string/release_dateHint"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/tvDateTitle" />
+                <TextView
+                    android:id="@+id/tvRatingTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/movie_rating"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPopularityTitle" />
 
-        </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tvRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.35"
+                    android:hint="@string/zerop_z"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.89"
+                    app:layout_constraintStart_toEndOf="@+id/tvRatingTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPopularity"
+                    app:layout_constraintVertical_bias="0.023" />
+
+                <TextView
+                    android:id="@+id/tvPopularityTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/movie_popularity"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvPopularity"
+                    android:layout_width="43dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/zerop_z"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.771"
+                    app:layout_constraintStart_toEndOf="@+id/tvPopularityTitle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvDateTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/release_date"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRatingTitle"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <TextView
+                    android:id="@+id/tvReleaseData"
+                    android:layout_width="81dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="0.35"
+                    android:hint="@string/release_dateHint"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.4"
+                    app:layout_constraintStart_toEndOf="@+id/tvDateTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/imageButton"
+                    app:layout_constraintVertical_bias="0.636" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="55dp"
+                    android:layout_height="41dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRating"
+                    app:srcCompat="@android:drawable/btn_star_big_off" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
 

@@ -16,7 +16,8 @@
             android:label="@string/title_activity_detail"
             android:parentActivityName=".app.MainActivity">
         </activity>
-        <activity android:name=".app.MainActivity">
+        <activity android:name=".app.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
