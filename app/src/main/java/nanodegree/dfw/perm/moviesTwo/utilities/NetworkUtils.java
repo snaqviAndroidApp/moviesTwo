@@ -27,24 +27,28 @@ import java.util.Scanner;
 /**
  * These utilities will be used to communicate with the Movies servers.
  */
-public final class NetworkUtils {
 
-    private static final String TAG = NetworkUtils.class.getSimpleName();
-    private final static String PARAM_KEY = "api_key";
-//    private final static String KEY_VALUE = "YOUR KEY";
-    private final static String KEY_VALUE = "fcb4ae381c4482341fc74a85ea0b071a";
-    private static final String BASE_MOVIES_URL =
+//public final class NetworkUtils {
+public class NetworkUtils {                         // tried to implement OOD
+
+    protected static final String TAG = NetworkUtils.class.getSimpleName();
+    protected final static String PARAM_KEY = "api_key";
+//    protected final static String KEY_VALUE = "YOUR KEY";
+    protected final static String KEY_VALUE = "fcb4ae381c4482341fc74a85ea0b071a";
+    protected static final String BASE_MOVIES_URL =
             "https://api.themoviedb.org/3/movie";
-    private static final String _BASE_URL = BASE_MOVIES_URL;
+    protected static final String _BASE_URL = BASE_MOVIES_URL;
 
-    private static final String POSTER_BASE_URL_MAIN = "http://image.tmdb.org/t/p";
+    protected static final String POSTER_BASE_URL_MAIN = "http://image.tmdb.org/t/p";
 
-    private static final String POSTER_BASE_URL_MAIN_RATED = "http://api.themoviedb.org/3/movie/top_rated";     //  http://api.themoviedb.org/3/movie/top_rated?api_key=<api_key>
-    private static final String POSTER_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";     //  http://api.themoviedb.org/3/movie/popular?api_key=<api_key>
+    protected static final String POSTER_BASE_URL_MAIN_RATED = "http://api.themoviedb.org/3/movie/top_rated";         //  http://api.themoviedb.org/3/movie/top_rated?api_key=<api_key>
+    protected static final String POSTER_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";         //  http://api.themoviedb.org/3/movie/popular?api_key=<api_key>
 
-    private static final String OPTIMUM_SIZE = "w185";
-    private static final String OPTIMUM_SIZE_92 = "w92";
-    private static final String OPTIMUM_SIZE_154 = "w154";
+
+
+    protected static final String OPTIMUM_SIZE = "w185";
+    protected static final String OPTIMUM_SIZE_92 = "w92";
+    protected static final String OPTIMUM_SIZE_154 = "w154";
 
     /**
      * Builds the URL used to talk to the Movie server [api] server
@@ -65,12 +69,12 @@ public final class NetworkUtils {
         }
         return url;
     }
+
     public static URL buildPosterUrl(String imageLocation) {
         Uri builtUri = Uri.parse(POSTER_BASE_URL_MAIN).buildUpon()
                 .appendEncodedPath(OPTIMUM_SIZE)
                 .appendEncodedPath(imageLocation)
                 .build();
-
         URL urlPoster = null;
         try {
             urlPoster = new URL(builtUri.toString());
@@ -80,9 +84,9 @@ public final class NetworkUtils {
         return urlPoster;
     }
 
-    public static URL buildToOrderPostersUrl(String imageLocation) {
+    public static URL buildToOrderPostersUrl(String orderBy) {
         URL urlPosterOrdered = null;
-        if (imageLocation.equals("popularity")) {
+        if (orderBy.equals("popularity")) {
             Uri builtUri = Uri.parse(POSTER_BASE_URL_MAIN_POPULAR).buildUpon()
                     .appendQueryParameter(PARAM_KEY, KEY_VALUE)
                     .build();

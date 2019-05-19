@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.Bridge">
-        <activity android:name=".app.DetailsActivity"
+        <activity android:name=".ui.DetailsActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".app.MainActivity">
         </activity>

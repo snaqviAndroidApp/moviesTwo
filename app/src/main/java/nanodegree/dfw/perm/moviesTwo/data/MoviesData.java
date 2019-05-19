@@ -1,5 +1,7 @@
 package nanodegree.dfw.perm.moviesTwo.data;
 
+import java.util.ArrayList;
+
 import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
 
 public class MoviesData {
@@ -14,13 +16,21 @@ public class MoviesData {
     private String failure_status;
 
     // added for State-2
+    private ArrayList<String> movie_reviews;
+    private ArrayList<String> movie_id;
+
+    public ArrayList<String> getMovie_reviews() { return movie_reviews; }
+    public void setMovie_reviews(ArrayList movie_reviews) { this.movie_reviews = movie_reviews; }
+
+    public ArrayList<String> getMovie_id() { return movie_id; }
+    public void setMovie_id(ArrayList<String> movie_id) { this.movie_id = movie_id; }
 
     public MoviesData() {
 
     }
 
     public MoviesData(String poster_path, String backDrop_pathC, String original_title, String overview, String release_date, double vote_average,
-                      double popularity, String failure_status) {
+                      double popularity, String failure_status, ArrayList movie_reviews, ArrayList movie_id) {
         this.poster_path = poster_path;
         this.backDrop_path = backDrop_pathC;
         this.original_title = original_title;
@@ -29,7 +39,8 @@ public class MoviesData {
         this.vote_average = vote_average;
         this.popularity = popularity;
         this.failure_status = failure_status;
-
+        this.movie_reviews = movie_reviews;
+        this.movie_id = movie_id;
     }
 
     /**
@@ -53,13 +64,13 @@ public class MoviesData {
     public void setPopularity(double popularity) {
         this.popularity = popularity;
     }
+    public void setFailure_status(String failure_status) { this.failure_status = failure_status; }
 
     /**
      * retrieves the posters available for introduction
      * @return
      *
      */
-
     public String getOriginal_title() {
         return original_title;
     }
@@ -76,7 +87,7 @@ public class MoviesData {
     public String getRelease_date() {
         return release_date;
     }
-    public void setFailure_status(String failure_status) { this.failure_status = failure_status; }
+
     /**
      * fetches the posters available for introduction
      * @return poster_path for Root Views
@@ -85,8 +96,7 @@ public class MoviesData {
     private String getPoster_path() {
         return poster_path;
     }
-    public String getBackDrop_path()
-    { return backDrop_path; }
+    public String getBackDrop_path() { return backDrop_path; }
 
     @Override
     public String toString() {
@@ -99,6 +109,8 @@ public class MoviesData {
                 ", vote_average=" + vote_average +
                 ", popularity=" + popularity +
                 ", failure_status='" + failure_status + '\'' +
+                ", movie_id=" + movie_id +
+                ", movie_reviews='" + movie_reviews + '\'' +
                 '}';
     }
 
@@ -109,5 +121,4 @@ public class MoviesData {
     public String getbackDropImage_bulitPath() {
         return NetworkUtils.buildPosterUrl(getBackDrop_path()).toString();
     }
-
 }

@@ -31,9 +31,12 @@ import java.util.concurrent.ScheduledFuture;
 import nanodegree.dfw.perm.moviesTwo.R;
 import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
 import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.ui.DetailsActivity;
 import nanodegree.dfw.perm.moviesTwo.ui.MovieAdapter;
 import nanodegree.dfw.perm.moviesTwo.utilities.MovieJsonUtils;
 import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
+import nanodegree.dfw.perm.moviesTwo.utilities.PhaseTwoJsonUtils;
+import nanodegree.dfw.perm.moviesTwo.utilities.PhaseTwoNetworkUtils;
 
 import static java.util.Objects.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -85,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));
         }
     }
-
     public void setDataClicked(MoviesData dataClicked) {
        final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
         detailIntent.putExtra("movieDetails", new DetailsData(
@@ -94,7 +96,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 dataClicked.getOverview(),
                 dataClicked.getVote_average(),
                 dataClicked.getPopularity(),
-                dataClicked.getRelease_date())
+                dataClicked.getRelease_date(),
+//                null,
+                dataClicked.getMovie_id(),
+                dataClicked.getMovie_reviews()
+                )
         );
         startActivity(detailIntent);
     }
@@ -105,8 +111,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     public class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
-        HashMap<Integer, MoviesData> parsedJsonMovieData;
-        String jsonMovieResponse;
+        HashMap<Integer, MoviesData> parsedJMovieData;
+        ArrayList<String> parsedJMovieReviews;
+        String jsonMovieResponse,
+                rawTrailers,
+                rawReviews;
 
         @Override
         protected void onPreExecute() {
@@ -117,17 +126,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         synchronized protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
             moviesFromServer = new ArrayList<>();
             moviesInputListToOrder = new ArrayList<>();
+            parsedJMovieReviews = new ArrayList<>();
             if (strings.length == 0) {
                     return null;
             }
             String moviesToOrder = strings[0];
-            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){                       // populaer or rated movies data - parsing
-                parsedJsonMovieData = null;
-                jsonMovieResponse = null;
-                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);               // build URL
+            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){     // populaer or rated movies data - parsing
+
+                jsonMovieResponse = null;parsedJMovieData = null;
+                rawReviews = null;
+
+                rawTrailers = null;
+
+                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);    // build URL
                 try {
                     jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-                    moviesInputListToOrder = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse);
+                    moviesInputListToOrder = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse, null, null);
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.printf("error occured: %s", e.getStackTrace().toString());
@@ -136,20 +150,42 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return moviesInputListToOrder;
             }
             else {
-                Integer movieNumber = Integer.valueOf(strings[0]);
-                for (int i = 0; i < movieNumber; i++) {
-                    parsedJsonMovieData = null;
+                Integer totalMovies = Integer.valueOf(strings[0]);
+                for (int i = 0; i < totalMovies; i++) {
+                    parsedJMovieData = null;
                     jsonMovieResponse = null;
-                    URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));        //  https://api.themoviedb.org/3/movie/550?api_key=KEY
+                    URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));    // https://api.themoviedb.org/3/movie/550?api_key=KEY
+                    URL movieRequestReviewsUrl = PhaseTwoNetworkUtils.buildSecLevelDetailedUrl(String.valueOf((MOVIES_OFFSET + i)), "reviews");
+                    URL movieRequestTrailerUrl = PhaseTwoNetworkUtils.buildSecLevelDetailedUrl(String.valueOf((MOVIES_OFFSET + i)), "videos");
                     try {
                         jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-                        parsedJsonMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse);
+
+                        // MovieApp Two Implementation
+                            rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);   // getting Reviews from server
+                            rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);   // getting Trailers id from server
+
+                            ArrayList<String> movieReviewExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawReviews, "reviews");
+                            ArrayList<String> movieTrailerExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawTrailers, "videos");
+
+                            if((movieReviewExt.size() != 0) && (movieTrailerExt.size() != 0)) {                     // both Review & Trailer as
+                                parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse, movieReviewExt,
+                                        movieTrailerExt);    //sending 1st value
+
+                            } else if((movieReviewExt.size() == 0) && (movieTrailerExt.size() != 0)) {
+                                parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
+                                        null, movieTrailerExt);        //sending 1st value
+
+                            }else  {
+                                parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
+                                        movieReviewExt, null);        //sending 1st value
+                            }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.printf("error occured: %s", e.getStackTrace().toString());
                         if (e.getClass().getName() == "java.io.FileNotFoundException") {
-                            parsedJsonMovieData = new HashMap<>();
-                            parsedJsonMovieData.put((MOVIES_OFFSET + i),
+                            parsedJMovieData = new HashMap<>();
+                            parsedJMovieData.put((MOVIES_OFFSET + i),
                                     new MoviesData(
                                             null,
                                             null,
@@ -158,15 +194,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                                             null,
                                             0.0,
                                             0.0,
-                                            "The resource you requested could not be found"
+                                            "The resource you requested could not be found",
+                                            null,
+                                            null
                                     )
                             );
-                            moviesFromServer.add(parsedJsonMovieData);
+                            moviesFromServer.add(parsedJMovieData);
                             continue;
                         }
                         return null;
                     }
-                    moviesFromServer.add(parsedJsonMovieData);
+                    moviesFromServer.add(parsedJMovieData);
                 }
                 return moviesFromServer;
             }

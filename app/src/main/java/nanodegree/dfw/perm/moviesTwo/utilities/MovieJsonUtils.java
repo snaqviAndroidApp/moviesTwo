@@ -12,8 +12,7 @@ import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
 
 public class MovieJsonUtils {
     private static final String MOVIE_ID = "id";
-    private static final String MOVIE_STATUS_CODE = "status_code";
-    private static final String MOVIE_STATUS_CODE_VALUE = "status_message";
+
     private static final String MOVIE_POSTER_PATH = "poster_path";
     private static final String MOVIE_POSTER_THUMB = "backdrop_path";
     private static final String MOVIE_ORIGINAL_TITLE = "original_title";
@@ -23,7 +22,9 @@ public class MovieJsonUtils {
     private static final String MOVIE_RATING = "vote_average";
     private static final String MOVIE_POPULARITY = "popularity";
 
-    public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
+//    public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
+    public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr,
+                                                                        ArrayList<String> _reviewsIn, ArrayList<String> _trailerId)
             throws JSONException {
         HashMap movieData = new HashMap();
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
@@ -36,12 +37,17 @@ public class MovieJsonUtils {
                         forecastJson.getString(MOVIE_RELEASE_DATE),
                         forecastJson.getDouble(MOVIE_RATING),
                         forecastJson.getDouble(MOVIE_POPULARITY),
-                        null)
+                        null,
+                        _reviewsIn,
+                        _trailerId
+                        )
         );
         return movieData;
     }
 
-    public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
+//    public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
+    public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr,
+                                                                                   ArrayList<String> _reviewsIn, ArrayList _traildIdIn)
             throws JSONException {
         ArrayList<HashMap<Integer, MoviesData>> moviesListToOrder = new ArrayList<>();
         JSONArray inMoviesJson_UnOrdered = new JSONObject(toOrderJsonStr).getJSONArray("results");
@@ -56,7 +62,10 @@ public class MovieJsonUtils {
                             inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getString(MOVIE_RELEASE_DATE),
                             inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getDouble(MOVIE_RATING),
                             inMoviesJson_UnOrdered.getJSONObject(toOderMovies).getDouble(MOVIE_POPULARITY),
-                            null)
+                            null,
+                            _reviewsIn,
+                            _traildIdIn
+                    )
             );
             moviesListToOrder.add(orderedMovieData);
         }

@@ -4,4 +4,12 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorAccentAmended">#F7F3F4</color>
+    <color name="colorCustom">#11F1EEEE</color>
+
+    <style name="playbutton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:color">@color/colorAccent</item>
+        <item name="android:src">@drawable/ic_btn_24dp</item>
+        <item name="android:alpha">0.85</item>
+    </style>
 </resources>
