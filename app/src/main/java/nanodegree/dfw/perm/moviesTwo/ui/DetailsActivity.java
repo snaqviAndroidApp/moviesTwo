@@ -38,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     // MovieApp Stage Two
     private String secReviews;
-    private FavoritemoviesDb fav_mDb;              // Temporary purpose
+    private FavoritemoviesDb fav_mDb;                                       // Temporary purpose
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,29 +92,9 @@ public class DetailsActivity extends AppCompatActivity {
                 .into(thumbNail);
     }
 
-
     public void onFavImageViewClicked(View view) {                          // set movie as favorite
         imageView.setImageResource(R.drawable.ic_favorite_full_24dp);
         imageView.setEnabled(false);
     }
-
-//    public void onPlayClicked(View view) {                                  // trailer_index[0] successfully displaying the trailer
-//        if(trailers != null){
-//            String _movieIdExt = trailers.get(0);
-//
-//            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + _movieIdExt));
-//            Intent webIntent = new Intent(Intent.ACTION_VIEW,
-//                    Uri.parse("http://www.youtube.com/watch?v=" + _movieIdExt));
-//            try {
-//                this.startActivity(appIntent);
-//            } catch (ActivityNotFoundException ex) {
-//                this.startActivity(webIntent);
-//            }
-//        }else {
-//            Snackbar.make(Objects.requireNonNull(getCurrentFocus())
-//                    , MessageFormat.format("Sorry, no Trailers available ",null)
-//                    , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-//        }
-//    }
 
 }
