@@ -22,7 +22,6 @@ public class MovieJsonUtils {
     private static final String MOVIE_RATING = "vote_average";
     private static final String MOVIE_POPULARITY = "popularity";
 
-//    public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr)
     public static HashMap<Integer, MoviesData> getMoviesStringsFromJson(Context context, String forecastJsonStr,
                                                                         ArrayList<String> _reviewsIn, ArrayList<String> _trailerId)
             throws JSONException {
@@ -45,7 +44,6 @@ public class MovieJsonUtils {
         return movieData;
     }
 
-//    public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr)
     public static ArrayList<HashMap<Integer, MoviesData>> getOrderingMoviesStrings(Context context, String toOrderJsonStr,
                                                                                    ArrayList<String> _reviewsIn, ArrayList _traildIdIn)
             throws JSONException {

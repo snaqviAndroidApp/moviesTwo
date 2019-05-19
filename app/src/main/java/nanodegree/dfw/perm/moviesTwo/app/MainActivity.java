@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public static final String POPULARITY = "popularity";
     public static final String RATING = "vote_average";
 
-    private ArrayList<MoviesData> moviesToView;                               // Final - POJO
-    private ArrayList<MoviesData> moviesSortedByRating;                       // To Order
+    private ArrayList<MoviesData> moviesToView;
+    private ArrayList<MoviesData> moviesSortedByRating;
 
     private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
     private ArrayList<HashMap<Integer, MoviesData>> moviesInputListToOrder;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     return null;
             }
             String moviesToOrder = strings[0];
-            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){     // populaer or rated movies data - parsing
+            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){
 
                 jsonMovieResponse = null;parsedJMovieData = null;
                 rawReviews = null;
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 for (int i = 0; i < totalMovies; i++) {
                     parsedJMovieData = null;
                     jsonMovieResponse = null;
-                    URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));    // https://api.themoviedb.org/3/movie/550?api_key=KEY
+                    URL movieRequestUrl = NetworkUtils.buildUrl(String.valueOf((MOVIES_OFFSET + i)));
                     URL movieRequestReviewsUrl = PhaseTwoNetworkUtils.buildSecLevelDetailedUrl(String.valueOf((MOVIES_OFFSET + i)), "reviews");
                     URL movieRequestTrailerUrl = PhaseTwoNetworkUtils.buildSecLevelDetailedUrl(String.valueOf((MOVIES_OFFSET + i)), "videos");
                     try {
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         {
             case R.id.sortby_rate:
                 {
-                    new MovieTasking().execute("vote_average");                                                                     //    TODO_ (1)Popular:
+                    new MovieTasking().execute("vote_average");                                                                //    TODO_ (1)Popular:
                     try {
                         Thread.sleep(320);
                     } catch (InterruptedException e) {
@@ -275,13 +275,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         moviesSortedByRating = new ArrayList<>();
         if(sortBy.equals("popularity")){
-            unOrderedMovies.sort((o1, o2) -> {                                      // Comparator
+            unOrderedMovies.sort((o1, o2) -> {
                 Double k1 = o1.get(o1.keySet().toArray()[0]).getPopularity();
                 Double k2 = o2.get(o2.keySet().toArray()[0]).getPopularity();
                 return k1.compareTo(k2);
             });
         }else {
-            unOrderedMovies.sort((o1, o2) -> {                                      // Comparator
+            unOrderedMovies.sort((o1, o2) -> {
                 Double k1 = o1.get(o1.keySet().toArray()[0]).getVote_average();
                 Double k2 = o2.get(o2.keySet().toArray()[0]).getVote_average();
                 return k1.compareTo(k2);

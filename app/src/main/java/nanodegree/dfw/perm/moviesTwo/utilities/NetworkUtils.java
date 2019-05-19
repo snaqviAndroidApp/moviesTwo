@@ -28,8 +28,8 @@ import java.util.Scanner;
  * These utilities will be used to communicate with the Movies servers.
  */
 
-//public final class NetworkUtils {
-public class NetworkUtils {                         // tried to implement OOD
+
+public class NetworkUtils {
 
     protected static final String TAG = NetworkUtils.class.getSimpleName();
     protected final static String PARAM_KEY = "api_key";
@@ -41,8 +41,8 @@ public class NetworkUtils {                         // tried to implement OOD
 
     protected static final String POSTER_BASE_URL_MAIN = "http://image.tmdb.org/t/p";
 
-    protected static final String POSTER_BASE_URL_MAIN_RATED = "http://api.themoviedb.org/3/movie/top_rated";         //  http://api.themoviedb.org/3/movie/top_rated?api_key=<api_key>
-    protected static final String POSTER_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";         //  http://api.themoviedb.org/3/movie/popular?api_key=<api_key>
+    protected static final String POSTER_BASE_URL_MAIN_RATED = "http://api.themoviedb.org/3/movie/top_rated";
+    protected static final String POSTER_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";
 
 
 

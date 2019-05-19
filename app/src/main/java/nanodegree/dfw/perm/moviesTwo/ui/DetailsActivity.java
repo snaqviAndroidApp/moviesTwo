@@ -54,12 +54,12 @@ public class DetailsActivity extends AppCompatActivity {
 
         // Room_movies_db population ---
         imageView = findViewById(R.id.fav_imageView);
-        fav_mDb = FavoritemoviesDb.getInstance(getApplicationContext());   // Initialize db
+        fav_mDb = FavoritemoviesDb.getInstance(getApplicationContext());                   // Initialize db
 
         // Room_movies_db population Ends ---
 
         Intent intent = getIntent();
-        DetailsData inDet = intent.getParcelableExtra("movieDetails");          // UnMarshalling
+        DetailsData inDet = intent.getParcelableExtra("movieDetails");              // UnMarshalling
 
         // Movie Stage2, review and trailer data from MainActivity
         reviews = new ArrayList<>();
@@ -98,22 +98,23 @@ public class DetailsActivity extends AppCompatActivity {
         imageView.setEnabled(false);
     }
 
-    public void onPlayClicked(View view) {                                  // trailer_index[0] successfully displaying the trailer
-        if(trailers != null){
-            String _movieIdExt = trailers.get(0);
+//    public void onPlayClicked(View view) {                                  // trailer_index[0] successfully displaying the trailer
+//        if(trailers != null){
+//            String _movieIdExt = trailers.get(0);
+//
+//            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + _movieIdExt));
+//            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+//                    Uri.parse("http://www.youtube.com/watch?v=" + _movieIdExt));
+//            try {
+//                this.startActivity(appIntent);
+//            } catch (ActivityNotFoundException ex) {
+//                this.startActivity(webIntent);
+//            }
+//        }else {
+//            Snackbar.make(Objects.requireNonNull(getCurrentFocus())
+//                    , MessageFormat.format("Sorry, no Trailers available ",null)
+//                    , Snackbar.LENGTH_LONG).setAction("Action", null).show();
+//        }
+//    }
 
-            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + _movieIdExt));
-            Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("http://www.youtube.com/watch?v=" + _movieIdExt));
-            try {
-                this.startActivity(appIntent);
-            } catch (ActivityNotFoundException ex) {
-                this.startActivity(webIntent);
-            }
-        }else {
-            Snackbar.make(Objects.requireNonNull(getCurrentFocus())
-                    , MessageFormat.format("Sorry, no Trailers available ",null)
-                    , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-        }
-    }
 }

@@ -7,8 +7,8 @@ import java.net.URL;
 
 public class PhaseTwoNetworkUtils extends NetworkUtils {
 
-    protected static final String TRAILERS_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";   //  http://api.themoviedb.org/3/movie/_movieId/videos?api_key=<key_value>
-    protected static final String REVIEWS_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";    //  http://api.themoviedb.org/3/movie/_movieId/reviews?api_key=<key_value>
+    protected static final String TRAILERS_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";
+    protected static final String REVIEWS_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";
 
 
     public static URL buildSecLevelDetailedUrl(String _movieId, String extDetailedPhrase) {
