@@ -41,7 +41,8 @@ import nanodegree.dfw.perm.moviesTwo.utilities.PhaseTwoNetworkUtils;
 import static java.util.Objects.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity
+        implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-        new ConnectionUtilities().getConnCheckHanlde();
+        new ConnectionUtilities().getConnCheckHanlde();                     // Checking data-connectivity (internet)
         mRecyclerView.setAdapter(movieAdapter);
     }
 
@@ -88,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));
         }
     }
-    public void setDataClicked(MoviesData dataClicked) {
+
+
+    public void onMovieClickListener(MoviesData dataClicked) {
        final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
         detailIntent.putExtra("movieDetails", new DetailsData(
                 dataClicked.getOriginal_title(),
@@ -97,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 dataClicked.getVote_average(),
                 dataClicked.getPopularity(),
                 dataClicked.getRelease_date(),
-//                null,
                 dataClicked.getMovie_id(),
                 dataClicked.getMovie_reviews()
                 )

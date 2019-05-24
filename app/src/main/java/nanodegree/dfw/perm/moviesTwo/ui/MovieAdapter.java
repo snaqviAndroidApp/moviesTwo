@@ -17,14 +17,15 @@ import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private ArrayList<MoviesData> mMoviesList;
+    private ArrayList<MoviesData> mMoviesClickedList;
 
     final private MovieAdapterOnClickHandler mClickHandler;
+
     private String sorting = null;
     String imageUrl = null;
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnCick Hanlding
-        default void setDataClicked(MoviesData dataClicked) {
+        default void onMovieClickListener(MoviesData dataClicked) {
         }
     }
 
@@ -46,7 +47,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.setDataClicked(mMoviesList.get(adapterPosition));   // Dummy Implementation
+            mClickHandler.onMovieClickListener(mMoviesClickedList.get(adapterPosition));   // Dummy Implementation
         }
     }
 
@@ -63,7 +64,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
-        MoviesData mImagSelected = mMoviesList.get(position);
+        MoviesData mImagSelected = mMoviesClickedList.get(position);
         imageUrl = mImagSelected.getPoster_builtPath();
         Picasso.get()
                 .load(imageUrl)
@@ -77,13 +78,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public int getItemCount() {
-        if (null == mMoviesList) return 0;
-        return mMoviesList.size();
+        if (null == mMoviesClickedList) return 0;
+        return mMoviesClickedList.size();
     }
 
-//    public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd){
     public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd, String ifSorting){
-        mMoviesList = movieDataRcvd;
+        mMoviesClickedList = movieDataRcvd;
         sorting = ifSorting;
         notifyDataSetChanged();
     }

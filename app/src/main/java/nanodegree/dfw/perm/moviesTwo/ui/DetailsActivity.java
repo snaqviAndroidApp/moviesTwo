@@ -1,30 +1,30 @@
 //package nanodegree.dfw.perm.moviesTwo.app;
 package nanodegree.dfw.perm.moviesTwo.ui;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Objects;
 
 import nanodegree.dfw.perm.moviesTwo.R;
 import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
 import nanodegree.dfw.perm.moviesTwo.data.db.FavoritemoviesDb;
 
-public class DetailsActivity extends AppCompatActivity {
+import static android.widget.LinearLayout.HORIZONTAL;
+
+//public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity
+        implements TrailersAdapter.TrailersAdapterOnClickHandler {
 
     private String rcvd_backdrop_path;
     TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity, vReview;
@@ -39,6 +39,9 @@ public class DetailsActivity extends AppCompatActivity {
     // MovieApp Stage Two
     private String secReviews;
     private FavoritemoviesDb fav_mDb;                                       // Temporary purpose
+
+    private RecyclerView mTrailerRecyclerView, mReviewsRecyclerView;
+    private TrailersAdapter trailersAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class DetailsActivity extends AppCompatActivity {
         fav_mDb = FavoritemoviesDb.getInstance(getApplicationContext());                   // Initialize db
 
         // Room_movies_db population Ends ---
+
 
         Intent intent = getIntent();
         DetailsData inDet = intent.getParcelableExtra("movieDetails");              // UnMarshalling
@@ -90,6 +94,15 @@ public class DetailsActivity extends AppCompatActivity {
                 .placeholder(R.color.colorAccentAmended)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(thumbNail);
+
+
+        mTrailerRecyclerView = findViewById(R.id.recyclerview_trailer);      // recyclerViews deployment Here
+        LinearLayoutManager posterslayoutManager = new LinearLayoutManager(this,  HORIZONTAL,false);
+        mTrailerRecyclerView.setLayoutManager(posterslayoutManager);
+        mTrailerRecyclerView.setHasFixedSize(true);
+        trailersAdapter = new TrailersAdapter( this);
+        trailersAdapter.setValidTrailers(trailers);
+        mTrailerRecyclerView.setAdapter(trailersAdapter);                   // recyclerViews deployment Ends Here
     }
 
     public void onFavImageViewClicked(View view) {                          // set movie as favorite
