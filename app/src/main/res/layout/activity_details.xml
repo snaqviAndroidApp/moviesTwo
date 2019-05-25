@@ -12,7 +12,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:layout_marginStart="5dp">
 
@@ -22,134 +22,127 @@
 
             <TextView
                 android:id="@+id/tvOriginalTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="325dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/title_hint"
                 android:padding="5dp"
                 android:textAllCaps="true"
                 android:textColor="#E7053A"
-                android:textSize="19sp"
+                android:textSize="24sp"
                 android:textStyle="bold|italic"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.272"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/tvThumbnail"
-                android:layout_width="157dp"
-                android:layout_height="168dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="89dp"
+                android:layout_height="103dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="5dp"
                 android:contentDescription="@string/mainposter_thumbnail"
                 android:padding="@dimen/tv_padding"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvOriginalTitle" />
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_width="254dp"
+                android:layout_height="194dp"
+                android:layout_marginTop="4dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvThumbnail"
+                app:layout_constraintTop_toBottomOf="@+id/tvOriginalTitle">
+
+                <TextView
+                    android:layout_width="84dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="140dp"
+                    android:text="@string/reviewsString"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerview_review"
+                        android:layout_width="201dp"
+                        android:layout_height="145dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/trailerTextLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvThumbnail">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-                <LinearLayout
-                    android:id="@+id/reviewTextLayout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/trailerTextLayout">
+                    android:text="@string/trailerString"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                    <TextView
-                        android:layout_width="84dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/reviewsString"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recyclerview_review"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginEnd="2dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0" />
-
-                    </android.support.constraint.ConstraintLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/trailerTextLayout"
+                <android.support.v4.widget.NestedScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="4dp"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                    <TextView
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerview_trailer"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/trailerString"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.015"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
 
-                    <android.support.v4.widget.NestedScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recyclerview_trailer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="2dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.015"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                    </android.support.v4.widget.NestedScrollView>
-
-                </LinearLayout>
-
+                </android.support.v4.widget.NestedScrollView>
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayoutOverview"
-                android:layout_width="match_parent"
+                android:layout_width="360dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.482"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0.0"
                 app:layout_goneMarginTop="5dp">
 
                 <TextView
@@ -162,35 +155,31 @@
 
                 <TextView
                     android:id="@+id/tvOverview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:hint="@string/overviewhint"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.512"
                     app:layout_constraintStart_toStartOf="parent" />
             </LinearLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/linearLayout"
-                android:layout_width="158dp"
-                android:layout_height="146dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.571"
-                app:layout_constraintStart_toEndOf="@+id/tvThumbnail"
-                app:layout_constraintTop_toBottomOf="@+id/tvOriginalTitle"
-                app:layout_constraintVertical_bias="0.123">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trailerTextLayout">
 
                 <TextView
                     android:id="@+id/tvRatingTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/movie_rating"
                     android:textStyle="bold"
@@ -201,25 +190,26 @@
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="52dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.35"
                     android:hint="@string/zerop_z"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.89"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/tvRatingTitle"
                     app:layout_constraintTop_toBottomOf="@+id/tvPopularity"
-                    app:layout_constraintVertical_bias="0.023" />
+                    app:layout_constraintVertical_bias="0.06" />
 
                 <TextView
                     android:id="@+id/tvPopularityTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/movie_popularity"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -230,65 +220,38 @@
                     android:layout_width="43dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/zerop_z"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.771"
+                    app:layout_constraintHorizontal_bias="0.053"
                     app:layout_constraintStart_toEndOf="@+id/tvPopularityTitle"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvDateTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/release_date"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvRatingTitle"
-                    app:layout_constraintVertical_bias="1.0" />
 
                 <TextView
                     android:id="@+id/tvReleaseData"
                     android:layout_width="81dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_weight="0.35"
                     android:hint="@string/release_dateHint"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.4"
-                    app:layout_constraintStart_toEndOf="@+id/tvDateTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/fav_imageView"
-                    app:layout_constraintVertical_bias="0.636" />
+                    app:layout_constraintTop_toBottomOf="@+id/fav_imageView" />
 
                 <ImageView
                     android:id="@+id/fav_imageView"
-                    android:layout_width="55dp"
-                    android:layout_height="41dp"
-                    android:layout_marginStart="6dp"
+                    android:layout_width="72dp"
+                    android:layout_height="45dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:onClick="onFavImageViewClicked"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvRating"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
-
             </android.support.constraint.ConstraintLayout>
-
-            <!--app:srcCompat="@android:drawable/ic_" />-->
 
         </android.support.constraint.ConstraintLayout>
 

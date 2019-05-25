@@ -137,9 +137,7 @@ public class MainActivity extends AppCompatActivity
 
                 jsonMovieResponse = null;parsedJMovieData = null;
                 rawReviews = null;
-
                 rawTrailers = null;
-
                 URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);    // build URL
                 try {
                     jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
@@ -163,12 +161,10 @@ public class MainActivity extends AppCompatActivity
                         jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
 
                         // MovieApp Two Implementation
-                            rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);   // getting Reviews from server
-                            rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);   // getting Trailers id from server
-
+                            rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);   // getting Reviews, Trailers from server
+                            rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);
                             ArrayList<String> movieReviewExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawReviews, "reviews");
                             ArrayList<String> movieTrailerExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawTrailers, "videos");
-
                             if((movieReviewExt.size() != 0) && (movieTrailerExt.size() != 0)) {                     // both Review & Trailer as
                                 parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse, movieReviewExt,
                                         movieTrailerExt);    //sending 1st value
@@ -310,7 +306,8 @@ public class MainActivity extends AppCompatActivity
                                 while (threadCounts < 1 ){
                                     getPrimaryMoviesList(true);
                                 threadCounts++;
-                                schPeriod = 15;
+//                                schPeriod = 15;           working
+                                schPeriod = 10;
                                     Log.d("thaeadC", "Try counter: " + threadCounts);       // check repetition
                                 }
                             }
@@ -333,7 +330,7 @@ public class MainActivity extends AppCompatActivity
                         return true;
                     } catch (IOException e) {
                         Snackbar.make(Objects.requireNonNull(getCurrentFocus())
-                                , MessageFormat.format("Ah, no internet connetion", null)
+                                , MessageFormat.format("Ah, no internet connetion", (Object) null)
                                 , Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repetition
                         threadCounts = 0;
