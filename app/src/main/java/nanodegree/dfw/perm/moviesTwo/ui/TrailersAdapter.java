@@ -47,7 +47,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Poster
         public void onClick(View v) {
             int trailerAdapterPosition = getAdapterPosition();
             mTrailerClickHandler.onTrailerItemClickListener(mTrailerClickedList.get(trailerAdapterPosition));
-            Log.d("_tClick", "trailer:" + trailerAdapterPosition + "clicked");
+            Log.d("_tClick", "trailer: " + trailerAdapterPosition + " clicked");
         }
     }
 

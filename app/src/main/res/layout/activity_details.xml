@@ -20,21 +20,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/fav_imageViewtop"
+                android:layout_width="64dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:onClick="onFavImageViewClicked"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/tvOriginalTitle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+
+
             <TextView
                 android:id="@+id/tvOriginalTitle"
-                android:layout_width="325dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="24dp"
+                android:layout_width="257dp"
+                android:layout_height="37dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
                 android:hint="@string/title_hint"
                 android:padding="5dp"
                 android:textAllCaps="true"
                 android:textColor="#E7053A"
                 android:textSize="24sp"
                 android:textStyle="bold|italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.272"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,14 +98,14 @@
 
             <LinearLayout
                 android:id="@+id/trailerTextLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="366dp"
+                android:layout_height="349dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.059"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
@@ -112,8 +124,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <WebView
+                    android:id="@+id/wv_trailers"
+                    android:layout_width="match_parent"
+                    android:layout_height="242dp"
+                    android:padding="5dp" />
+
 
             </LinearLayout>
 
@@ -152,13 +172,12 @@
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="85dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="324dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/trailerTextLayout">
 
@@ -167,8 +186,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="2dp"
                     android:text="@string/movie_rating"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -178,26 +197,26 @@
                     android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="52dp"
+                    android:layout_marginStart="44dp"
                     android:layout_marginTop="2dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="0.35"
                     android:hint="@string/zerop_z"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintEnd_toStartOf="@+id/tvReleaseData"
+                    app:layout_constraintHorizontal_bias="0.081"
                     app:layout_constraintStart_toEndOf="@+id/tvRatingTitle"
                     app:layout_constraintTop_toBottomOf="@+id/tvPopularity"
-                    app:layout_constraintVertical_bias="0.06" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/tvPopularityTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="77dp"
+                    android:layout_height="18dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
                     android:text="@string/movie_popularity"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -208,10 +227,8 @@
                     android:layout_width="43dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="44dp"
+                    android:layout_marginTop="12dp"
                     android:hint="@string/zerop_z"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.025"
                     app:layout_constraintStart_toEndOf="@+id/tvPopularityTitle"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -220,24 +237,29 @@
                     android:layout_width="81dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_weight="0.35"
                     android:hint="@string/release_dateHint"
                     android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/fav_imageView" />
-
-                <ImageView
-                    android:id="@+id/fav_imageView"
-                    android:layout_width="72dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:onClick="onFavImageViewClicked"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/tvPopularity"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+                    app:layout_constraintVertical_bias="0.47" />
+
+                <!--<ImageView-->
+                <!--android:id="@+id/fav_imageView"-->
+                <!--android:layout_width="72dp"-->
+                <!--android:layout_height="45dp"-->
+                <!--android:onClick="onFavImageViewClicked"-->
+                <!--app:srcCompat="@drawable/ic_favorite_border_black_24dp"-->
+                <!--tools:layout_editor_absoluteX="248dp"-->
+                <!--tools:layout_editor_absoluteY="7dp" />-->
 
             </android.support.constraint.ConstraintLayout>
 

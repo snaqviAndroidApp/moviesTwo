@@ -1,26 +1,26 @@
 //package nanodegree.dfw.perm.moviesTwo.app;
 package nanodegree.dfw.perm.moviesTwo.ui;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.solver.widgets.ConstraintHorizontalLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
@@ -30,7 +30,6 @@ import nanodegree.dfw.perm.moviesTwo.data.db.FavoritemoviesDb;
 
 import static android.widget.LinearLayout.HORIZONTAL;
 import static android.widget.LinearLayout.VERTICAL;
-import static java.awt.font.TextAttribute.WIDTH;
 
 public class DetailsActivity extends AppCompatActivity
         implements TrailersAdapter.TrailersOnClickHandler {
@@ -39,6 +38,8 @@ public class DetailsActivity extends AppCompatActivity
     TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity, vReview;
     ImageView thumbNail;
     ImageView imageView;
+    private WebChromeClient.CustomViewCallback mCustomViewCallback;
+
 
     // MovieApp Stage Two
     LinearLayoutManager postersLayoutManager, reviewsLayoutManager;
@@ -50,11 +51,17 @@ public class DetailsActivity extends AppCompatActivity
     ArrayList<String> reviews = null;
     ArrayList<String> trailers = null;
     String checkIfValidTitle = null, checkIfVaildOverview = null;                   // Check if Trailer is available
+    WebView wtrailersView;
+    String strTrailer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        wtrailersView = (WebView) findViewById(R.id.wv_trailers);
+
+        wtrailersView.setWebViewClient(new inWebView());
 
         vTitle = findViewById(R.id.tvOriginalTitle);
         vOverview = findViewById(R.id.tvOverview);
@@ -64,7 +71,7 @@ public class DetailsActivity extends AppCompatActivity
         vReleaseDate = findViewById(R.id.tvReleaseData);
 
         // Room_movies_db population ---
-        imageView = findViewById(R.id.fav_imageView);
+        imageView = findViewById(R.id.fav_imageViewtop);
         fav_mDb = FavoritemoviesDb.getInstance(getApplicationContext());           // Initialize db
 
         // Room_movies_db population Ends ---
@@ -139,15 +146,23 @@ public class DetailsActivity extends AppCompatActivity
                     , Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
+
     public void onTrailerItemClickListener(String trailerId) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + trailerId));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + trailerId));
-                    try {
-                        this.startActivity(appIntent);
-                    } catch (ActivityNotFoundException ex) {
-                        this.startActivity(webIntent);
-                    }
+        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/" +
+                "embed/"+trailerId+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        WebSettings webSettings = wtrailersView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        wtrailersView.loadData(frameVideo, "text/html", "utf-8");
+
+    }
+
+    private class inWebView extends WebViewClient {
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            view.loadUrl(strTrailer);
+            return true;
+        }
     }
 
     public void onFavImageViewClicked(View view) {                          // set movie as favorite

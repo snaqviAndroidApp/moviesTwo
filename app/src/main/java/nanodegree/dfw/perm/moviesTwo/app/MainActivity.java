@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         if (null != moviesFromServer) moviesFromServer.clear();
         if (null != moviesInputListToOrder) moviesInputListToOrder.clear();
         if (null != moviesSortedByRating) moviesSortedByRating.clear();
-        schPeriod = 8;
+        schPeriod = 5;
         threadCounts = 0;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
