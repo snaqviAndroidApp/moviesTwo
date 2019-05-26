@@ -18,14 +18,12 @@ import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private ArrayList<MoviesData> mMoviesClickedList;
-
     final private MovieAdapterOnClickHandler mClickHandler;
-
     private String sorting = null;
     String imageUrl = null;
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnCick Hanlding
-        default void onMovieClickListener(MoviesData dataClicked) {
+        default void onMovieItemClickListener(MoviesData dataClicked) {
         }
     }
 
@@ -47,7 +45,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.onMovieClickListener(mMoviesClickedList.get(adapterPosition));   // Dummy Implementation
+            mClickHandler.onMovieItemClickListener(mMoviesClickedList.get(adapterPosition));   // Dummy Implementation
         }
     }
 

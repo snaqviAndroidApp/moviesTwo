@@ -19,6 +19,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
     private static final String TAG = TrailersAdapter.class.getSimpleName();
     private ArrayList<String> mReviewsClicked;
     private int colorNum = 0;
+
     public class ReviewsViewHolder extends RecyclerView.ViewHolder {
         TextView t_ReviewText;
 
@@ -37,6 +38,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsV
                 colorNum++;
         }
     }
+
     public ReviewsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.movie_reviews_item;

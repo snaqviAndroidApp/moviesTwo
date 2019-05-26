@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,38 +18,39 @@ import nanodegree.dfw.perm.moviesTwo.R;
 public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.PostersViewHolder> {
 
     private static final String TAG = TrailersAdapter.class.getSimpleName();
-
     private ArrayList<String> mTrailerClickedList;
-    final private TrailersAdapterOnClickHandler mTrailerClickHandler;
+    final private TrailersOnClickHandler mTrailerClickHandler;
 
-    public interface TrailersAdapterOnClickHandler {
-        default void onTrailerClickListener(String trailerClicked) {
+    public interface TrailersOnClickHandler {
+        default void onTrailerItemClickListener(String trailerClicked) {
         }
     }
 
-    public TrailersAdapter(TrailersAdapterOnClickHandler trailerClickHandler) {
+    public TrailersAdapter(TrailersOnClickHandler trailerClickHandler) {
         mTrailerClickHandler = trailerClickHandler;
     }
 
     public class PostersViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
-        ImageButton b_TrailerPlayer;
+//        ImageButton b_TrailerPlayer;
+        ImageView b_TrailerPlayer;
 
         public PostersViewHolder(@NonNull View itemView) {
             super(itemView);
             b_TrailerPlayer = itemView.findViewById(R.id.playButton);
+//            b_TrailerPlayer.getResources().getDrawable(R.drawable.ic_btn_24dp, null).setBounds(0, 0, 20, 10);
             itemView.setOnClickListener(this);
         }
 
         public void bind(int position) {
-            b_TrailerPlayer.getResources().getDrawable(R.drawable.ic_btn_24dp, null).setBounds(0, 0, 20, 10);
+//            String trailerId
         }
 
         @Override
         public void onClick(View v) {
             int trailerAdapterPosition = getAdapterPosition();
-            mTrailerClickHandler.onTrailerClickListener(mTrailerClickedList.get(trailerAdapterPosition));
-            Log.d("_tClick", "trailer clicked");
+            mTrailerClickHandler.onTrailerItemClickListener(mTrailerClickedList.get(trailerAdapterPosition));
+            Log.d("_tClick", "trailer:" + trailerAdapterPosition + "clicked");
         }
     }
 

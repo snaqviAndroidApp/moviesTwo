@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<MoviesData> moviesToView;
     private ArrayList<MoviesData> moviesSortedByRating;
-
     private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
     private ArrayList<HashMap<Integer, MoviesData>> moviesInputListToOrder;
 
@@ -67,16 +66,16 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(null != moviesFromServer) moviesFromServer.clear();
-        if(null != moviesInputListToOrder) moviesInputListToOrder.clear();
-        if(null != moviesSortedByRating) moviesSortedByRating.clear();
-        schPeriod = 15;
+        if (null != moviesFromServer) moviesFromServer.clear();
+        if (null != moviesInputListToOrder) moviesInputListToOrder.clear();
+        if (null != moviesSortedByRating) moviesSortedByRating.clear();
+        schPeriod = 8;
         threadCounts = 0;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
         GridLayoutManager gridlayoutManager
-                = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
+                = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
@@ -85,23 +84,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getPrimaryMoviesList(boolean nwConn) {
-        if(nwConn) {
+        if (nwConn) {
             new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));
         }
     }
 
-
-    public void onMovieClickListener(MoviesData dataClicked) {
-       final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
+    public void onMovieItemClickListener(MoviesData dataClicked) {
+        final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
         detailIntent.putExtra("movieDetails", new DetailsData(
-                dataClicked.getOriginal_title(),
-                dataClicked.getbackDropImage_bulitPath(),
-                dataClicked.getOverview(),
-                dataClicked.getVote_average(),
-                dataClicked.getPopularity(),
-                dataClicked.getRelease_date(),
-                dataClicked.getMovie_id(),
-                dataClicked.getMovie_reviews()
+                        dataClicked.getOriginal_title(),
+                        dataClicked.getbackDropImage_bulitPath(),
+                        dataClicked.getOverview(),
+                        dataClicked.getVote_average(),
+                        dataClicked.getPopularity(),
+                        dataClicked.getRelease_date(),
+                        dataClicked.getMovie_id(),
+                        dataClicked.getMovie_reviews()
                 )
         );
         startActivity(detailIntent);
@@ -130,12 +128,12 @@ public class MainActivity extends AppCompatActivity
             moviesInputListToOrder = new ArrayList<>();
             parsedJMovieReviews = new ArrayList<>();
             if (strings.length == 0) {
-                    return null;
+                return null;
             }
             String moviesToOrder = strings[0];
-            if(moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)){
-
-                jsonMovieResponse = null;parsedJMovieData = null;
+            if (moviesToOrder.equals(POPULARITY) || moviesToOrder.equals(RATING)) {
+                jsonMovieResponse = null;
+                parsedJMovieData = null;
                 rawReviews = null;
                 rawTrailers = null;
                 URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);    // build URL
@@ -148,8 +146,7 @@ public class MainActivity extends AppCompatActivity
                     return null;
                 }
                 return moviesInputListToOrder;
-            }
-            else {
+            } else {
                 Integer totalMovies = Integer.valueOf(strings[0]);
                 for (int i = 0; i < totalMovies; i++) {
                     parsedJMovieData = null;
@@ -161,22 +158,22 @@ public class MainActivity extends AppCompatActivity
                         jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
 
                         // MovieApp Two Implementation
-                            rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);   // getting Reviews, Trailers from server
-                            rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);
-                            ArrayList<String> movieReviewExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawReviews, "reviews");
-                            ArrayList<String> movieTrailerExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawTrailers, "videos");
-                            if((movieReviewExt.size() != 0) && (movieTrailerExt.size() != 0)) {                     // both Review & Trailer as
-                                parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse, movieReviewExt,
-                                        movieTrailerExt);    //sending 1st value
+                        rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);   // getting Reviews, Trailers from server
+                        rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);
+                        ArrayList<String> movieReviewExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawReviews, "reviews");
+                        ArrayList<String> movieTrailerExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawTrailers, "videos");
+                        if ((movieReviewExt.size() != 0) && (movieTrailerExt.size() != 0)) {                     // both Review & Trailer as
+                            parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse, movieReviewExt,
+                                    movieTrailerExt);    //sending 1st value
 
-                            } else if((movieReviewExt.size() == 0) && (movieTrailerExt.size() != 0)) {
-                                parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
-                                        null, movieTrailerExt);        //sending 1st value
+                        } else if ((movieReviewExt.size() == 0) && (movieTrailerExt.size() != 0)) {
+                            parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
+                                    null, movieTrailerExt);        //sending 1st value
 
-                            }else  {
-                                parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
-                                        movieReviewExt, null);        //sending 1st value
-                            }
+                        } else {
+                            parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
+                                    movieReviewExt, null);        //sending 1st value
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -192,7 +189,7 @@ public class MainActivity extends AppCompatActivity
                                             null,
                                             0.0,
                                             0.0,
-                                            "The resource you requested could not be found",
+                                            "The resource requested could not be found",
                                             null,
                                             null
                                     )
@@ -208,7 +205,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-    @Override
+        @Override
         protected void onPostExecute(ArrayList<HashMap<Integer, MoviesData>> movieDataListIn) {
             mLoadIndicator.setVisibility(View.INVISIBLE);
             menuItemEnabled = true;
@@ -231,7 +228,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mainMInflator = getMenuInflater();
         mainMInflator.inflate(R.menu.main_menu, menu);
-        if(menuItemEnabled){
+        if (menuItemEnabled) {
             menu.findItem(R.id.sortby_popularity).setEnabled(true);
             menu.findItem(R.id.sortby_rate).setEnabled(true);
         }
@@ -240,30 +237,27 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.sortby_rate:
-                {
-                    new MovieTasking().execute("vote_average");                                                                //    TODO_ (1)Popular:
-                    try {
-                        Thread.sleep(320);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "vote_average"), RATING);
-                    break;
+        switch (item.getItemId()) {
+            case R.id.sortby_rate: {
+                new MovieTasking().execute("vote_average");                                                                //    TODO_ (1)Popular:
+                try {
+                    Thread.sleep(320);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            case R.id.sortby_popularity:
-                {
-                    new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
-                    try {
-                        Thread.sleep(320);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "popularity"), POPULARITY);
-                    break;
+                movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "vote_average"), RATING);
+                break;
+            }
+            case R.id.sortby_popularity: {
+                new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
+                try {
+                    Thread.sleep(320);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "popularity"), POPULARITY);
+                break;
+            }
         }
         mRecyclerView.setAdapter(movieAdapter);
         return super.onOptionsItemSelected(item);
@@ -272,13 +266,13 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
 
         moviesSortedByRating = new ArrayList<>();
-        if(sortBy.equals("popularity")){
+        if (sortBy.equals("popularity")) {
             unOrderedMovies.sort((o1, o2) -> {
                 Double k1 = o1.get(o1.keySet().toArray()[0]).getPopularity();
                 Double k2 = o2.get(o2.keySet().toArray()[0]).getPopularity();
                 return k1.compareTo(k2);
             });
-        }else {
+        } else {
             unOrderedMovies.sort((o1, o2) -> {
                 Double k1 = o1.get(o1.keySet().toArray()[0]).getVote_average();
                 Double k2 = o2.get(o2.keySet().toArray()[0]).getVote_average();
@@ -296,47 +290,47 @@ public class MainActivity extends AppCompatActivity
     public final class ConnectionUtilities {
         private ScheduledExecutorService scheduler =
                 Executors.newScheduledThreadPool(1);
-        final Runnable internNetCheck  = new Runnable() {
+        final Runnable internNetCheck = new Runnable() {
             @Override
             public void run() {
-                    if(checkConnection()){
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                while (threadCounts < 1 ){
-                                    getPrimaryMoviesList(true);
+                if (checkConnection()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (threadCounts < 1) {
+                                getPrimaryMoviesList(true);
                                 threadCounts++;
-//                                schPeriod = 15;           working
-                                schPeriod = 10;
-                                    Log.d("thaeadC", "Try counter: " + threadCounts);       // check repetition
-                                }
+//                                schPeriod = 10;
+                                Log.d("thaeadC", "Try counter: " + threadCounts);       // check repetition
                             }
-                        });
-                    }
+                        }
+                    });
                 }
-            };
+            }
+        };
         final ScheduledFuture<?> connCheckHanlde =
                 scheduler.scheduleAtFixedRate(internNetCheck, 5, schPeriod, SECONDS);
+
         public ScheduledFuture<?> getConnCheckHanlde() {
             return connCheckHanlde;
         }
         private boolean checkConnection() {
             try {
-                        int timeoutMs = 1500;
-                        Socket sock = new Socket();
-                        SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
-                        sock.connect(sockAddr, timeoutMs);
-                        sock.close();
-                        return true;
-                    } catch (IOException e) {
-                        Snackbar.make(Objects.requireNonNull(getCurrentFocus())
-                                , MessageFormat.format("Ah, no internet connetion", (Object) null)
-                                , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                        Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repetition
-                        threadCounts = 0;
-                        return false;
-                    }
-                }
+                int timeoutMs = 1500;
+                Socket sock = new Socket();
+                SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
+                sock.connect(sockAddr, timeoutMs);
+                sock.close();
+                return true;
+            } catch (IOException e) {
+                Snackbar.make(Objects.requireNonNull(getCurrentFocus())
+                        , MessageFormat.format("Ah, no internet connetion", (Object) null)
+                        , Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repetition
+                threadCounts = 0;
+                return false;
+            }
         }
+    }
 }
 
