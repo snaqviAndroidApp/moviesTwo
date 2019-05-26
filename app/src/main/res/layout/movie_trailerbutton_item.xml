@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/playButton"
             style="@style/playbutton"
-            android:layout_width="140dp"
+            android:layout_width="110dp"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp" />
 

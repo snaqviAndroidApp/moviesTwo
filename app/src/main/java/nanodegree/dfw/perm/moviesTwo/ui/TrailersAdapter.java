@@ -38,13 +38,10 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Poster
         public PostersViewHolder(@NonNull View itemView) {
             super(itemView);
             b_TrailerPlayer = itemView.findViewById(R.id.playButton);
-//            b_TrailerPlayer.getResources().getDrawable(R.drawable.ic_btn_24dp, null).setBounds(0, 0, 20, 10);
             itemView.setOnClickListener(this);
         }
 
-        public void bind(int position) {
-//            String trailerId
-        }
+        public void bind(int position) { }
 
         @Override
         public void onClick(View v) {

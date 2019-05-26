@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
                         dataClicked.getVote_average(),
                         dataClicked.getPopularity(),
                         dataClicked.getRelease_date(),
-                        dataClicked.getMovie_id(),
+                        dataClicked.getTrailer_id(),
                         dataClicked.getMovie_reviews()
                 )
         );

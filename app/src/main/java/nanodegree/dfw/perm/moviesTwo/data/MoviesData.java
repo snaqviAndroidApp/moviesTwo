@@ -17,20 +17,20 @@ public class MoviesData {
 
     // added for State-2
     private ArrayList<String> movie_reviews;
-    private ArrayList<String> movie_id;
+    private ArrayList<String> trailer_id;
 
     public ArrayList<String> getMovie_reviews() { return movie_reviews; }
     public void setMovie_reviews(ArrayList movie_reviews) { this.movie_reviews = movie_reviews; }
 
-    public ArrayList<String> getMovie_id() { return movie_id; }
-    public void setMovie_id(ArrayList<String> movie_id) { this.movie_id = movie_id; }
+    public ArrayList<String> getTrailer_id() { return trailer_id; }
+    public void setTrailer_id(ArrayList<String> trailer_id) { this.trailer_id = trailer_id; }
 
     public MoviesData() {
 
     }
 
     public MoviesData(String poster_path, String backDrop_pathC, String original_title, String overview, String release_date, double vote_average,
-                      double popularity, String failure_status, ArrayList movie_reviews, ArrayList movie_id) {
+                      double popularity, String failure_status, ArrayList movie_reviews, ArrayList trailer_id) {
         this.poster_path = poster_path;
         this.backDrop_path = backDrop_pathC;
         this.original_title = original_title;
@@ -40,7 +40,7 @@ public class MoviesData {
         this.popularity = popularity;
         this.failure_status = failure_status;
         this.movie_reviews = movie_reviews;
-        this.movie_id = movie_id;
+        this.trailer_id = trailer_id;
     }
 
     /**
@@ -109,7 +109,7 @@ public class MoviesData {
                 ", vote_average=" + vote_average +
                 ", popularity=" + popularity +
                 ", failure_status='" + failure_status + '\'' +
-                ", movie_id=" + movie_id +
+                ", trailer_id=" + trailer_id +
                 ", movie_reviews='" + movie_reviews + '\'' +
                 '}';
     }

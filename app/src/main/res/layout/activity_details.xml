@@ -52,7 +52,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="254dp"
-                android:layout_height="194dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
                         android:id="@+id/recyclerview_review"
                         android:layout_width="201dp"
                         android:layout_height="145dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_margin="2dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -86,41 +86,34 @@
 
             <LinearLayout
                 android:id="@+id/trailerTextLayout"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.059"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                 <TextView
+                    android:id="@+id/trailerstitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:text="@string/trailerString"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <!--<android.support.v4.widget.NestedScrollView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent">-->
-
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerview_trailer"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="65dp"
                     android:layout_marginTop="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <!--</android.support.v4.widget.NestedScrollView>-->
 
             </LinearLayout>
 
@@ -128,18 +121,15 @@
                 android:id="@+id/linearLayoutOverview"
                 android:layout_width="360dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                app:layout_constraintVertical_bias="0.0"
                 app:layout_goneMarginTop="5dp">
 
                 <TextView
@@ -152,7 +142,7 @@
 
                 <TextView
                     android:id="@+id/tvOverview"
-                    android:layout_width="320dp"
+                    android:layout_width="310dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:hint="@string/overviewhint"
@@ -165,9 +155,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/trailerTextLayout">
 
@@ -177,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:text="@string/movie_rating"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="44dp"
                     android:text="@string/movie_popularity"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -217,10 +208,10 @@
                     android:layout_width="43dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="44dp"
                     android:hint="@string/zerop_z"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.053"
+                    app:layout_constraintHorizontal_bias="0.025"
                     app:layout_constraintStart_toEndOf="@+id/tvPopularityTitle"
                     app:layout_constraintTop_toTopOf="parent" />
 

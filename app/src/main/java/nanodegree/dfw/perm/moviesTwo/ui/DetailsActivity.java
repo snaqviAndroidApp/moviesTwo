@@ -4,12 +4,16 @@ package nanodegree.dfw.perm.moviesTwo.ui;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.solver.widgets.ConstraintHorizontalLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity
 
     // MovieApp Stage Two
     LinearLayoutManager postersLayoutManager, reviewsLayoutManager;
+
     private FavoritemoviesDb fav_mDb;                                               // Temporary purpose
     private RecyclerView mTrailerRecyclerView, mReviewsRecyclerView;
     private TrailersAdapter trailersAdapter;
@@ -98,13 +103,6 @@ public class DetailsActivity extends AppCompatActivity
         mTrailerRecyclerView = findViewById(R.id.recyclerview_trailer);      // Trailers recyclerViews deployment Here
         mTrailerRecyclerView.setHasFixedSize(true);
         postersLayoutManager = new LinearLayoutManager(this, HORIZONTAL, false);
-        if(trailers.size() != 0){
-            postersLayoutManager.chooseSize(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT  / trailers.size(),
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-        }
-
         mTrailerRecyclerView.setLayoutManager(postersLayoutManager);
         mReviewsRecyclerView = findViewById(R.id.recyclerview_review);      // Reviews - recyclerViews deployment Here
         mReviewsRecyclerView.setHasFixedSize(true);
@@ -141,7 +139,6 @@ public class DetailsActivity extends AppCompatActivity
                     , Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
-
     public void onTrailerItemClickListener(String trailerId) {
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + trailerId));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -152,7 +149,6 @@ public class DetailsActivity extends AppCompatActivity
                         this.startActivity(webIntent);
                     }
     }
-
 
     public void onFavImageViewClicked(View view) {                          // set movie as favorite
         imageView.setImageResource(R.drawable.ic_favorite_full_24dp);
