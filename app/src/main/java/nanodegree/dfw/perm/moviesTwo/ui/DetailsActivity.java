@@ -1,4 +1,4 @@
-//package nanodegree.dfw.perm.moviesTwo.app;
+
 package nanodegree.dfw.perm.moviesTwo.ui;
 
 import android.content.Intent;
@@ -18,9 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
@@ -38,8 +35,6 @@ public class DetailsActivity extends AppCompatActivity
     TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity, vReview;
     ImageView thumbNail;
     ImageView imageView;
-    private WebChromeClient.CustomViewCallback mCustomViewCallback;
-
 
     // MovieApp Stage Two
     LinearLayoutManager postersLayoutManager, reviewsLayoutManager;
@@ -59,10 +54,8 @@ public class DetailsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        wtrailersView = (WebView) findViewById(R.id.wv_trailers);
-
+        wtrailersView = findViewById(R.id.wv_trailers);
         wtrailersView.setWebViewClient(new inWebView());
-
         vTitle = findViewById(R.id.tvOriginalTitle);
         vOverview = findViewById(R.id.tvOverview);
         thumbNail = findViewById(R.id.tvThumbnail);
@@ -78,10 +71,8 @@ public class DetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         DetailsData inDet = intent.getParcelableExtra("movieDetails");       // UnMarshalling
-
         reviews = new ArrayList<>();                                               // Movie Stage2, review and trailer data from MainActivity
         trailers = new ArrayList<>();
-
         checkIfValidTitle = inDet.getDetailAct_original_title();
         checkIfVaildOverview = inDet.getDetailAct_overview();
         if (checkIfValidTitle == null && checkIfVaildOverview == null) {        // A sneak -peak into if Trailer-n-Overview would be available
@@ -153,11 +144,9 @@ public class DetailsActivity extends AppCompatActivity
         WebSettings webSettings = wtrailersView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         wtrailersView.loadData(frameVideo, "text/html", "utf-8");
-
     }
 
     private class inWebView extends WebViewClient {
-
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             view.loadUrl(strTrailer);
