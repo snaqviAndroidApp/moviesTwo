@@ -22,11 +22,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private String sorting = null;
     String imageUrl = null;
 
-    public interface MovieAdapterOnClickHandler {                                       //Interface for OnCick Hanlding
+    public interface MovieAdapterOnClickHandler {                                       //Interface for OnClick Handling
         default void onMovieItemClickListener(MoviesData dataClicked) {
         }
     }
-
     public MovieAdapter(MovieAdapterOnClickHandler movieAdapterOnClickHandler){
         mClickHandler = movieAdapterOnClickHandler;
     }
@@ -45,7 +44,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.onMovieItemClickListener(mMoviesClickedList.get(adapterPosition));   // Dummy Implementation
+            mClickHandler.onMovieItemClickListener(mMoviesClickedList.get(adapterPosition));
         }
     }
 

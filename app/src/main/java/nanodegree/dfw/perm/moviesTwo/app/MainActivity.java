@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         if (null != moviesFromServer) moviesFromServer.clear();
         if (null != moviesInputListToOrder) moviesInputListToOrder.clear();
         if (null != moviesSortedByRating) moviesSortedByRating.clear();
-        schPeriod = 5;
+        schPeriod = 8;
         threadCounts = 0;
 
         mRecyclerView = findViewById(R.id.recyclerview_movie);
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
         movieAdapter = new MovieAdapter(this);
-        new ConnectionUtilities().getConnCheckHanlde();                     // Checking data-connectivity (internet)
+        new ConnectionUtilities().getConnCheckHanlde();                     // Checking Connectivity (internet)
         mRecyclerView.setAdapter(movieAdapter);
     }
 
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity
                 parsedJMovieData = null;
                 rawReviews = null;
                 rawTrailers = null;
-                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);    // build URL
+                URL movieRequestUrl = NetworkUtils.buildToOrderPostersUrl(moviesToOrder);
                 try {
                     jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
                     moviesInputListToOrder = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse, null, null);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity
                         jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
 
                         // MovieApp Two Implementation
-                        rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);   // getting Reviews, Trailers from server
+                        rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);
                         rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);
                         ArrayList<String> movieReviewExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawReviews, "reviews");
                         ArrayList<String> movieTrailerExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawTrailers, "videos");
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sortby_rate: {
-                new MovieTasking().execute("vote_average");                                                                //    TODO_ (1)Popular:
+                new MovieTasking().execute("vote_average");
                 try {
                     Thread.sleep(320);
                 } catch (InterruptedException e) {
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.sortby_popularity: {
-                new MovieTasking().execute("popularity");                                                                   //    TODO_ (2) Top rated:
+                new MovieTasking().execute("popularity");
                 try {
                     Thread.sleep(320);
                 } catch (InterruptedException e) {
@@ -300,8 +300,6 @@ public class MainActivity extends AppCompatActivity
                             while (threadCounts < 1) {
                                 getPrimaryMoviesList(true);
                                 threadCounts++;
-//                                schPeriod = 10;
-                                Log.d("thaeadC", "Try counter: " + threadCounts);       // check repetition
                             }
                         }
                     });
@@ -326,7 +324,6 @@ public class MainActivity extends AppCompatActivity
                 Snackbar.make(Objects.requireNonNull(getCurrentFocus())
                         , MessageFormat.format("Ah, no internet connetion", (Object) null)
                         , Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Log.e("thaeadC", "IOException counter: " + threadCounts);           // check repetition
                 threadCounts = 0;
                 return false;
             }

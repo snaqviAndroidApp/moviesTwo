@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -32,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity
         implements TrailersAdapter.TrailersOnClickHandler {
 
     private String rcvd_backdrop_path;
-    TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity, vReview;
+    TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity;
     ImageView thumbNail;
     ImageView imageView;
 
@@ -70,14 +69,14 @@ public class DetailsActivity extends AppCompatActivity
         // Room_movies_db population Ends ---
 
         Intent intent = getIntent();
-        DetailsData inDet = intent.getParcelableExtra("movieDetails");       // UnMarshalling
-        reviews = new ArrayList<>();                                               // Movie Stage2, review and trailer data from MainActivity
+        DetailsData inDet = intent.getParcelableExtra("movieDetails");
+        reviews = new ArrayList<>();                                             // Movie Stage2, review and trailer data from MainActivity
         trailers = new ArrayList<>();
         checkIfValidTitle = inDet.getDetailAct_original_title();
         checkIfVaildOverview = inDet.getDetailAct_overview();
         if (checkIfValidTitle == null && checkIfVaildOverview == null) {        // A sneak -peak into if Trailer-n-Overview would be available
             trailers = null;
-            reviews = null;                                    // assuming the all-time non-null validity of the two fields, (not ideal app)
+            reviews = null;                                                     // assuming the all-time non-null validity of the two fields, (not ideal app)
         } else {
             reviews = inDet.getDetailAct_reviewsInput();
             trailers = inDet.getDetailAct_trailer();
@@ -138,9 +137,9 @@ public class DetailsActivity extends AppCompatActivity
         }
     }
 
-    public void onTrailerItemClickListener(String trailerId) {
-        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/" +
-                "embed/"+trailerId+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+    public void onTrailerItemClickListener(String trailerId, int adapterItem) {
+        adapterItem++;
+        String frameVideo = "<html><body> Trailer no." +adapterItem+ " <br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/"+trailerId+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
         WebSettings webSettings = wtrailersView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         wtrailersView.loadData(frameVideo, "text/html", "utf-8");
