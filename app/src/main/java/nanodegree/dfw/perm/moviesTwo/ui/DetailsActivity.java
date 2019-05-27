@@ -38,7 +38,11 @@ public class DetailsActivity extends AppCompatActivity
     // MovieApp Stage Two
     LinearLayoutManager postersLayoutManager, reviewsLayoutManager;
 
-    private FavoritemoviesDb fav_mDb;                                               // Temporary purpose
+    private FavoritemoviesDb fav_mDb;                                               // Favorite - movies Storage, Room-db
+    ArrayList<String> fav_movies;
+                                                                                    // Favorite - movies Storage, Room-db ENDS Here
+
+
     private RecyclerView mTrailerRecyclerView, mReviewsRecyclerView;
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;

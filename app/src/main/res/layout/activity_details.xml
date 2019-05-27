@@ -79,17 +79,16 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="239dp"
+                    android:layout_height="144dp">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerview_review"
                         android:layout_width="201dp"
                         android:layout_height="145dp"
-                        android:layout_margin="2dp"
+                        android:layout_marginStart="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
 

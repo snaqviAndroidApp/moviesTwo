@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface DbFavoriteMoviesDao {
 
-    @Query("SELECT * FROM DbFavorite ORDER BY bfavorite_room")
+    @Query("SELECT * FROM favorites ORDER BY bfavorite_room")
     List<MovieEntries> loadAllDbFavorite();
 
     @Insert
