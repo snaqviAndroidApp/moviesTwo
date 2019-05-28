@@ -120,9 +120,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
         _listMoviesRetrieved = new ArrayList<>();
-
         _listMoviesRetrieved.addAll (mdB_MainActivity.dbFavoriteMoviesDao() .loadAllDbFavorite());
         if(_listMoviesRetrieved != null){
             Toast.makeText(this, "Favorites Movies: " + _listMoviesRetrieved.toString(),
