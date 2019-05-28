@@ -8,7 +8,7 @@
     <color name="colorReview">#1E9990</color>
     <color name="colorReview2">#9F06A8</color>
     <color name="colorReview3">#E1F2F7</color>
-    <color name="colorReview4">#DFE2EE</color>
+    <color name="colorReview4">#EDEEF3</color>
 
     <style name="playbutton">
         <item name="android:layout_width">wrap_content</item>

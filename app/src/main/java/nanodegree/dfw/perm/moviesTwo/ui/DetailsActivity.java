@@ -2,10 +2,10 @@
 package nanodegree.dfw.perm.moviesTwo.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,83 +15,83 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import static android.widget.LinearLayout.VERTICAL;
 import com.squareup.picasso.Picasso;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import nanodegree.dfw.perm.moviesTwo.R;
 import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
-import nanodegree.dfw.perm.moviesTwo.data.db.FavoritemoviesDb;
+import nanodegree.dfw.perm.moviesTwo.data.db.MoviesDatabase;
+import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
 
-import static android.widget.LinearLayout.HORIZONTAL;
-import static android.widget.LinearLayout.VERTICAL;
 
 public class DetailsActivity extends AppCompatActivity
         implements TrailersAdapter.TrailersOnClickHandler {
 
-    private String rcvd_backdrop_path;
-    TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity;
-    ImageView thumbNail;
-    ImageView imageView;
 
-    // MovieApp Stage Two
-    LinearLayoutManager postersLayoutManager, reviewsLayoutManager;
+    // Extra for the movie Id to be received in the Intent                           MovieApp Stage Two
+    public static final String EXTRA_MOVIE_ID = "extrafMovieId";
+    // Extra for the movie Id to be received after rotation
+    public static final String INSTANCE_MOVIE_ID = "instancefMovieId";
 
-    private FavoritemoviesDb fav_mDb;                                               // Favorite - movies Storage, Room-db
-    ArrayList<String> fav_movies;
-                                                                                    // Favorite - movies Storage, Room-db ENDS Here
+    LinearLayoutManager reviewsLayoutManager;
+    GridLayoutManager gPostersLayoutManager;
 
+    /** Favorite - movies Storage, Room-Database    **/
+        private MoviesDatabase fav_mDb;
+        ArrayList<String> fav_movies;
+
+    // Favorite - movies Storage, Room-db ENDS Here
 
     private RecyclerView mTrailerRecyclerView, mReviewsRecyclerView;
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;
     ArrayList<String> reviews = null;
     ArrayList<String> trailers = null;
-    String checkIfValidTitle = null, checkIfVaildOverview = null;                   // Check if Trailer is available
+    String checkIfValidTitle = null, checkIfVaildOverview = null;                   // Trailers-nullability parameters
     WebView wtrailersView;
     String strTrailer;
+
+    private String rcvd_backdrop_path;
+    TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity;
+    private ImageView thumbNail;
+    private ImageView imageView;                                                    // MovieApp Stage Two Ends Here
+
+    private Intent mIntent;
+    private DetailsData inDetetails = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        wtrailersView = findViewById(R.id.wv_trailers);
-        wtrailersView.setWebViewClient(new inWebView());
-        vTitle = findViewById(R.id.tvOriginalTitle);
-        vOverview = findViewById(R.id.tvOverview);
-        thumbNail = findViewById(R.id.tvThumbnail);
-        vVoteAverage = findViewById(R.id.tvRating);
-        vPopularity = findViewById(R.id.tvPopularity);
-        vReleaseDate = findViewById(R.id.tvReleaseData);
-
-        // Room_movies_db population ---
-        imageView = findViewById(R.id.fav_imageViewtop);
-        fav_mDb = FavoritemoviesDb.getInstance(getApplicationContext());           // Initialize db
+        initViews();
+        fav_mDb = MoviesDatabase.getInstance(getApplicationContext());           // Initialize db
 
         // Room_movies_db population Ends ---
 
-        Intent intent = getIntent();
-        DetailsData inDet = intent.getParcelableExtra("movieDetails");
+        mIntent = getIntent();
+        inDetetails = mIntent.getParcelableExtra("movieDetails");
         reviews = new ArrayList<>();                                             // Movie Stage2, review and trailer data from MainActivity
         trailers = new ArrayList<>();
-        checkIfValidTitle = inDet.getDetailAct_original_title();
-        checkIfVaildOverview = inDet.getDetailAct_overview();
+        checkIfValidTitle = inDetetails.getDetailAct_original_title();
+        checkIfVaildOverview = inDetetails.getDetailAct_overview();
         if (checkIfValidTitle == null && checkIfVaildOverview == null) {        // A sneak -peak into if Trailer-n-Overview would be available
             trailers = null;
             reviews = null;                                                     // assuming the all-time non-null validity of the two fields, (not ideal app)
         } else {
-            reviews = inDet.getDetailAct_reviewsInput();
-            trailers = inDet.getDetailAct_trailer();
+            reviews = inDetetails.getDetailAct_reviewsInput();
+            trailers = inDetetails.getDetailAct_trailer();
         }
         vTitle.setText(checkIfValidTitle);
         vOverview.setText(checkIfVaildOverview);
-        rcvd_backdrop_path = inDet.getDetailAct_backdrop_path();
-        vOverview.setText(inDet.getDetailAct_overview());
-        vVoteAverage.setText(String.valueOf(inDet.getDetailAct_vote_average()));
-        vPopularity.setText(String.valueOf(inDet.getDetailAct_popularity()));
-        vReleaseDate.setText(String.format("%s%s", getString(R.string.releaseData_Prepending), inDet.getDetailAct_release_date()));
+        rcvd_backdrop_path = inDetetails.getDetailAct_backdrop_path();
+        vOverview.setText(inDetetails.getDetailAct_overview());
+        vVoteAverage.setText(String.valueOf(inDetetails.getDetailAct_vote_average()));
+        vPopularity.setText(String.valueOf(inDetetails.getDetailAct_popularity()));
+        vReleaseDate.setText(String.format("%s%s", getString(R.string.releaseData_Prepending), inDetetails.getDetailAct_release_date()));
         Picasso.get()
                 .load(rcvd_backdrop_path)
                 .fit()
@@ -101,15 +101,14 @@ public class DetailsActivity extends AppCompatActivity
                 .error(R.drawable.ic_launcher_foreground)
                 .into(thumbNail);
 
-        mTrailerRecyclerView = findViewById(R.id.recyclerview_trailer);      // Trailers recyclerViews deployment Here
-        mTrailerRecyclerView.setHasFixedSize(true);
-        postersLayoutManager = new LinearLayoutManager(this, HORIZONTAL, false);
-        mTrailerRecyclerView.setLayoutManager(postersLayoutManager);
-        mReviewsRecyclerView = findViewById(R.id.recyclerview_review);      // Reviews - recyclerViews deployment Here
-        mReviewsRecyclerView.setHasFixedSize(true);
+        if(trailers != null && (trailers.size() !=0))
+        gPostersLayoutManager = new GridLayoutManager(this,trailers.size(), VERTICAL, false);
+        mTrailerRecyclerView.setLayoutManager(gPostersLayoutManager);
+
         reviewsLayoutManager = new LinearLayoutManager(this, VERTICAL, false);
         mReviewsRecyclerView.setLayoutManager(reviewsLayoutManager);
-        if ((trailers == null) && (reviews == null)) {
+
+        if ((trailers == null || (trailers.size() == 0)) && (reviews == null)) {
             Snackbar.make(getWindow().getDecorView().getRootView()
                     , MessageFormat.format("No Trailers, Reviews Available", (Object) null)
                     , Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -121,7 +120,8 @@ public class DetailsActivity extends AppCompatActivity
             reviewsAdapter.setValidReviews(reviews);
             mReviewsRecyclerView.setAdapter(reviewsAdapter);
         } else if (trailers != null) {
-            mTrailerRecyclerView.setLayoutManager(postersLayoutManager);
+            mTrailerRecyclerView.setLayoutManager(gPostersLayoutManager);
+
             mTrailerRecyclerView.setHasFixedSize(true);
             trailersAdapter = new TrailersAdapter(this);
             trailersAdapter.setValidTrailers(trailers);
@@ -141,6 +141,22 @@ public class DetailsActivity extends AppCompatActivity
         }
     }
 
+    private void initViews() {
+        wtrailersView = findViewById(R.id.wv_trailers);
+        wtrailersView.setWebViewClient(new inWebView());
+        vTitle = findViewById(R.id.tvOriginalTitle);
+        vOverview = findViewById(R.id.tvOverview);
+        thumbNail = findViewById(R.id.tvThumbnail);
+        vVoteAverage = findViewById(R.id.tvRating);
+        vPopularity = findViewById(R.id.tvPopularity);
+        vReleaseDate = findViewById(R.id.tvReleaseData);
+        imageView = findViewById(R.id.fav_imageViewtop);
+        mTrailerRecyclerView = findViewById(R.id.recyclerview_trailer);      // Trailers recyclerViews deployment Here
+        mTrailerRecyclerView.setHasFixedSize(true);
+        mReviewsRecyclerView = findViewById(R.id.recyclerview_review);      // Reviews - recyclerViews deployment Here
+        mReviewsRecyclerView.setHasFixedSize(true);
+    }
+
     public void onTrailerItemClickListener(String trailerId, int adapterItem) {
         adapterItem++;
         String frameVideo = "<html><body> Trailer no." +adapterItem+ " <br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/"+trailerId+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
@@ -158,8 +174,16 @@ public class DetailsActivity extends AppCompatActivity
     }
 
     public void onFavImageViewClicked(View view) {                          // set movie as favorite
+
+        String favMovie = inDetetails.getDetailAct_original_title();
+        Date date = new Date();
+
+        MovieEntries movieEntries = new MovieEntries(favMovie,date);
+        fav_mDb.dbFavoriteMoviesDao().insertFavorites(movieEntries);
+        finish();                                                           // returning to MainActivity
+
+        // Favorite controll button
         imageView.setImageResource(R.drawable.ic_favorite_full_24dp);
         imageView.setEnabled(false);
     }
-
 }

@@ -10,18 +10,19 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 @Dao
-public interface DbFavoriteMoviesDao {
+public interface FavoritesDao {
 
-    @Query("SELECT * FROM favorites ORDER BY bfavorite_room")
+//    @Query("SELECT * FROM favorites ORDER BY bfavorite_room")
+    @Query("SELECT * FROM favorites")
     List<MovieEntries> loadAllDbFavorite();
 
     @Insert
-    void insertDbFavoriteMovies(MovieEntries movieEntries);
+    void insertFavorites(MovieEntries movieEntries);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateDbFavoriteMovies(MovieEntries movieEntries);
+    void updateFavorites(MovieEntries movieEntries);
 
     @Delete
-    void deleteDbFavoriteMovies(MovieEntries movieEntries);
+    void deleteFavorites(MovieEntries movieEntries);
 
 }

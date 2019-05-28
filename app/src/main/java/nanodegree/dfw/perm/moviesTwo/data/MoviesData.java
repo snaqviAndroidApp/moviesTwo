@@ -68,7 +68,8 @@ public class MoviesData {
 
     /**
      * retrieves the posters available for introduction
-     * @return
+     *
+     * @return original_title
      *
      */
     public String getOriginal_title() {

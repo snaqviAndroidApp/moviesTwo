@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,6 +32,8 @@ import java.util.concurrent.ScheduledFuture;
 import nanodegree.dfw.perm.moviesTwo.R;
 import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
 import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
+import nanodegree.dfw.perm.moviesTwo.data.db.MoviesDatabase;
 import nanodegree.dfw.perm.moviesTwo.ui.DetailsActivity;
 import nanodegree.dfw.perm.moviesTwo.ui.MovieAdapter;
 import nanodegree.dfw.perm.moviesTwo.utilities.MovieJsonUtils;
@@ -61,17 +64,26 @@ public class MainActivity extends AppCompatActivity
     private long schPeriod;
     private int threadCounts;
 
+
+    private MoviesDatabase mdB_MainActivity;                                 // MovieApp Stage Two
+    ArrayList<MovieEntries> _listMoviesRetrieved = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        schPeriod = 8;
+        threadCounts = 0;
         if (null != moviesFromServer) moviesFromServer.clear();
         if (null != moviesInputListToOrder) moviesInputListToOrder.clear();
         if (null != moviesSortedByRating) moviesSortedByRating.clear();
-        schPeriod = 8;
-        threadCounts = 0;
+        initView();
 
+        mdB_MainActivity = MoviesDatabase.getInstance(getApplicationContext()); // Movies-Db Initialize
+    }
+
+    private void initView() {
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
         GridLayoutManager gridlayoutManager
@@ -108,7 +120,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-    }
+
+        _listMoviesRetrieved = new ArrayList<>();
+
+        _listMoviesRetrieved.addAll (mdB_MainActivity.dbFavoriteMoviesDao() .loadAllDbFavorite());
+        if(_listMoviesRetrieved != null){
+            Toast.makeText(this, "Favorites Movies: " + _listMoviesRetrieved.toString(),
+                    Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(this, "No Favorite Movies available", Toast.LENGTH_SHORT).show();
+        }
+        }
 
     public class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
         HashMap<Integer, MoviesData> parsedJMovieData;

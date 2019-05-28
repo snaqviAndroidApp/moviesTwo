@@ -13,21 +13,21 @@ public class MovieEntries {
 
     @PrimaryKey(autoGenerate = true)            //set autoGenerate to true
     private int id_room;
-    private boolean bfavorite_room;
-    @ColumnInfo(name = "updatedat")
-    private Date updatedat;
+    private String bfavorite_room;
+    @ColumnInfo(name = "updatedAt")
+    private Date updatedAt;
 
 
     @Ignore
-    public MovieEntries(boolean bfavorite_room, Date updatedat) {
+    public MovieEntries(String bfavorite_room, Date updatedat) {
         this.bfavorite_room = bfavorite_room;
-        this.updatedat = updatedat;
+        this.updatedAt = updatedat;
     }
 
-    public MovieEntries(int id_room, boolean bfavorite_room, Date updatedat) {  // use this to create new table-entry
+    public MovieEntries(int id_room, String bfavorite_room, Date updatedAt) {
         this.id_room = id_room;
         this.bfavorite_room = bfavorite_room;
-        this.updatedat = updatedat;
+        this.updatedAt = updatedAt;
     }
 
     public int getId_room() {
@@ -38,20 +38,19 @@ public class MovieEntries {
         this.id_room = id_room;
     }
 
-    public boolean isBfavorite_room() {
+    public String getBfavorite_room() {
         return bfavorite_room;
     }
 
-    public void setBfavorite_room(boolean bfavorite_room) {
+    public void setBfavorite_room(String bfavorite_room) {
         this.bfavorite_room = bfavorite_room;
     }
 
-    public Date getUpdatedat() {
-        return updatedat;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdatedat(Date updatedat) {
-        this.updatedat = updatedat;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
-
 }
