@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/sortby_rate"
+        android:id="@+id/menuItem_sortby_rate"
         android:title="@string/sort_by_rate"
         android:enabled="false"
         />
     <item
-        android:id="@+id/sortby_popularity"
+        android:id="@+id/menuItem_sortby_popularity"
         android:title="@string/sort_by_popularity"
+        android:enabled="false"
+        />
+    <item
+        android:id="@+id/menuItem_favorites"
+        android:title="@string/favorite_movies"
         android:enabled="false"
         />
 

@@ -22,8 +22,8 @@ public abstract class MoviesDatabase extends RoomDatabase {       // made class 
                 Log.d(LOG_TAG, "creating new DB instance");
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         MoviesDatabase.class, MoviesDatabase.DATABASE_NAME)
-                        // Queries should be done on Separate Thread, it is JUST to validate Room-based-Db
-                        .allowMainThreadQueries()
+//                        .allowMainThreadQueries()                         // Queries should be done on Separate Thread, it is JUST to validate Room-based-Db
+                                                                            // that, then turned-off, after test showed a pass (that db is functioning)
                         .build();
             }
         }

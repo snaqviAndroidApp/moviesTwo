@@ -1,11 +1,11 @@
-package nanodegree.dfw.perm.moviesTwo.data;
+package nanodegree.dfw.perm.moviesTwo.data.handler;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public final class DetailsData implements Parcelable{
+public final class DetailsDataHandler implements Parcelable{
     private String detailAct_original_title;
     private String detailAct_backdrop_path;
     private String detailAct_overview;
@@ -16,8 +16,8 @@ public final class DetailsData implements Parcelable{
     //    MovieStageTwo -----------
     private ArrayList<String> detailAct_trailer ;
     private ArrayList<String> detailAct_reviewsInput;
-    public DetailsData(String detailAct_original_title, String detailAct_backdrop_path, String detailAct_overview,
-                       double detailAct_vote_average, double detailAct_popularity, String detailAct_release_date, ArrayList detailAct_trailer
+    public DetailsDataHandler(String detailAct_original_title, String detailAct_backdrop_path, String detailAct_overview,
+                              double detailAct_vote_average, double detailAct_popularity, String detailAct_release_date, ArrayList detailAct_trailer
     , ArrayList detailAct_reviewsInput) {
         this.detailAct_original_title = detailAct_original_title;
         this.detailAct_backdrop_path = detailAct_backdrop_path;
@@ -29,7 +29,7 @@ public final class DetailsData implements Parcelable{
         this.detailAct_reviewsInput = detailAct_reviewsInput;
     }
 
-    protected DetailsData(Parcel in) {
+    protected DetailsDataHandler(Parcel in) {
         detailAct_original_title = in.readString();
         detailAct_backdrop_path = in.readString();
         detailAct_overview = in.readString();
@@ -40,15 +40,15 @@ public final class DetailsData implements Parcelable{
         detailAct_reviewsInput = in.createStringArrayList();
     }
 
-    public static final Creator<DetailsData> CREATOR = new Creator<DetailsData>() {
+    public static final Creator<DetailsDataHandler> CREATOR = new Creator<DetailsDataHandler>() {
         @Override
-        public DetailsData createFromParcel(Parcel in) {
-            return new DetailsData(in);
+        public DetailsDataHandler createFromParcel(Parcel in) {
+            return new DetailsDataHandler(in);
         }
 
         @Override
-        public DetailsData[] newArray(int size) {
-            return new DetailsData[size];
+        public DetailsDataHandler[] newArray(int size) {
+            return new DetailsDataHandler[size];
         }
     };
 

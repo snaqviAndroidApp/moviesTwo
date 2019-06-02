@@ -8,22 +8,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import nanodegree.dfw.perm.moviesTwo.R;
-import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
+import nanodegree.dfw.perm.moviesTwo.data.handler.PrimaryMoviesDataHandler;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private ArrayList<MoviesData> mMoviesClickedList;
+    private ArrayList<PrimaryMoviesDataHandler> mMoviesClickedList;
+    private ArrayList<String> mMovieFavReceived;
     final private MovieAdapterOnClickHandler mClickHandler;
+    int adapterPosition = 0;
     private String sorting = null;
     String imageUrl = null;
 
+    Context context;
+
+
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnClick Handling
-        default void onMovieItemClickListener(MoviesData dataClicked) {
+        default void onMovieItemClickListener(PrimaryMoviesDataHandler dataClicked) {
         }
     }
     public MovieAdapter(MovieAdapterOnClickHandler movieAdapterOnClickHandler){
@@ -43,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
+            adapterPosition = getAdapterPosition();
             mClickHandler.onMovieItemClickListener(mMoviesClickedList.get(adapterPosition));
         }
     }
@@ -61,16 +68,55 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
-        MoviesData mImagSelected = mMoviesClickedList.get(position);
-        imageUrl = mImagSelected.getPoster_builtPath();
-        Picasso.get()
+
+        if(sorting != "fav"){
+            PrimaryMoviesDataHandler mImagSelected = mMoviesClickedList.get(position);
+            imageUrl = mImagSelected.getPoster_builtPath();
+        }else {
+            imageUrl = mMovieFavReceived.get(position);
+        }
+
+        Picasso.get()                                     // Success-implementation
                 .load(imageUrl)
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
                 .rotate(0)
                 .centerCrop(5)
-                .placeholder(null)
+                .placeholder(R.drawable.ic_download_icon)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(movieViewHolder.mMovieImageView);
+
+
+//        Picasso.get()
+//                .load(imageUrl)
+//                .networkPolicy(NetworkPolicy.OFFLINE)
+//                .into(movieViewHolder.mMovieImageView, new Callback() {
+//            @Override
+//            public void onSuccess() {
+//
+//            }
+//            @Override
+//            public void onError(Exception e) {
+//                // Try again online if cache failed
+//                Picasso.get()
+//                        .load(imageUrl)
+//                        .fit()
+//                        .rotate(0)
+//                        .centerCrop(5)
+////                        .placeholder(R.drawable.ic_launcher_foreground)
+//                        .placeholder(R.drawable.ic_download_icon)
+//                        .error(R.drawable.ic_launcher_foreground)
+//                        .into(movieViewHolder.mMovieImageView);
+//            }
+//        });
+
+//        Glide.with(movieViewHolder.itemView.getContext())
+//                .load(imageUrl)
+//                .placeholder(null)
+//                .error(R.drawable.ic_launcher_foreground)
+//                .override(65,72)
+//                .into(movieViewHolder.mMovieImageView);
+
     }
 
     @Override
@@ -79,9 +125,24 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return mMoviesClickedList.size();
     }
 
-    public void setMoviePosters(ArrayList<MoviesData> movieDataRcvd, String ifSorting){
+    public void setMoviePosters(ArrayList<PrimaryMoviesDataHandler> movieDataRcvd, String ifSorting){
         mMoviesClickedList = movieDataRcvd;
         sorting = ifSorting;
         notifyDataSetChanged();
     }
+
+//    public void setMoviePosters(String  _strMovie, String ifSorting){
+//        mMovieFavReceived = _strMovie;
+//        sorting = ifSorting;
+//        notifyDataSetChanged();
+//    }
+
+    public void setMovieFavPosters(ArrayList<String> favList, String ifSorting) {
+
+        mMovieFavReceived = favList;
+        sorting = ifSorting;
+        notifyDataSetChanged();
+
+    }
+
 }

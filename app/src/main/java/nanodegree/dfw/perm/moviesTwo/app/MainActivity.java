@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,8 +29,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
 import nanodegree.dfw.perm.moviesTwo.R;
-import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
-import nanodegree.dfw.perm.moviesTwo.data.MoviesData;
+import nanodegree.dfw.perm.moviesTwo.data.background.AppExecutors;
+import nanodegree.dfw.perm.moviesTwo.data.handler.DetailsDataHandler;
+import nanodegree.dfw.perm.moviesTwo.data.handler.PrimaryMoviesDataHandler;
 import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
 import nanodegree.dfw.perm.moviesTwo.data.db.MoviesDatabase;
 import nanodegree.dfw.perm.moviesTwo.ui.DetailsActivity;
@@ -52,10 +52,8 @@ public class MainActivity extends AppCompatActivity
     public static final String POPULARITY = "popularity";
     public static final String RATING = "vote_average";
 
-    private ArrayList<MoviesData> moviesToView;
-    private ArrayList<MoviesData> moviesSortedByRating;
-    private ArrayList<HashMap<Integer, MoviesData>> moviesFromServer;
-    private ArrayList<HashMap<Integer, MoviesData>> moviesInputListToOrder;
+    private ArrayList<PrimaryMoviesDataHandler> moviesToView, moviesSortedByRating;
+    private ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> moviesFromServer, moviesInputListToOrder;
 
     boolean menuItemEnabled = false;
     private RecyclerView mRecyclerView;
@@ -63,8 +61,6 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadIndicator;
     private long schPeriod;
     private int threadCounts;
-
-
     private MoviesDatabase mdB_MainActivity;                                 // MovieApp Stage Two
     ArrayList<MovieEntries> _listMoviesRetrieved = null;
 
@@ -72,17 +68,18 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        _initialize();
+        initView();
+    }
 
+    private void _initialize() {
         schPeriod = 8;
         threadCounts = 0;
         if (null != moviesFromServer) moviesFromServer.clear();
         if (null != moviesInputListToOrder) moviesInputListToOrder.clear();
         if (null != moviesSortedByRating) moviesSortedByRating.clear();
-        initView();
-
         mdB_MainActivity = MoviesDatabase.getInstance(getApplicationContext()); // Movies-Db Initialize
     }
-
     private void initView() {
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
@@ -101,9 +98,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void onMovieItemClickListener(MoviesData dataClicked) {
+    public void onMovieItemClickListener(PrimaryMoviesDataHandler dataClicked) {
         final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
-        detailIntent.putExtra("movieDetails", new DetailsData(
+        detailIntent.putExtra("movieDetails", new DetailsDataHandler(
                         dataClicked.getOriginal_title(),
                         dataClicked.getbackDropImage_bulitPath(),
                         dataClicked.getOverview(),
@@ -117,21 +114,8 @@ public class MainActivity extends AppCompatActivity
         startActivity(detailIntent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        _listMoviesRetrieved = new ArrayList<>();
-        _listMoviesRetrieved.addAll (mdB_MainActivity.dbFavoriteMoviesDao() .loadAllDbFavorite());
-        if(_listMoviesRetrieved != null){
-            Toast.makeText(this, "Favorites Movies: " + _listMoviesRetrieved.toString(),
-                    Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(this, "No Favorite Movies available", Toast.LENGTH_SHORT).show();
-        }
-        }
-
-    public class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, MoviesData>>> {
-        HashMap<Integer, MoviesData> parsedJMovieData;
+    public class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>>> {
+        HashMap<Integer, PrimaryMoviesDataHandler> parsedJMovieData;
         ArrayList<String> parsedJMovieReviews;
         String jsonMovieResponse,
                 rawTrailers,
@@ -143,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        synchronized protected ArrayList<HashMap<Integer, MoviesData>> doInBackground(String... strings) {
+        synchronized protected ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> doInBackground(String... strings) {
             moviesFromServer = new ArrayList<>();
             moviesInputListToOrder = new ArrayList<>();
             parsedJMovieReviews = new ArrayList<>();
@@ -162,7 +146,7 @@ public class MainActivity extends AppCompatActivity
                     moviesInputListToOrder = MovieJsonUtils.getOrderingMoviesStrings(MainActivity.this, jsonMovieResponse, null, null);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.printf("error occured: %s", e.getStackTrace().toString());
+                    System.out.printf("error occurred: %s", e.getStackTrace().toString());
                     return null;
                 }
                 return moviesInputListToOrder;
@@ -175,33 +159,28 @@ public class MainActivity extends AppCompatActivity
                     URL movieRequestReviewsUrl = PhaseTwoNetworkUtils.buildSecLevelDetailedUrl(String.valueOf((MOVIES_OFFSET + i)), "reviews");
                     URL movieRequestTrailerUrl = PhaseTwoNetworkUtils.buildSecLevelDetailedUrl(String.valueOf((MOVIES_OFFSET + i)), "videos");
                     try {
-                        jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-
-                        // MovieApp Two Implementation
+                        jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);                                                           // MovieApp Two Implementation
                         rawReviews = NetworkUtils.getResponseFromHttpUrl(movieRequestReviewsUrl);
                         rawTrailers = NetworkUtils.getResponseFromHttpUrl(movieRequestTrailerUrl);
                         ArrayList<String> movieReviewExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawReviews, "reviews");
                         ArrayList<String> movieTrailerExt = PhaseTwoJsonUtils.getPhaseTwoJsonData(MainActivity.this, rawTrailers, "videos");
-                        if ((movieReviewExt.size() != 0) && (movieTrailerExt.size() != 0)) {                     // both Review & Trailer as
+                        if ((movieReviewExt.size() != 0) && (movieTrailerExt.size() != 0)) {                                                                // both Review & Trailer as
                             parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse, movieReviewExt,
-                                    movieTrailerExt);    //sending 1st value
-
+                                    movieTrailerExt);                                                                                                       //sending 1st value
                         } else if ((movieReviewExt.size() == 0) && (movieTrailerExt.size() != 0)) {
                             parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
-                                    null, movieTrailerExt);        //sending 1st value
-
+                                    null, movieTrailerExt);
                         } else {
                             parsedJMovieData = MovieJsonUtils.getMoviesStringsFromJson(MainActivity.this, jsonMovieResponse,
-                                    movieReviewExt, null);        //sending 1st value
+                                    movieReviewExt, null);
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.out.printf("error occured: %s", e.getStackTrace().toString());
                         if (e.getClass().getName() == "java.io.FileNotFoundException") {
                             parsedJMovieData = new HashMap<>();
                             parsedJMovieData.put((MOVIES_OFFSET + i),
-                                    new MoviesData(
+                                    new PrimaryMoviesDataHandler(
                                             null,
                                             null,
                                             null,
@@ -226,7 +205,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(ArrayList<HashMap<Integer, MoviesData>> movieDataListIn) {
+        protected void onPostExecute(ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> movieDataListIn) {
             mLoadIndicator.setVisibility(View.INVISIBLE);
             menuItemEnabled = true;
             sendMovieData(movieDataListIn);
@@ -234,7 +213,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void sendMovieData(ArrayList<HashMap<Integer, MoviesData>> localMovieData) {
+    private void sendMovieData(ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> localMovieData) {
         moviesToView = new ArrayList<>();
         if (localMovieData != null) {
             localMovieData.forEach(m -> {
@@ -249,8 +228,9 @@ public class MainActivity extends AppCompatActivity
         MenuInflater mainMInflator = getMenuInflater();
         mainMInflator.inflate(R.menu.main_menu, menu);
         if (menuItemEnabled) {
-            menu.findItem(R.id.sortby_popularity).setEnabled(true);
-            menu.findItem(R.id.sortby_rate).setEnabled(true);
+            menu.findItem(R.id.menuItem_sortby_popularity).setEnabled(true);
+            menu.findItem(R.id.menuItem_sortby_rate).setEnabled(true);
+            menu.findItem(R.id.menuItem_favorites).setEnabled(true);
         }
         return true;
     }
@@ -258,7 +238,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.sortby_rate: {
+            case R.id.menuItem_sortby_rate: {
                 new MovieTasking().execute("vote_average");
                 try {
                     Thread.sleep(320);
@@ -266,9 +246,10 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "vote_average"), RATING);
+                mRecyclerView.setAdapter(movieAdapter);
                 break;
             }
-            case R.id.sortby_popularity: {
+            case R.id.menuItem_sortby_popularity: {
                 new MovieTasking().execute("popularity");
                 try {
                     Thread.sleep(320);
@@ -276,15 +257,60 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "popularity"), POPULARITY);
+                mRecyclerView.setAdapter(movieAdapter);
+                break;
+            }
+            case R.id.menuItem_favorites: {
+
+                movieAdapter = new MovieAdapter(this);
+                _listMoviesRetrieved = new ArrayList<>();
+                ArrayList<String> _favList = new ArrayList<>();
+
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        _listMoviesRetrieved.addAll(mdB_MainActivity.dbFavoriteMoviesDao().loadAllDbFavorite());
+
+                        if (_listMoviesRetrieved != null) {
+                            for (int favCount = 0; favCount < _listMoviesRetrieved.size(); favCount++) {
+                                _favList.add(_listMoviesRetrieved.get(favCount).getBfavorite_room());
+//                                        movieAdapter.setMoviePosters(_listMoviesRetrieved.get(favCount).getBfavorite_room(), "fav");
+                            }
+                            movieAdapter.setMovieFavPosters(_favList, "fav");
+                        }
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                    try {
+                                        Thread.sleep(1400);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                Toast.makeText(getApplicationContext(), " " + _favList.get(15) + "\n"         // it shows respective Toast with data-retrieved.
+                                        + _favList.get(_favList.size() - 1), Toast.LENGTH_SHORT).show();
+                                mRecyclerView.setAdapter(movieAdapter);                                            // Nothing is happening here
+//                                invalidateOptionsMenu();
+                            }
+
+                        });
+
+//                        mRecyclerView.setAdapter(movieAdapter);   // CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+
+                    }
+
+                });
+
+//                mRecyclerView.setAdapter(movieAdapter);
                 break;
             }
         }
-        mRecyclerView.setAdapter(movieAdapter);
+
+//        mRecyclerView.setAdapter(movieAdapter);
         return super.onOptionsItemSelected(item);
     }
 
-    private ArrayList<MoviesData> sortMoviesBy(ArrayList<HashMap<Integer, MoviesData>> unOrderedMovies, String sortBy) {
-
+    private ArrayList<PrimaryMoviesDataHandler> sortMoviesBy(ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> unOrderedMovies, String sortBy) {
         moviesSortedByRating = new ArrayList<>();
         if (sortBy.equals("popularity")) {
             unOrderedMovies.sort((o1, o2) -> {
@@ -336,8 +362,8 @@ public class MainActivity extends AppCompatActivity
             try {
                 int timeoutMs = 1500;
                 Socket sock = new Socket();
-                SocketAddress sockAddr = new InetSocketAddress("8.8.8.8", 53);
-                sock.connect(sockAddr, timeoutMs);
+                SocketAddress socketAddress = new InetSocketAddress("8.8.8.8", 53);
+                sock.connect(socketAddress, timeoutMs);
                 sock.close();
                 return true;
             } catch (IOException e) {

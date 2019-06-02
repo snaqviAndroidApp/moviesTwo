@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import nanodegree.dfw.perm.moviesTwo.R;
-import nanodegree.dfw.perm.moviesTwo.data.DetailsData;
+import nanodegree.dfw.perm.moviesTwo.data.background.AppExecutors;
+import nanodegree.dfw.perm.moviesTwo.data.handler.DetailsDataHandler;
 import nanodegree.dfw.perm.moviesTwo.data.db.MoviesDatabase;
 import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
 
@@ -60,7 +61,7 @@ public class DetailsActivity extends AppCompatActivity
     private ImageView imageView;                                                    // MovieApp Stage Two Ends Here
 
     private Intent mIntent;
-    private DetailsData inDetetails = null;
+    private DetailsDataHandler inDetetails = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,14 +174,19 @@ public class DetailsActivity extends AppCompatActivity
         }
     }
 
-    public void onFavImageViewClicked(View view) {                          // set movie as favorite
+    public void onFavImageViewClicked(View view) {                          // set favorite movies over all
 
-        String favMovie = inDetetails.getDetailAct_original_title();
+        String favMovie = inDetetails.getDetailAct_backdrop_path();
         Date date = new Date();
 
-        MovieEntries movieEntries = new MovieEntries(favMovie,date);
-        fav_mDb.dbFavoriteMoviesDao().insertFavorites(movieEntries);
-        finish();                                                           // returning to MainActivity
+        final MovieEntries movieEntries = new MovieEntries(favMovie,date);      // os 'run() could have access to Entities
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {                                                 // implemented DiskIO to handle multi-thread (race) scenario using Singleton Approach (getInstance())
+                fav_mDb.dbFavoriteMoviesDao().insertFavorites(movieEntries);
+                finish();                                                           // returning to MainActivity
+            }
+        });
 
         // Favorite controll button
         imageView.setImageResource(R.drawable.ic_favorite_full_24dp);

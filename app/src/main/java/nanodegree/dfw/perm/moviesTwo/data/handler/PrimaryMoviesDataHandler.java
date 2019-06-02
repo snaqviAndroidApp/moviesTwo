@@ -1,10 +1,10 @@
-package nanodegree.dfw.perm.moviesTwo.data;
+package nanodegree.dfw.perm.moviesTwo.data.handler;
 
 import java.util.ArrayList;
 
 import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
 
-public class MoviesData {
+public class PrimaryMoviesDataHandler {
 
     private String poster_path;
     private String backDrop_path;
@@ -18,19 +18,11 @@ public class MoviesData {
     // added for State-2
     private ArrayList<String> movie_reviews;
     private ArrayList<String> trailer_id;
-
     public ArrayList<String> getMovie_reviews() { return movie_reviews; }
-    public void setMovie_reviews(ArrayList movie_reviews) { this.movie_reviews = movie_reviews; }
-
     public ArrayList<String> getTrailer_id() { return trailer_id; }
-    public void setTrailer_id(ArrayList<String> trailer_id) { this.trailer_id = trailer_id; }
 
-    public MoviesData() {
-
-    }
-
-    public MoviesData(String poster_path, String backDrop_pathC, String original_title, String overview, String release_date, double vote_average,
-                      double popularity, String failure_status, ArrayList movie_reviews, ArrayList trailer_id) {
+    public PrimaryMoviesDataHandler(String poster_path, String backDrop_pathC, String original_title, String overview, String release_date, double vote_average,
+                                    double popularity, String failure_status, ArrayList movie_reviews, ArrayList trailer_id) {
         this.poster_path = poster_path;
         this.backDrop_path = backDrop_pathC;
         this.original_title = original_title;
@@ -42,29 +34,6 @@ public class MoviesData {
         this.movie_reviews = movie_reviews;
         this.trailer_id = trailer_id;
     }
-
-    /**
-     * sets the poster location
-     *
-     */
-    public void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
-    }
-    public void setBackDrop_path(String backDrop_path) { this.backDrop_path = backDrop_path; }
-    public void setOriginal_title(String original_title) { this.original_title = original_title; }
-    public void setVote_average(double vote_average) {
-        this.vote_average = vote_average;
-    }
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
-    }
-    public void setPopularity(double popularity) {
-        this.popularity = popularity;
-    }
-    public void setFailure_status(String failure_status) { this.failure_status = failure_status; }
 
     /**
      * retrieves the posters available for introduction
@@ -101,7 +70,7 @@ public class MoviesData {
 
     @Override
     public String toString() {
-        return "MoviesData{" +
+        return "PrimaryMoviesDataHandler{" +
                 "poster_path='" + poster_path + '\'' +
                 ", backDrop_path='" + backDrop_path + '\'' +
                 ", original_title='" + original_title + '\'' +
