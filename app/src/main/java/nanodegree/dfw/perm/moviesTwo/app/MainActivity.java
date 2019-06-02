@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void _initialize() {
-        schPeriod = 8;
+        schPeriod = 1;
         threadCounts = 0;
         if (null != moviesFromServer) moviesFromServer.clear();
         if (null != moviesInputListToOrder) moviesInputListToOrder.clear();
