@@ -1,6 +1,7 @@
 package nanodegree.dfw.perm.moviesTwo.utilities;
 
 import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +40,7 @@ public class MovieJsonUtils {
                         null,
                         _reviewsIn,
                         _trailerId
-                        )
+                )
         );
         return movieData;
     }
@@ -49,7 +50,7 @@ public class MovieJsonUtils {
             throws JSONException {
         ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> moviesListToOrder = new ArrayList<>();
         JSONArray inMoviesJson_UnOrdered = new JSONObject(toOrderJsonStr).getJSONArray("results");
-        for (int toOderMovies = 0; toOderMovies < inMoviesJson_UnOrdered.length();toOderMovies++) {
+        for (int toOderMovies = 0; toOderMovies < inMoviesJson_UnOrdered.length(); toOderMovies++) {
             HashMap orderedMovieData = new HashMap();
             orderedMovieData.put(toOderMovies,
                     new PrimaryMoviesDataHandler(

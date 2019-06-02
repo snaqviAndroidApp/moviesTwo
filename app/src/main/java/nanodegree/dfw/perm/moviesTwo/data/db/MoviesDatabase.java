@@ -15,7 +15,6 @@ public abstract class MoviesDatabase extends RoomDatabase {       // made class 
     private static final Object LOCK = new Object();
     private static final String DATABASE_NAME = "db_favorites";                  // different than what was given as default in MoviesEntries.java
     private static MoviesDatabase sInstance;
-
     public static MoviesDatabase getInstance(Context context){
         if(sInstance == null){
             synchronized (LOCK){
@@ -31,5 +30,4 @@ public abstract class MoviesDatabase extends RoomDatabase {       // made class 
     }
 
     public abstract FavoritesDao dbFavoriteMoviesDao();
-
 }

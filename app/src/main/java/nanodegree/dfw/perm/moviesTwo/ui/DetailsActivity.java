@@ -15,8 +15,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import static android.widget.LinearLayout.VERTICAL;
+
 import com.squareup.picasso.Picasso;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,8 +34,7 @@ import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
 public class DetailsActivity extends AppCompatActivity
         implements TrailersAdapter.TrailersOnClickHandler {
 
-
-    // Extra for the movie Id to be received in the Intent                           MovieApp Stage Two
+    // Extra for the mdovie Id to be received in the Intent                           MovieApp Stage Two
     public static final String EXTRA_MOVIE_ID = "extrafMovieId";
     // Extra for the movie Id to be received after rotation
     public static final String INSTANCE_MOVIE_ID = "instancefMovieId";
@@ -40,12 +42,10 @@ public class DetailsActivity extends AppCompatActivity
     LinearLayoutManager reviewsLayoutManager;
     GridLayoutManager gPostersLayoutManager;
 
-    /** Favorite - movies Storage, Room-Database    **/
-        private MoviesDatabase fav_mDb;
-        ArrayList<String> fav_movies;
-
-    // Favorite - movies Storage, Room-db ENDS Here
-
+    /**
+     * Favorite - movies Storage, Room-Database
+     **/
+    private MoviesDatabase fav_mDb;
     private RecyclerView mTrailerRecyclerView, mReviewsRecyclerView;
     private TrailersAdapter trailersAdapter;
     private ReviewsAdapter reviewsAdapter;
@@ -56,7 +56,7 @@ public class DetailsActivity extends AppCompatActivity
     String strTrailer;
 
     private String rcvd_backdrop_path;
-    TextView vTitle, vOverview,vReleaseDate, vVoteAverage, vPopularity;
+    TextView vTitle, vOverview, vReleaseDate, vVoteAverage, vPopularity;
     private ImageView thumbNail;
     private ImageView imageView;                                                    // MovieApp Stage Two Ends Here
 
@@ -70,8 +70,6 @@ public class DetailsActivity extends AppCompatActivity
 
         initViews();
         fav_mDb = MoviesDatabase.getInstance(getApplicationContext());           // Initialize db
-
-        // Room_movies_db population Ends ---
 
         mIntent = getIntent();
         inDetetails = mIntent.getParcelableExtra("movieDetails");
@@ -102,13 +100,11 @@ public class DetailsActivity extends AppCompatActivity
                 .error(R.drawable.ic_launcher_foreground)
                 .into(thumbNail);
 
-        if(trailers != null && (trailers.size() !=0))
-        gPostersLayoutManager = new GridLayoutManager(this,trailers.size(), VERTICAL, false);
+        if (trailers != null && (trailers.size() != 0))
+            gPostersLayoutManager = new GridLayoutManager(this, trailers.size(), VERTICAL, false);
         mTrailerRecyclerView.setLayoutManager(gPostersLayoutManager);
-
         reviewsLayoutManager = new LinearLayoutManager(this, VERTICAL, false);
         mReviewsRecyclerView.setLayoutManager(reviewsLayoutManager);
-
         if ((trailers == null || (trailers.size() == 0)) && (reviews == null)) {
             Snackbar.make(getWindow().getDecorView().getRootView()
                     , MessageFormat.format("No Trailers, Reviews Available", (Object) null)
@@ -152,15 +148,15 @@ public class DetailsActivity extends AppCompatActivity
         vPopularity = findViewById(R.id.tvPopularity);
         vReleaseDate = findViewById(R.id.tvReleaseData);
         imageView = findViewById(R.id.fav_imageViewtop);
-        mTrailerRecyclerView = findViewById(R.id.recyclerview_trailer);      // Trailers recyclerViews deployment Here
+        mTrailerRecyclerView = findViewById(R.id.recyclerview_trailer);      // Trailers
         mTrailerRecyclerView.setHasFixedSize(true);
-        mReviewsRecyclerView = findViewById(R.id.recyclerview_review);      // Reviews - recyclerViews deployment Here
+        mReviewsRecyclerView = findViewById(R.id.recyclerview_review);      // Reviews d
         mReviewsRecyclerView.setHasFixedSize(true);
     }
 
     public void onTrailerItemClickListener(String trailerId, int adapterItem) {
         adapterItem++;
-        String frameVideo = "<html><body> Trailer no." +adapterItem+ " <br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/"+trailerId+"\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String frameVideo = "<html><body> Trailer no." + adapterItem + " <br><iframe width=\"420\" height=\"315\" src=\"https://www.youtube.com/embed/" + trailerId + "\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
         WebSettings webSettings = wtrailersView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         wtrailersView.loadData(frameVideo, "text/html", "utf-8");
@@ -174,12 +170,10 @@ public class DetailsActivity extends AppCompatActivity
         }
     }
 
-    public void onFavImageViewClicked(View view) {                          // set favorite movies over all
-
+    public void onFavImageViewClicked(View view) {                              // ddset favorite movies over all
         String favMovie = inDetetails.getDetailAct_backdrop_path();
         Date date = new Date();
-
-        final MovieEntries movieEntries = new MovieEntries(favMovie,date);      // os 'run() could have access to Entities
+        final MovieEntries movieEntries = new MovieEntries(favMovie, date);      // os 'run() could have access to Entities
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {                                                 // implemented DiskIO to handle multi-thread (race) scenario using Singleton Approach (getInstance())
@@ -187,9 +181,7 @@ public class DetailsActivity extends AppCompatActivity
                 finish();                                                           // returning to MainActivity
             }
         });
-
-        // Favorite controll button
         imageView.setImageResource(R.drawable.ic_favorite_full_24dp);
-        imageView.setEnabled(false);
+        imageView.setEnabled(false);                                             // Favorite control button
     }
 }

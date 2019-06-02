@@ -33,8 +33,7 @@ public class NetworkUtils {
 
     protected static final String TAG = NetworkUtils.class.getSimpleName();
     protected final static String PARAM_KEY = "api_key";
-//    protected final static String KEY_VALUE = "YOUR KEY";
-    protected final static String KEY_VALUE = "fcb4ae381c4482341fc74a85ea0b071a";
+    protected final static String KEY_VALUE = "YOUR KEY";
     protected static final String BASE_MOVIES_URL =
             "https://api.themoviedb.org/3/movie";
     protected static final String _BASE_URL = BASE_MOVIES_URL;

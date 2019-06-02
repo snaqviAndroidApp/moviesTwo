@@ -14,7 +14,7 @@
     <item
         android:id="@+id/menuItem_favorites"
         android:title="@string/favorite_movies"
-        android:enabled="false"
+        android:enabled="true"
         />
 
 </menu>

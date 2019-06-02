@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -21,13 +23,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     private ArrayList<PrimaryMoviesDataHandler> mMoviesClickedList;
     private ArrayList<String> mMovieFavReceived;
-    final private MovieAdapterOnClickHandler mClickHandler;
+    private MovieAdapterOnClickHandler mClickHandler;
     int adapterPosition = 0;
     private String sorting = null;
     String imageUrl = null;
-
-    Context context;
-
 
     public interface MovieAdapterOnClickHandler {                                       //Interface for OnClick Handling
         default void onMovieItemClickListener(PrimaryMoviesDataHandler dataClicked) {
@@ -50,8 +49,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         @Override
         public void onClick(View v) {
-            adapterPosition = getAdapterPosition();
-            mClickHandler.onMovieItemClickListener(mMoviesClickedList.get(adapterPosition));
+            if(mMovieFavReceived != null){                          // disabling the onClick() event on Favorite-movies posters
+                return;
+            }else{
+                adapterPosition = getAdapterPosition();
+                mClickHandler.onMovieItemClickListener(mMoviesClickedList.get(adapterPosition));
+            }
         }
     }
 
@@ -68,15 +71,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder movieViewHolder, int position) {
-
-        if(sorting != "fav"){
+        if(!sorting.equals("favoritesList")){
             PrimaryMoviesDataHandler mImagSelected = mMoviesClickedList.get(position);
             imageUrl = mImagSelected.getPoster_builtPath();
         }else {
             imageUrl = mMovieFavReceived.get(position);
         }
-
-        Picasso.get()                                     // Success-implementation
+        Picasso.get()                                     // Successful -implementation, includes offline (cached)data retrieval
                 .load(imageUrl)
                 .networkPolicy(NetworkPolicy.OFFLINE)
                 .fit()
@@ -85,43 +86,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .placeholder(R.drawable.ic_download_icon)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(movieViewHolder.mMovieImageView);
-
-
-//        Picasso.get()
-//                .load(imageUrl)
-//                .networkPolicy(NetworkPolicy.OFFLINE)
-//                .into(movieViewHolder.mMovieImageView, new Callback() {
-//            @Override
-//            public void onSuccess() {
-//
-//            }
-//            @Override
-//            public void onError(Exception e) {
-//                // Try again online if cache failed
-//                Picasso.get()
-//                        .load(imageUrl)
-//                        .fit()
-//                        .rotate(0)
-//                        .centerCrop(5)
-////                        .placeholder(R.drawable.ic_launcher_foreground)
-//                        .placeholder(R.drawable.ic_download_icon)
-//                        .error(R.drawable.ic_launcher_foreground)
-//                        .into(movieViewHolder.mMovieImageView);
-//            }
-//        });
-
-//        Glide.with(movieViewHolder.itemView.getContext())
-//                .load(imageUrl)
-//                .placeholder(null)
-//                .error(R.drawable.ic_launcher_foreground)
-//                .override(65,72)
-//                .into(movieViewHolder.mMovieImageView);
-
     }
 
     @Override
     public int getItemCount() {
-        if (null == mMoviesClickedList) return 0;
+        if (null == mMoviesClickedList && (null == mMovieFavReceived)) return 0;
+        else if (null == mMoviesClickedList && (null != mMovieFavReceived)) {
+            return mMovieFavReceived.size();
+        } else
         return mMoviesClickedList.size();
     }
 
@@ -131,18 +103,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-//    public void setMoviePosters(String  _strMovie, String ifSorting){
-//        mMovieFavReceived = _strMovie;
-//        sorting = ifSorting;
-//        notifyDataSetChanged();
-//    }
-
+    /** Favorite Movies Handler
+     *
+     * **/
     public void setMovieFavPosters(ArrayList<String> favList, String ifSorting) {
-
         mMovieFavReceived = favList;
         sorting = ifSorting;
         notifyDataSetChanged();
-
     }
 
 }

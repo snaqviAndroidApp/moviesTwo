@@ -18,8 +18,14 @@ public class PrimaryMoviesDataHandler {
     // added for State-2
     private ArrayList<String> movie_reviews;
     private ArrayList<String> trailer_id;
-    public ArrayList<String> getMovie_reviews() { return movie_reviews; }
-    public ArrayList<String> getTrailer_id() { return trailer_id; }
+
+    public ArrayList<String> getMovie_reviews() {
+        return movie_reviews;
+    }
+
+    public ArrayList<String> getTrailer_id() {
+        return trailer_id;
+    }
 
     public PrimaryMoviesDataHandler(String poster_path, String backDrop_pathC, String original_title, String overview, String release_date, double vote_average,
                                     double popularity, String failure_status, ArrayList movie_reviews, ArrayList trailer_id) {
@@ -39,34 +45,43 @@ public class PrimaryMoviesDataHandler {
      * retrieves the posters available for introduction
      *
      * @return original_title
-     *
      */
     public String getOriginal_title() {
         return original_title;
     }
+
     public String getOverview() {
         return overview;
     }
+
     public double getVote_average() {
         return vote_average;
     }
+
     public double getPopularity() {
         return popularity;
     }
-    public String getFailure_status() { return failure_status; }
+
+    public String getFailure_status() {
+        return failure_status;
+    }
+
     public String getRelease_date() {
         return release_date;
     }
 
     /**
      * fetches the posters available for introduction
-     * @return poster_path for Root Views
      *
+     * @return poster_path for Root Views
      */
     private String getPoster_path() {
         return poster_path;
     }
-    public String getBackDrop_path() { return backDrop_path; }
+
+    public String getBackDrop_path() {
+        return backDrop_path;
+    }
 
     @Override
     public String toString() {

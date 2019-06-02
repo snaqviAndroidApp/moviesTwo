@@ -54,14 +54,14 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<PrimaryMoviesDataHandler> moviesToView, moviesSortedByRating;
     private ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>> moviesFromServer, moviesInputListToOrder;
-
     boolean menuItemEnabled = false;
     private RecyclerView mRecyclerView;
-    private MovieAdapter movieAdapter;
+
+    MovieAdapter movieAdapter;
     private ProgressBar mLoadIndicator;
     private long schPeriod;
     private int threadCounts;
-    private MoviesDatabase mdB_MainActivity;                                 // MovieApp Stage Two
+    private MoviesDatabase mdB_MainActivity;                                 // MovieApp Stage Two Database
     ArrayList<MovieEntries> _listMoviesRetrieved = null;
 
     @Override
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         if (null != moviesSortedByRating) moviesSortedByRating.clear();
         mdB_MainActivity = MoviesDatabase.getInstance(getApplicationContext()); // Movies-Db Initialize
     }
+
     private void initView() {
         mRecyclerView = findViewById(R.id.recyclerview_movie);
         mLoadIndicator = findViewById(R.id.mv_loading_indicator);
@@ -87,9 +88,7 @@ public class MainActivity extends AppCompatActivity
                 = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
-        movieAdapter = new MovieAdapter(this);
         new ConnectionUtilities().getConnCheckHanlde();                     // Checking Connectivity (internet)
-        mRecyclerView.setAdapter(movieAdapter);
     }
 
     public void getPrimaryMoviesList(boolean nwConn) {
@@ -97,6 +96,7 @@ public class MainActivity extends AppCompatActivity
             new MovieTasking().execute(String.valueOf(MainActivity.NUM_OF_MOVIES));
         }
     }
+
 
     public void onMovieItemClickListener(PrimaryMoviesDataHandler dataClicked) {
         final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
@@ -220,7 +220,9 @@ public class MainActivity extends AppCompatActivity
                 moviesToView.add(m.get(requireNonNull(m.keySet().toArray())[0]));
             });
         }
+        movieAdapter = new MovieAdapter(this);      // new implementation
         movieAdapter.setMoviePosters(moviesToView, "");
+        mRecyclerView.setAdapter(movieAdapter);
     }
 
     @Override
@@ -246,7 +248,6 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "vote_average"), RATING);
-                mRecyclerView.setAdapter(movieAdapter);
                 break;
             }
             case R.id.menuItem_sortby_popularity: {
@@ -257,56 +258,43 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
                 movieAdapter.setMoviePosters(sortMoviesBy(moviesInputListToOrder, "popularity"), POPULARITY);
-                mRecyclerView.setAdapter(movieAdapter);
                 break;
             }
             case R.id.menuItem_favorites: {
-
                 movieAdapter = new MovieAdapter(this);
                 _listMoviesRetrieved = new ArrayList<>();
                 ArrayList<String> _favList = new ArrayList<>();
-
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
                         _listMoviesRetrieved.addAll(mdB_MainActivity.dbFavoriteMoviesDao().loadAllDbFavorite());
-
                         if (_listMoviesRetrieved != null) {
                             for (int favCount = 0; favCount < _listMoviesRetrieved.size(); favCount++) {
                                 _favList.add(_listMoviesRetrieved.get(favCount).getBfavorite_room());
-//                                        movieAdapter.setMoviePosters(_listMoviesRetrieved.get(favCount).getBfavorite_room(), "fav");
                             }
-                            movieAdapter.setMovieFavPosters(_favList, "fav");
+                            movieAdapter.setMovieFavPosters(_favList, "favoritesList");
                         }
-
-                        runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {                                              // favorite movies poster populaes to same recylcerView
                             @Override
                             public void run() {
-                                    try {
-                                        Thread.sleep(1400);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                Toast.makeText(getApplicationContext(), " " + _favList.get(15) + "\n"         // it shows respective Toast with data-retrieved.
-                                        + _favList.get(_favList.size() - 1), Toast.LENGTH_SHORT).show();
-                                mRecyclerView.setAdapter(movieAdapter);                                            // Nothing is happening here
-//                                invalidateOptionsMenu();
+                                try {
+                                    Thread.sleep(1400);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                if (movieAdapter.getItemCount() == 0) {
+                                    Snackbar.make(Objects.requireNonNull(getCurrentFocus())
+                                            , MessageFormat.format("No movie designated as favorite", (Object) null)
+                                            , Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                                }
+                                mRecyclerView.setAdapter(movieAdapter);
                             }
-
                         });
-
-//                        mRecyclerView.setAdapter(movieAdapter);   // CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
-
                     }
-
                 });
-
-//                mRecyclerView.setAdapter(movieAdapter);
                 break;
             }
         }
-
-//        mRecyclerView.setAdapter(movieAdapter);
         return super.onOptionsItemSelected(item);
     }
 
@@ -358,6 +346,7 @@ public class MainActivity extends AppCompatActivity
         public ScheduledFuture<?> getConnCheckHanlde() {
             return connCheckHanlde;
         }
+
         private boolean checkConnection() {
             try {
                 int timeoutMs = 1500;

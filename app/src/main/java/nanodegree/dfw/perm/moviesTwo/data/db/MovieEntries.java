@@ -17,7 +17,6 @@ public class MovieEntries {
     @ColumnInfo(name = "updatedAt")
     private Date updatedAt;
 
-
     @Ignore
     public MovieEntries(String bfavorite_room, Date updatedat) {
         this.bfavorite_room = bfavorite_room;
@@ -45,11 +44,9 @@ public class MovieEntries {
     public void setBfavorite_room(String bfavorite_room) {
         this.bfavorite_room = bfavorite_room;
     }
-
     public Date getUpdatedAt() {
         return updatedAt;
     }
-
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
