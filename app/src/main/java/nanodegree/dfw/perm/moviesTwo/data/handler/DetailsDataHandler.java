@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public final class DetailsDataHandler implements Parcelable{
+public final class DetailsDataHandler implements Parcelable {
     private String detailAct_original_title;
     private String detailAct_backdrop_path;
     private String detailAct_overview;

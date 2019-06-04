@@ -33,22 +33,17 @@ public class NetworkUtils {
 
     protected static final String TAG = NetworkUtils.class.getSimpleName();
     protected final static String PARAM_KEY = "api_key";
-    protected final static String KEY_VALUE = "YOUR KEY";
+//    protected final static String KEY_VALUE = "YOUR KEY";
+    protected final static String KEY_VALUE = "fcb4ae381c4482341fc74a85ea0b071a";
     protected static final String BASE_MOVIES_URL =
             "https://api.themoviedb.org/3/movie";
     protected static final String _BASE_URL = BASE_MOVIES_URL;
-
     protected static final String POSTER_BASE_URL_MAIN = "http://image.tmdb.org/t/p";
-
     protected static final String POSTER_BASE_URL_MAIN_RATED = "http://api.themoviedb.org/3/movie/top_rated";
     protected static final String POSTER_BASE_URL_MAIN_POPULAR = "http://api.themoviedb.org/3/movie/popular";
-
-
-
     protected static final String OPTIMUM_SIZE = "w185";
     protected static final String OPTIMUM_SIZE_92 = "w92";
     protected static final String OPTIMUM_SIZE_154 = "w154";
-
     /**
      * Builds the URL used to talk to the Movie server [api] server
      * @implNote ----> Current consumption <--------

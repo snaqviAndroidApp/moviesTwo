@@ -7,12 +7,15 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
 
+import nanodegree.dfw.perm.moviesTwo.data.handler.PrimaryMoviesDataHandler;
+
 
 @Entity(tableName = "favorites")
 public class MovieEntries {
 
     @PrimaryKey(autoGenerate = true)            //set autoGenerate to true
     private int id_room;
+
     private String bfavorite_room;
     @ColumnInfo(name = "updatedAt")
     private Date updatedAt;

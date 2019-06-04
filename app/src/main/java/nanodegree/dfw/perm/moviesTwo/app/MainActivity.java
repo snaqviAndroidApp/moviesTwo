@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -45,7 +44,7 @@ import static java.util.Objects.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class MainActivity extends AppCompatActivity
-        implements MovieAdapter.MovieAdapterOnClickHandler {
+        implements MovieAdapter.AdapterClickHandler {
 
     private static final int MOVIES_OFFSET = 545;
     private static final int NUM_OF_MOVIES = 14;
@@ -88,6 +87,7 @@ public class MainActivity extends AppCompatActivity
                 = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(gridlayoutManager);
         mRecyclerView.setHasFixedSize(true);
+
         new ConnectionUtilities().getConnCheckHanlde();                     // Checking Connectivity (internet)
     }
 
@@ -97,6 +97,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /*** fav-Movies onClick() Implementation worked!!
+     * leaving this implementation to move forward with 'backing-app',
+     * now only left part is to somehow get the data from PrimaryMoviesDataHandler alongwith
+     * @param favItemClicked
+     * so when this (a poster as .jpg, is passed, the relevant data is retrieved, either from - DetailedActivity
+     * or from here MainActivity
+     * for now, all entries are dummied as null
+     ***/
+
+    public void onFavMovieItemClickListener(String favItemClicked){
+
+        // Experimental
+        final Intent _fdetailIntent = new Intent(MainActivity.this, DetailsActivity.class);
+        _fdetailIntent.putExtra("movieDetails", new DetailsDataHandler(
+                        null,
+                favItemClicked,
+                null,
+                0.0f,
+                        0.0f,
+                        null,
+                        null,
+                null
+        ));
+        startActivity(_fdetailIntent);
+    }
 
     public void onMovieItemClickListener(PrimaryMoviesDataHandler dataClicked) {
         final Intent detailIntent = new Intent(MainActivity.this, DetailsActivity.class);
@@ -112,6 +137,11 @@ public class MainActivity extends AppCompatActivity
                 )
         );
         startActivity(detailIntent);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 
     public class MovieTasking extends AsyncTask<String, Void, ArrayList<HashMap<Integer, PrimaryMoviesDataHandler>>> {
@@ -220,7 +250,7 @@ public class MainActivity extends AppCompatActivity
                 moviesToView.add(m.get(requireNonNull(m.keySet().toArray())[0]));
             });
         }
-        movieAdapter = new MovieAdapter(this);      // new implementation
+        movieAdapter = new MovieAdapter(this, null);      // new implementation
         movieAdapter.setMoviePosters(moviesToView, "");
         mRecyclerView.setAdapter(movieAdapter);
     }
@@ -261,7 +291,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
             case R.id.menuItem_favorites: {
-                movieAdapter = new MovieAdapter(this);
+
+                movieAdapter = new MovieAdapter(this, this);
+
                 _listMoviesRetrieved = new ArrayList<>();
                 ArrayList<String> _favList = new ArrayList<>();
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -270,7 +302,7 @@ public class MainActivity extends AppCompatActivity
                         _listMoviesRetrieved.addAll(mdB_MainActivity.dbFavoriteMoviesDao().loadAllDbFavorite());
                         if (_listMoviesRetrieved != null) {
                             for (int favCount = 0; favCount < _listMoviesRetrieved.size(); favCount++) {
-                                _favList.add(_listMoviesRetrieved.get(favCount).getBfavorite_room());
+                                _favList.add(_listMoviesRetrieved.get(favCount).getBfavorite_room());                   // Original passing statement
                             }
                             movieAdapter.setMovieFavPosters(_favList, "favoritesList");
                         }
@@ -328,6 +360,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 if (checkConnection()) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -360,6 +398,7 @@ public class MainActivity extends AppCompatActivity
                         , MessageFormat.format("Ah, no internet connetion", (Object) null)
                         , Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 threadCounts = 0;
+
                 return false;
             }
         }

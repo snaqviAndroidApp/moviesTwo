@@ -27,6 +27,7 @@ public class PrimaryMoviesDataHandler {
         return trailer_id;
     }
 
+
     public PrimaryMoviesDataHandler(String poster_path, String backDrop_pathC, String original_title, String overview, String release_date, double vote_average,
                                     double popularity, String failure_status, ArrayList movie_reviews, ArrayList trailer_id) {
         this.poster_path = poster_path;
