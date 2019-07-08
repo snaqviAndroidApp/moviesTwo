@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.moviesTwo.app;
+package nanodegree.dfw.perm.BackingApp.app;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -27,18 +27,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import nanodegree.dfw.perm.moviesTwo.R;
-import nanodegree.dfw.perm.moviesTwo.data.background.AppExecutors;
-import nanodegree.dfw.perm.moviesTwo.data.handler.DetailsDataHandler;
-import nanodegree.dfw.perm.moviesTwo.data.handler.PrimaryMoviesDataHandler;
-import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
-import nanodegree.dfw.perm.moviesTwo.data.db.MoviesDatabase;
-import nanodegree.dfw.perm.moviesTwo.ui.DetailsActivity;
-import nanodegree.dfw.perm.moviesTwo.ui.MovieAdapter;
-import nanodegree.dfw.perm.moviesTwo.utilities.MovieJsonUtils;
-import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
-import nanodegree.dfw.perm.moviesTwo.utilities.PhaseTwoJsonUtils;
-import nanodegree.dfw.perm.moviesTwo.utilities.PhaseTwoNetworkUtils;
+import nanodegree.dfw.perm.BackingApp.R;
+import nanodegree.dfw.perm.BackingApp.data.background.AppExecutors;
+import nanodegree.dfw.perm.BackingApp.data.handler.DetailsDataHandler;
+import nanodegree.dfw.perm.BackingApp.data.handler.PrimaryMoviesDataHandler;
+import nanodegree.dfw.perm.BackingApp.data.db.MovieEntries;
+import nanodegree.dfw.perm.BackingApp.data.db.MoviesDatabase;
+import nanodegree.dfw.perm.BackingApp.ui.DetailsActivity;
+import nanodegree.dfw.perm.BackingApp.ui.MovieAdapter;
+import nanodegree.dfw.perm.BackingApp.utilities.MovieJsonUtils;
+import nanodegree.dfw.perm.BackingApp.utilities.NetworkUtils;
+import nanodegree.dfw.perm.BackingApp.utilities.PhaseTwoJsonUtils;
+import nanodegree.dfw.perm.BackingApp.utilities.PhaseTwoNetworkUtils;
 
 import static java.util.Objects.*;
 import static java.util.concurrent.TimeUnit.SECONDS;

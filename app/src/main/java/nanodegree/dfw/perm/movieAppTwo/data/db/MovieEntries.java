@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.moviesTwo.data.db;
+package nanodegree.dfw.perm.BackingApp.data.db;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -6,8 +6,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import java.util.Date;
-
-import nanodegree.dfw.perm.moviesTwo.data.handler.PrimaryMoviesDataHandler;
 
 
 @Entity(tableName = "favorites")

@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.moviesTwo.data.db;
+package nanodegree.dfw.perm.BackingApp.data.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;

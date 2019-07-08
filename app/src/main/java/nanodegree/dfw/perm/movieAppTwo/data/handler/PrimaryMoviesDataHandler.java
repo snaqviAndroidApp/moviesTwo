@@ -1,8 +1,8 @@
-package nanodegree.dfw.perm.moviesTwo.data.handler;
+package nanodegree.dfw.perm.BackingApp.data.handler;
 
 import java.util.ArrayList;
 
-import nanodegree.dfw.perm.moviesTwo.utilities.NetworkUtils;
+import nanodegree.dfw.perm.BackingApp.utilities.NetworkUtils;
 
 public class PrimaryMoviesDataHandler {
 

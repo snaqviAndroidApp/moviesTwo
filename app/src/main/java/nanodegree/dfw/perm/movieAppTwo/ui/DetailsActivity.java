@@ -1,5 +1,5 @@
 
-package nanodegree.dfw.perm.moviesTwo.ui;
+package nanodegree.dfw.perm.movieAppTwo.ui;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
@@ -24,11 +24,11 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import nanodegree.dfw.perm.moviesTwo.R;
-import nanodegree.dfw.perm.moviesTwo.data.background.AppExecutors;
-import nanodegree.dfw.perm.moviesTwo.data.handler.DetailsDataHandler;
-import nanodegree.dfw.perm.moviesTwo.data.db.MoviesDatabase;
-import nanodegree.dfw.perm.moviesTwo.data.db.MovieEntries;
+import nanodegree.dfw.perm.movieAppTwo.R;
+import nanodegree.dfw.perm.movieAppTwo.data.background.AppExecutors;
+import nanodegree.dfw.perm.movieAppTwo.data.handler.DetailsDataHandler;
+import nanodegree.dfw.perm.movieAppTwo.data.db.MoviesDatabase;
+import nanodegree.dfw.perm.movieAppTwo.data.db.MovieEntries;
 
 
 public class DetailsActivity extends AppCompatActivity
@@ -165,7 +165,7 @@ public class DetailsActivity extends AppCompatActivity
     private class inWebView extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(strTrailer);
+//            view.loadUrl(strTrailer);
             return true;
         }
     }

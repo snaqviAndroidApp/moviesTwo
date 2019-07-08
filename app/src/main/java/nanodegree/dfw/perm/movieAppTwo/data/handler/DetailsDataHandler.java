@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.moviesTwo.data.handler;
+package nanodegree.dfw.perm.BackingApp.data.handler;
 
 import android.os.Parcel;
 import android.os.Parcelable;

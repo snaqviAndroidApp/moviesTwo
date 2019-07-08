@@ -1,7 +1,6 @@
-package nanodegree.dfw.perm.moviesTwo.data.db;
+package nanodegree.dfw.perm.BackingApp.data.db;
 
 import android.arch.persistence.room.TypeConverter;
-import android.util.Log;
 
 import java.util.Date;
 

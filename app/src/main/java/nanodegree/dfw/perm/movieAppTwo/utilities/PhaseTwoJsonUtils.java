@@ -1,4 +1,4 @@
-package nanodegree.dfw.perm.moviesTwo.utilities;
+package nanodegree.dfw.perm.BackingApp.utilities;
 
 import android.content.Context;
 
@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PhaseTwoJsonUtils extends MovieJsonUtils {
 
